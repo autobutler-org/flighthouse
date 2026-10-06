@@ -5,6 +5,10 @@
 /// against a baseline, and renders JSON and HTML reports.
 library;
 
+export 'src/model/enums.dart';
+export 'src/model/observations.dart';
+export 'src/model/report.dart';
+export 'src/model/report_json.dart';
 export 'src/result/failure.dart' hide firstLine;
 export 'src/result/result.dart';
 
