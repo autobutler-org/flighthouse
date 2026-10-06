@@ -36,3 +36,5 @@ jobs:
         run: make check
       - name: Test
         run: make test
+      - name: Score the package like pub.dev
+        run: make check/pana
