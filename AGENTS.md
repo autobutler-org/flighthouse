@@ -87,9 +87,9 @@ footer, or a `claude.ai/code` session link.
   no files. Edit only when the request asks for a change.
 - **Filing an issue is not implementing it.** When asked to write up an issue or a plan, stop there.
 - **An issue belongs to its epic as a sub-issue, not a link.** Attach it with
-  `gh api -X POST repos/brandonapol/flighthouse/issues/<epic>/sub_issues -F sub_issue_id=<id>`, where `<id>` is the
-  child's database id from `gh api repos/brandonapol/flighthouse/issues/<N> --jq .id`, not its number. Confirm with
-  `gh api repos/brandonapol/flighthouse/issues/<N>/parent`.
+  `gh api -X POST repos/autobutler-org/flighthouse/issues/<epic>/sub_issues -F sub_issue_id=<id>`, where `<id>` is the
+  child's database id from `gh api repos/autobutler-org/flighthouse/issues/<N> --jq .id`, not its number. Confirm with
+  `gh api repos/autobutler-org/flighthouse/issues/<N>/parent`.
 - **Working an issue means owning it.** Before starting on a ticket, `gh issue edit <N> --add-assignee @me`.
 - **Every ticket states its model scope.** `**Model scope: Opus.**` with a one-line reason. Opus is the default;
   Sonnet only for a mechanical, well-specified change with no design judgment.

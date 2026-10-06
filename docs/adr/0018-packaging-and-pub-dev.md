@@ -1,6 +1,6 @@
 # 0018. Packaging for pub.dev
 
-- Status: Accepted
+- Status: Accepted; repository URLs amended by [ADR 0020](0020-repository-in-autobutler-org.md)
 - Date: 2026-10-06
 
 ## Context
@@ -18,8 +18,8 @@ name: flighthouse
 description: >-
   Flutter accessibility, performance, Lighthouse-style report, and CI gate. Merges attest, Lighthouse,
   axe, and integration_test results into one scored report with a baseline diff.
-repository: https://github.com/brandonapol/flighthouse
-issue_tracker: https://github.com/brandonapol/flighthouse/issues
+repository: https://github.com/autobutler-org/flighthouse
+issue_tracker: https://github.com/autobutler-org/flighthouse/issues
 topics: [accessibility, a11y, performance, lighthouse, testing]
 executables:
   flighthouse:
