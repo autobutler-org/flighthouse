@@ -1,0 +1,40 @@
+name: Feature Request
+description: Request a new feature
+title: "[Feature] "
+labels: ["enhancement"]
+type: Feature
+assignees: []
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Surface
+      multiple: true
+      options:
+        - Schema / model
+        - Pipeline
+        - Adapter
+        - Renderer
+        - CLI
+        - Web runner
+        - flighthouse_flutter
+        - CI / packaging
+    validations:
+      required: true
+  - type: input
+    id: model-scope
+    attributes:
+      label: Model scope
+      placeholder: "Opus. Needs design judgment on X."
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What feature do you want?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria

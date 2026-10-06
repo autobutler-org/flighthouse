@@ -1,0 +1,33 @@
+name: EPIC
+description: File a new epic. One epic per phase.
+title: "[EPIC] "
+labels: ["epic"]
+type: EPIC
+assignees: []
+body:
+  - type: input
+    id: model-scope
+    attributes:
+      label: Model scope
+      description: "Opus by default. Sonnet only for mechanical, well-specified work. Add a one-line reason."
+      placeholder: "Opus. Cross-cutting design across schema, scoring, and CLI."
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What is true when this epic is done?
+    validations:
+      required: true
+  - type: textarea
+    id: adrs
+    attributes:
+      label: ADRs
+      description: The ADRs this epic depends on. All must be Accepted before work starts.
+  - type: textarea
+    id: exit-criteria
+    attributes:
+      label: Exit criteria
+    validations:
+      required: true

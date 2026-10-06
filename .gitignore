@@ -1,0 +1,13 @@
+.DS_Store
+.dart_tool/
+.packages
+build/
+coverage/
+doc/api/
+pubspec_overrides.yaml
+
+# Raw tool outputs and reports produced by local runs. Fixtures live under test/fixtures and are committed.
+.flighthouse/
+flighthouse-report/
+
+.env

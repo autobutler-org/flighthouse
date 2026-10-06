@@ -1,0 +1,38 @@
+name: Chore / Maintenance
+description: Dependency updates, refactors, CI changes, tooling, cleanup. Work that does not change behavior.
+title: "chore: "
+labels: ["chore"]
+type: Task
+assignees: []
+body:
+  - type: dropdown
+    id: chore-type
+    attributes:
+      label: Type of chore
+      options:
+        - Dependency update
+        - Refactor / cleanup
+        - CI / tooling
+        - Documentation
+        - Test coverage
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: model-scope
+    attributes:
+      label: Model scope
+      placeholder: "Sonnet. Mechanical version bump with no API change."
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs doing?
+    validations:
+      required: true
+  - type: textarea
+    id: bot-guidance
+    attributes:
+      label: Bot guidance
+      description: Scope limits, related issues, things to avoid touching.

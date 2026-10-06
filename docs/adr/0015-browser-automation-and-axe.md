@@ -1,0 +1,40 @@
+# 0015. Browser automation and axe
+
+- Status: Proposed, pending the phase 2 spike
+- Date: 2026-10-06
+
+## Context
+
+The web runner has to open pages, wait for Flutter to render, sometimes click (the semantics placeholder, a login
+form), and run axe in the page. The brief says to look at the Dart ecosystem first and fall back to Node tooling
+behind a small interface if nothing is adequate.
+
+Candidates, checked on pub.dev and GitHub on 2026-10-06:
+
+| Option                    | Latest, published       | Repo activity          | Notes                                              |
+| ------------------------- | ----------------------- | ---------------------- | -------------------------------------------------- |
+| `puppeteer` (Dart port)   | 3.26.0, 2026-08-13      | pushed 2026-09-30, 52 open issues | Chrome DevTools Protocol. Can download a pinned Chrome. `page.evaluate` runs arbitrary JS and returns JSON. |
+| `webdriver` (Dart team)   | 3.2.0, 2026-09-09       | pushed 2026-10-01, 27 open issues | W3C WebDriver. Needs a separate chromedriver process matching the Chrome version. |
+| Node: Playwright or `@axe-core/cli` | n/a           | n/a                    | The fallback the brief allows, as a subprocess.    |
+
+axe-core is a single JavaScript file (`axe.min.js`, MPL-2.0) that runs in the page. With either Dart driver it can be
+injected and `axe.run()` evaluated, with no Node involved at runtime.
+
+## Decision (proposed)
+
+- Define a small interface in `io/`: open a URL, wait for a selector, click, type, evaluate a script returning JSON,
+  close. The web runner depends only on it.
+- First implementation: `package:puppeteer`, because it needs no extra driver process and can fetch its own Chrome.
+- axe-core is not vendored into the repository. The runner loads `axe.min.js` from a path in config or downloads a
+  pinned version into a cache directory, then injects it and calls `axe.run()`.
+- If the spike shows puppeteer cannot do what we need, the next choice is `webdriver`, then a Node subprocess behind
+  the same interface.
+
+## Spike before accepting
+
+The first phase 2 task answers these and reports back before this ADR is accepted:
+
+1. Does puppeteer's Chrome download and headless launch work on `ubuntu-latest` and macOS?
+2. Can it wait for Flutter's first frame reliably (a selector on `flt-glass-pane` or the semantics host)?
+3. Does injecting `axe.min.js` and returning `axe.run()` results round-trip intact for a large page?
+4. How responsive are the maintainers? Look at recent issues and fixed bugs for CDP version drift.
