@@ -1,6 +1,6 @@
 # 0008. Scoring
 
-- Status: Accepted
+- Status: Accepted; category score formula made precise by [ADR 0022](0022-measurement-weights.md)
 - Date: 2026-10-06
 
 ## Context

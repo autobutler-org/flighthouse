@@ -1,6 +1,6 @@
 # 0006. Core schema
 
-- Status: Accepted
+- Status: Accepted; `Measurement.weight` added by [ADR 0022](0022-measurement-weights.md)
 - Date: 2026-10-06
 
 ## Context

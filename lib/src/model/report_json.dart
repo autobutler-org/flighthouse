@@ -216,6 +216,7 @@ Map<String, Object?> measurementToJson(Measurement measurement) => {
   'category': measurement.category.id,
   'route': measurement.route,
   'metric': metricToJson(measurement.metric),
+  'weight': measurement.weight,
   'toolScore': measurement.toolScore,
 };
 
@@ -229,6 +230,7 @@ Result<Measurement, SchemaFailure> measurementFromJson(
       'category',
       'route',
       'metric',
+      'weight',
       'toolScore',
     ]).flatMap(
       (object) => switch ((
@@ -236,6 +238,7 @@ Result<Measurement, SchemaFailure> measurementFromJson(
         readField(object, 'category', path, _decodeCategory),
         readField(object, 'route', path, decodeString),
         readField(object, 'metric', path, metricFromJson),
+        readField(object, 'weight', path, decodeNonNegative),
         readField(object, 'toolScore', path, nullable(decodeUnitInterval)),
       )) {
         (
@@ -243,6 +246,7 @@ Result<Measurement, SchemaFailure> measurementFromJson(
           Ok(value: final category),
           Ok(value: final route),
           Ok(value: final metric),
+          Ok(value: final weight),
           Ok(value: final toolScore),
         ) =>
           Ok((
@@ -250,6 +254,7 @@ Result<Measurement, SchemaFailure> measurementFromJson(
             category: category,
             route: route,
             metric: metric,
+            weight: weight,
             toolScore: toolScore,
           )),
         (
@@ -257,9 +262,10 @@ Result<Measurement, SchemaFailure> measurementFromJson(
           final category,
           final route,
           final metric,
+          final weight,
           final toolScore,
         ) =>
-          Err(firstError([source, category, route, metric, toolScore])),
+          Err(firstError([source, category, route, metric, weight, toolScore])),
       },
     );
 
@@ -398,6 +404,7 @@ _SortKey _measurementKey(Measurement measurement) => [
   measurement.category.index,
   measurement.metric.unit.index,
   measurement.metric.value,
+  measurement.weight,
   measurement.toolScore ?? -1,
 ];
 

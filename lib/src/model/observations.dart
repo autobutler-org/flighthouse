@@ -32,10 +32,15 @@ typedef RuleOutcome = ({
 });
 
 /// A metric measured on one route, with the tool's own score when it has one.
+///
+/// [weight] is the measurement's weight in its category score, on the same
+/// scale as [RuleOutcome] weights, so a category score is the weighted mean of
+/// both.
 typedef Measurement = ({
   Source source,
   Category category,
   String route,
   Metric metric,
+  double weight,
   double? toolScore,
 });
