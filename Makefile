@@ -54,5 +54,6 @@ test: ## Run every unit, fixture, and end-to-end test
 	dart test
 
 .PHONY: test/cli
-test/cli: ## Run the CLI against recorded fixtures
-	dart run bin/flighthouse.dart ci --config $(FIXTURES)/flighthouse.yaml
+test/cli: ## Run the CLI's collect and ci commands against recorded fixtures
+	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml collect
+	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml ci
