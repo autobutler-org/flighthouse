@@ -16,6 +16,7 @@ export 'src/model/enums.dart';
 export 'src/model/observations.dart';
 export 'src/model/report.dart';
 export 'src/model/report_json.dart';
+export 'src/pipeline/assemble.dart';
 export 'src/pipeline/baseline_update.dart';
 export 'src/pipeline/diff.dart';
 export 'src/pipeline/fingerprint.dart' show fingerprint, fingerprintVersion;
