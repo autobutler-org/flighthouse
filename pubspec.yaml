@@ -5,9 +5,23 @@ description: >-
 version: 0.0.1
 repository: https://github.com/autobutler-org/flighthouse
 issue_tracker: https://github.com/autobutler-org/flighthouse/issues
+topics:
+  - accessibility
+  - a11y
+  - performance
+  - lighthouse
+  - testing
 
 environment:
   sdk: ^3.13.0
+
+platforms:
+  linux:
+  macos:
+  windows:
+
+executables:
+  flighthouse:
 
 dev_dependencies:
   lints: ^6.1.0

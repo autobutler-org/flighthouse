@@ -1,0 +1,6 @@
+flighthouse
+Copyright (c) 2026 Brandon Apol
+
+This product includes a port of the log-normal scoring function from
+Lighthouse (https://github.com/GoogleChrome/lighthouse), shared/statistics.js,
+Copyright Google LLC, licensed under the Apache License, Version 2.0.
