@@ -21,6 +21,8 @@ export 'src/pipeline/log_normal.dart' show logNormalScore;
 export 'src/pipeline/scoring.dart' show measurementScore, score;
 export 'src/pipeline/route.dart'
     show RoutePattern, compileRoutePattern, normalizeRoute;
+export 'src/render/html_renderer.dart' show renderHtml;
+export 'src/render/json_renderer.dart';
 export 'src/result/failure.dart' hide firstLine;
 export 'src/result/result.dart';
 

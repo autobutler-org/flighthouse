@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>quark flighthouse report</title><style>:root{--bg:#fff;--fg:#1b1b1f;--muted:#55565c;--line:#d9d9de;--panel:#f6f6f8;--pass:#0a7d32;--average:#a14a00;--fail:#c5221f;--none:#6b6b73;--track:#e4e4e8}
+@media (prefers-color-scheme:dark){:root{--bg:#18181b;--fg:#ececf0;--muted:#a8a8b3;--line:#3a3a42;--panel:#222227;--pass:#4ade80;--average:#fbbf24;--fail:#f87171;--none:#9a9aa5;--track:#33333a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header,main,footer{max-width:960px;margin:0 auto;padding:16px}
+header{padding-bottom:0}main{padding-top:0}
+h1{margin:0;font-size:1.75rem}
+h2{margin-top:2rem;font-size:1.35rem;border-bottom:1px solid var(--line);padding-bottom:.25rem}
+h3{font-size:1.1rem}
+main>section:first-child>h2{margin-top:.5rem}
+.meta,.note,.source,.detail,footer{color:var(--muted)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;overflow-wrap:anywhere}
+.gauges{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:16px}
+.gauge{display:flex;flex-direction:column;align-items:center;width:120px}
+.gauge-dial{position:relative;width:96px;height:96px}
+.gauge-dial svg{width:100%;height:100%}
+.gauge-track{fill:none;stroke:var(--track);stroke-width:10}
+.gauge-arc{fill:none;stroke:currentColor;stroke-width:10;stroke-linecap:round}
+.gauge-score{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:600}
+.gauge-label{margin-top:4px;text-align:center}
+.band-pass{color:var(--pass)}.band-average{color:var(--average)}.band-fail{color:var(--fail)}.band-none{color:var(--none)}
+.counts{list-style:none;padding:0;display:flex;gap:24px}
+table{border-collapse:collapse;width:100%;margin:1rem 0}
+caption{text-align:left;font-weight:600;padding-bottom:.25rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+details{margin:.5rem 0;background:var(--panel);border-radius:8px;padding:8px 12px}
+summary{cursor:pointer;font-weight:600}
+.findings,.fixed{padding-left:0;list-style:none}
+.finding{border-top:1px solid var(--line);padding:8px 0}
+.finding p{margin:.25rem 0}
+.badge{display:inline-block;padding:0 8px;border-radius:999px;font-size:.8rem;font-weight:600;border:1px solid currentColor}
+.severity-critical,.severity-serious{color:var(--fail)}.severity-moderate{color:var(--average)}.severity-minor,.severity-info{color:var(--none)}
+.new{color:var(--fg);background:var(--panel)}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style></head><body><header><h1>quark</h1><p class="meta">Commit <code>f49bdf18</code> · <time datetime="2026-10-06T19:30:00.000Z">2026-10-06T19:30:00.000Z</time> · flighthouse 0.0.1</p></header><main><section aria-labelledby="scores-heading"><h2 id="scores-heading">Scores</h2><ul class="gauges"><li class="gauge band-average"><div class="gauge-dial"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle class="gauge-track" cx="60" cy="60" r="52.0"/><circle class="gauge-arc" cx="60" cy="60" r="52.0" stroke-dasharray="261.38 326.73" transform="rotate(-90 60 60)"/></svg><span class="gauge-score"><span class="visually-hidden">Overall score: </span>80</span></div><span class="gauge-label" aria-hidden="true">Overall</span></li><li class="gauge band-average"><div class="gauge-dial"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle class="gauge-track" cx="60" cy="60" r="52.0"/><circle class="gauge-arc" cx="60" cy="60" r="52.0" stroke-dasharray="267.92 326.73" transform="rotate(-90 60 60)"/></svg><span class="gauge-score"><span class="visually-hidden">Accessibility score: </span>82</span></div><span class="gauge-label" aria-hidden="true">Accessibility</span></li><li class="gauge band-pass"><div class="gauge-dial"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle class="gauge-track" cx="60" cy="60" r="52.0"/><circle class="gauge-arc" cx="60" cy="60" r="52.0" stroke-dasharray="294.05 326.73" transform="rotate(-90 60 60)"/></svg><span class="gauge-score"><span class="visually-hidden">Performance score: </span>90</span></div><span class="gauge-label" aria-hidden="true">Performance</span></li><li class="gauge band-average"><div class="gauge-dial"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle class="gauge-track" cx="60" cy="60" r="52.0"/><circle class="gauge-arc" cx="60" cy="60" r="52.0" stroke-dasharray="199.30 326.73" transform="rotate(-90 60 60)"/></svg><span class="gauge-score"><span class="visually-hidden">Responsiveness score: </span>61</span></div><span class="gauge-label" aria-hidden="true">Responsiveness</span></li><li class="gauge band-none"><div class="gauge-dial"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle class="gauge-track" cx="60" cy="60" r="52.0"/></svg><span class="gauge-score"><span class="visually-hidden">Memory score: </span>n/a</span></div><span class="gauge-label" aria-hidden="true">Memory</span></li><li class="gauge band-none"><div class="gauge-dial"><svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle class="gauge-track" cx="60" cy="60" r="52.0"/></svg><span class="gauge-score"><span class="visually-hidden">Best practices score: </span>n/a</span></div><span class="gauge-label" aria-hidden="true">Best practices</span></li></ul><p class="note">Not measured, so left out of the overall score: Memory, Best practices.</p></section><section aria-labelledby="findings-heading"><h2 id="findings-heading">Findings</h2><h3>Accessibility (1)</h3><details open><summary>Serious (1)</summary><ul class="findings"><li class="finding"><p class="finding-head"><span class="badge severity-serious">Serious</span> <code>color-contrast</code> on <code>&#47;login</code> <span class="source">from axe</span></p><p>Elements must meet minimum color contrast ratio thresholds</p><p class="detail">Target: <code>flt-semantics[role=&quot;button&quot;]</code></p></li></ul></details><h3>Responsiveness (1)</h3><details open><summary>Moderate (1)</summary><ul class="findings"><li class="finding"><p class="finding-head"><span class="badge severity-moderate">Moderate</span> <code>frame-budget</code> on <code>&#47;photos</code> <span class="source">from timeline</span></p><p>p90 frame build time exceeds the 16 ms budget</p><p class="detail">frame_build_time_p90: 12.50 ms</p></li></ul></details></section><section aria-labelledby="measurements-heading"><h2 id="measurements-heading">Measurements</h2><details><summary>2 measured values</summary><table><thead><tr><th scope="col">Metric</th><th scope="col">Route</th><th scope="col">Value</th><th scope="col">Score</th></tr></thead><tbody><tr><td><code>largest-contentful-paint</code></td><td><code>&#47;login</code></td><td>1800 ms</td><td>92</td></tr><tr><td><code>frame_build_time_p90</code></td><td><code>&#47;photos</code></td><td>12.50 ms</td><td>not scored</td></tr></tbody></table></details></section></main><footer><p>Tools: lighthouse 12.8.0, axe 4.10.3.</p></footer></body></html>

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "app": "quark",
+    "commit": "f49bdf18",
+    "timestamp": "2026-10-06T19:30:00.000Z",
+    "flighthouseVersion": "0.0.1",
+    "toolVersions": {
+      "lighthouse": "12.8.0",
+      "axe": "4.10.3"
+    }
+  },
+  "scores": {
+    "overall": 0.8,
+    "categories": {
+      "a11y": 0.82,
+      "perf": 0.9,
+      "responsiveness": 0.61,
+      "memory": null,
+      "best-practices": null
+    }
+  },
+  "findings": [
+    {
+      "fingerprint": "636f6e7472617374000000000000000000000000000000000000000000000000",
+      "source": "axe",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "color-contrast",
+      "route": "/login",
+      "target": "flt-semantics[role=\"button\"]",
+      "message": "Elements must meet minimum color contrast ratio thresholds",
+      "metric": null
+    },
+    {
+      "fingerprint": "736c6f772d6672616d6500000000000000000000000000000000000000000000",
+      "source": "timeline",
+      "category": "responsiveness",
+      "severity": "moderate",
+      "rule": "frame-budget",
+      "route": "/photos",
+      "target": null,
+      "message": "p90 frame build time exceeds the 16 ms budget",
+      "metric": {
+        "name": "frame_build_time_p90",
+        "value": 12.5,
+        "unit": "ms"
+      }
+    }
+  ],
+  "ruleOutcomes": [
+    {
+      "source": "axe",
+      "category": "a11y",
+      "rule": "button-name",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "axe",
+      "category": "a11y",
+      "rule": "color-contrast",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": false
+    }
+  ],
+  "measurements": [
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "largest-contentful-paint",
+        "value": 1800.0,
+        "unit": "ms"
+      },
+      "weight": 25.0,
+      "toolScore": 0.92
+    },
+    {
+      "source": "timeline",
+      "category": "responsiveness",
+      "route": "/photos",
+      "metric": {
+        "name": "frame_build_time_p90",
+        "value": 12.5,
+        "unit": "ms"
+      },
+      "weight": 10.0,
+      "toolScore": null
+    }
+  ]
+}
