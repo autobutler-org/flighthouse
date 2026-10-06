@@ -120,6 +120,18 @@ final class ProcessFailure extends Failure {
   final String stderr;
 }
 
+/// The committed baseline cannot be compared with this run.
+final class BaselineFailure extends Failure {
+  /// The baseline at [path] is unusable because of [problem].
+  const BaselineFailure({required this.path, required this.problem});
+
+  /// The baseline file.
+  final String path;
+
+  /// Why it cannot be used.
+  final String problem;
+}
+
 /// Renders [failure] as one line a user can act on.
 String describe(Failure failure) => switch (failure) {
   ConfigFailure(:final keyPath, :final problem, location: null) =>
@@ -143,6 +155,8 @@ String describe(Failure failure) => switch (failure) {
       '' => '$command exited with code $exitCode',
       final detail => '$command exited with code $exitCode: $detail',
     },
+  BaselineFailure(:final path, :final problem) =>
+    'baseline $path: $problem. Run: flighthouse baseline --update',
 };
 
 /// The first non-blank line of [text], trimmed, or an empty string.

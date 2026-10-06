@@ -106,6 +106,19 @@ void main() {
       );
     });
 
+    test('baseline failure says how to fix it', () {
+      expect(
+        describe(
+          const BaselineFailure(
+            path: 'flighthouse-baseline.json',
+            problem: 'it uses fingerprint scheme v0, this run uses v1',
+          ),
+        ),
+        'baseline flighthouse-baseline.json: it uses fingerprint scheme v0, '
+        'this run uses v1. Run: flighthouse baseline --update',
+      );
+    });
+
     test('toString is the description', () {
       const failure = MissingToolFailure(
         tool: 'Chrome',
