@@ -1,0 +1,1587 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "app": "quark",
+    "commit": "e2e0000",
+    "timestamp": "2026-10-06T12:00:00.000Z",
+    "flighthouseVersion": "0.0.1",
+    "toolVersions": {
+      "lighthouse": "13.5.0"
+    }
+  },
+  "scores": {
+    "overall": 0.769368131868132,
+    "categories": {
+      "a11y": 0.7067307692307693,
+      "perf": 0.8,
+      "responsiveness": null,
+      "memory": null,
+      "best-practices": 0.8653846153846154
+    }
+  },
+  "findings": [
+    {
+      "fingerprint": "096bb33024d568d0a6ca258f6e8b7a3d96c1d458ab1692fa9fd78b336de7e89d",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "moderate",
+      "rule": "landmark-one-main",
+      "route": "/",
+      "target": "html",
+      "message": "Document does not have a main landmark.",
+      "metric": null
+    },
+    {
+      "fingerprint": "1499dbef826eae58e0a9499b4e6963568e1506b253fb316c681d32e69e1c5edd",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unused-javascript",
+      "route": "/login",
+      "target": null,
+      "message": "Reduce unused JavaScript",
+      "metric": {
+        "name": "unused-javascript",
+        "value": 0.0,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "1c3e86e3dfa925180bbd6d6da535dcff2a90b5f1f12cfb96e51fd40a29191501",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "interactive",
+      "route": "/login",
+      "target": null,
+      "message": "Time to Interactive",
+      "metric": {
+        "name": "interactive",
+        "value": 160016.48552750002,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "1c9d3376db9778c39112bccce8bbdb67d89df480e05271a0e326d4b92edcbcd4",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "critical",
+      "rule": "image-alt",
+      "route": "/",
+      "target": "body > img",
+      "message": "Image elements do not have `[alt]` attributes",
+      "metric": null
+    },
+    {
+      "fingerprint": "1d82786b50a9e33f2d159514c43c6b37a99d03336ec853d9ecd4d49440c3ed88",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "moderate",
+      "rule": "deprecations",
+      "route": "/login",
+      "target": null,
+      "message": "Uses deprecated APIs",
+      "metric": null
+    },
+    {
+      "fingerprint": "35879780adf1b3bb216bdbf5b4332f7371d30bbf1e1f4d0d2f8f72c73afa0480",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "html-has-lang",
+      "route": "/",
+      "target": "html",
+      "message": "`<html>` element does not have a `[lang]` attribute",
+      "metric": null
+    },
+    {
+      "fingerprint": "3cf812d07798d5a91c589ed60c173364923573cd8b163aaaaabc8b0f4671f84f",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "image-delivery-insight",
+      "route": "/login",
+      "target": "div#quark-splash > img",
+      "message": "Improve image delivery",
+      "metric": {
+        "name": "image-delivery-insight",
+        "value": 0.5,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "58845e0b0ea37169a5f21595ec142bcf10cd4150ecbb18f4caec87cee849de8c",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "critical",
+      "rule": "button-name",
+      "route": "/",
+      "target": "body > button",
+      "message": "Buttons do not have an accessible name",
+      "metric": null
+    },
+    {
+      "fingerprint": "5da5d25210fde638a70db8429371a6853ae4b704eb8f9c1270e1706ab009bcd7",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "network-dependency-tree-insight",
+      "route": "/login",
+      "target": null,
+      "message": "Network dependency tree",
+      "metric": {
+        "name": "network-dependency-tree-insight",
+        "value": 0.0,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "60b797f9f0ab0d1854de7001aa31562cd5fe937287089b57bf32898c3ce06c6a",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unminified-javascript",
+      "route": "/login",
+      "target": null,
+      "message": "Minify JavaScript",
+      "metric": {
+        "name": "unminified-javascript",
+        "value": 0.0,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "74b12059999af11d4c95797ea646738a27b2e69137527766c3994fa31c005804",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "minor",
+      "rule": "errors-in-console",
+      "route": "/",
+      "target": null,
+      "message": "Browser errors were logged to the console",
+      "metric": null
+    },
+    {
+      "fingerprint": "76cd4e25b56c0d252fefdb8aa6f88b897c3c28bbdb9f54404354915fb46cfef8",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "cache-insight",
+      "route": "/login",
+      "target": null,
+      "message": "Use efficient cache lifetimes",
+      "metric": {
+        "name": "cache-insight",
+        "value": 0.0,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "7dc6f1f85917ea579de8aa70cf6818342f3fffdb7f9eb867adc54575d21a8eb0",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "speed-index",
+      "route": "/login",
+      "target": null,
+      "message": "Speed Index",
+      "metric": {
+        "name": "speed-index",
+        "value": 57781.36374629719,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "84586b71eec88710b9f8a80371dc1006d3ca5fb71e84f690f28b5694e5d4a633",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "color-contrast",
+      "route": "/",
+      "target": "body > div",
+      "message": "Background and foreground colors do not have a sufficient contrast ratio.",
+      "metric": null
+    },
+    {
+      "fingerprint": "8a27d15eaee1c7700b305961dbec6d7dd2d1f50aad8790294e1e66feb59589b3",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "forced-reflow-insight",
+      "route": "/login",
+      "target": null,
+      "message": "Forced reflow",
+      "metric": {
+        "name": "forced-reflow-insight",
+        "value": 0.0,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "a1c2b8b1962a24d426759db916edcb39779cc224858c3ad81cc290ee72b3fec2",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "info",
+      "rule": "valid-source-maps",
+      "route": "/login",
+      "target": null,
+      "message": "Missing source maps for large first-party JavaScript",
+      "metric": null
+    },
+    {
+      "fingerprint": "a630c5706d9ebfb00bcfb150637b0873731461343a15ca643f13cfd2786a3591",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "document-latency-insight",
+      "route": "/login",
+      "target": null,
+      "message": "Document request latency",
+      "metric": {
+        "name": "document-latency-insight",
+        "value": 0.5,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "a63db07b5902144c1b4008747afe5a8705166ce12af76cfe144fd755b8216dae",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "mainthread-work-breakdown",
+      "route": "/login",
+      "target": null,
+      "message": "Minimize main-thread work",
+      "metric": {
+        "name": "mainthread-work-breakdown",
+        "value": 11244.871999999785,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "aa3f1422acba9383aeafa05da67599366158f859493b4a40152ff91b98bd5982",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unsized-images",
+      "route": "/",
+      "target": "body > img",
+      "message": "Image elements do not have explicit `width` and `height`",
+      "metric": {
+        "name": "unsized-images",
+        "value": 0.5,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "aa87d02a7ce4f2fe4d49b34c1ca73f44d9c15a5a954ef709d097faa268a7bb9d",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "total-blocking-time",
+      "route": "/login",
+      "target": null,
+      "message": "Total Blocking Time",
+      "metric": {
+        "name": "total-blocking-time",
+        "value": 7738.568475000007,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "b5aec874b44ec03caee4fd5aacd7789bf9e4924a3a1b8413fdbb6a938195c6b3",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "lcp-discovery-insight",
+      "route": "/login",
+      "target": null,
+      "message": "LCP request discovery",
+      "metric": {
+        "name": "lcp-discovery-insight",
+        "value": 0.0,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "bb1dea4045825f7740dfed45517900feb65b3c857f82199ba8486097552257c3",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "minor",
+      "rule": "errors-in-console",
+      "route": "/login",
+      "target": null,
+      "message": "Browser errors were logged to the console",
+      "metric": null
+    },
+    {
+      "fingerprint": "cd8a2495171eef429c9d993ccdb8dffd2f6356037a567be444c354921577f657",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "viewport-insight",
+      "route": "/",
+      "target": null,
+      "message": "Optimize viewport for mobile",
+      "metric": {
+        "name": "viewport-insight",
+        "value": 0.5,
+        "unit": "score"
+      }
+    },
+    {
+      "fingerprint": "d87549581923b04f0c6bd1d9c01e6b1fc797d94853f5f040a9bf46e9127879e8",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "total-byte-weight",
+      "route": "/login",
+      "target": null,
+      "message": "Avoid enormous network payloads",
+      "metric": {
+        "name": "total-byte-weight",
+        "value": 32815219.0,
+        "unit": "bytes"
+      }
+    },
+    {
+      "fingerprint": "e282f8ed3fdc58a797c8be851aa1451b1ae1fc5a1f9806fad130424eb5917f91",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "link-name",
+      "route": "/",
+      "target": "body > a",
+      "message": "Links do not have a discernible name",
+      "metric": null
+    },
+    {
+      "fingerprint": "e48f554836d94c8a55b9205bd813825dcc40ee6722cd74712e20702544fa404c",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "document-title",
+      "route": "/",
+      "target": "html",
+      "message": "Document doesn't have a `<title>` element",
+      "metric": null
+    },
+    {
+      "fingerprint": "e864bc332813bf8786b5559a003d4be240a09c0736fd2fea30ffe43a511125ff",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "bootup-time",
+      "route": "/login",
+      "target": null,
+      "message": "Reduce JavaScript execution time",
+      "metric": {
+        "name": "bootup-time",
+        "value": 9864.103999999814,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "ebbfe815a96f66537481cf1e8641852fd2a8802dcc31c460604633d8596f5d12",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "max-potential-fid",
+      "route": "/login",
+      "target": null,
+      "message": "Max Potential First Input Delay",
+      "metric": {
+        "name": "max-potential-fid",
+        "value": 4310.0,
+        "unit": "ms"
+      }
+    },
+    {
+      "fingerprint": "fd637f8707fb3c3d13ba135fa6d9df8f8d7771da69a5528a9b84b6dcb35c71ce",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "critical",
+      "rule": "label",
+      "route": "/",
+      "target": "body > input",
+      "message": "Form elements do not have associated labels",
+      "metric": null
+    }
+  ],
+  "ruleOutcomes": [
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-allowed-attr",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-command-name",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-conditional-attr",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-deprecated-role",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-hidden-body",
+      "route": "/",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-hidden-body",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-hidden-focus",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-prohibited-attr",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-required-attr",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-roles",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-valid-attr",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "aria-valid-attr-value",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "rule": "bf-cache",
+      "route": "/",
+      "weight": 0.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "rule": "bf-cache",
+      "route": "/login",
+      "weight": 0.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "button-name",
+      "route": "/",
+      "weight": 10.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "charset",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "charset",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "color-contrast",
+      "route": "/",
+      "weight": 7.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "deprecations",
+      "route": "/",
+      "weight": 5.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "deprecations",
+      "route": "/login",
+      "weight": 5.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "doctype",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "doctype",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "document-title",
+      "route": "/",
+      "weight": 7.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "document-title",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "errors-in-console",
+      "route": "/",
+      "weight": 1.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "errors-in-console",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "geolocation-on-start",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "geolocation-on-start",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "html-has-lang",
+      "route": "/",
+      "weight": 7.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "html-has-lang",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "html-lang-valid",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "image-alt",
+      "route": "/",
+      "weight": 10.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "image-aspect-ratio",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "image-aspect-ratio",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "image-size-responsive",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "image-size-responsive",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "inspector-issues",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "inspector-issues",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "is-on-https",
+      "route": "/",
+      "weight": 5.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "is-on-https",
+      "route": "/login",
+      "weight": 5.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "label",
+      "route": "/",
+      "weight": 10.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "landmark-one-main",
+      "route": "/",
+      "weight": 3.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "landmark-one-main",
+      "route": "/login",
+      "weight": 3.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "link-name",
+      "route": "/",
+      "weight": 7.0,
+      "passed": false
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "meta-viewport",
+      "route": "/login",
+      "weight": 10.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "notification-on-start",
+      "route": "/",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "notification-on-start",
+      "route": "/login",
+      "weight": 1.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "paste-preventing-inputs",
+      "route": "/",
+      "weight": 3.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "paste-preventing-inputs",
+      "route": "/login",
+      "weight": 3.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "tabindex",
+      "route": "/login",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "a11y",
+      "rule": "target-size",
+      "route": "/",
+      "weight": 7.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "third-party-cookies",
+      "route": "/",
+      "weight": 5.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "third-party-cookies",
+      "route": "/login",
+      "weight": 5.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "valid-source-maps",
+      "route": "/",
+      "weight": 0.0,
+      "passed": true
+    },
+    {
+      "source": "lighthouse",
+      "category": "best-practices",
+      "rule": "valid-source-maps",
+      "route": "/login",
+      "weight": 0.0,
+      "passed": false
+    }
+  ],
+  "measurements": [
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "bootup-time",
+        "value": 18.003999999999998,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "cache-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "cls-culprits-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "cumulative-layout-shift",
+        "value": 0.0,
+        "unit": "ratio"
+      },
+      "weight": 25.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "document-latency-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "dom-size-insight",
+        "value": 7.0,
+        "unit": "count"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "duplicated-javascript-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "first-contentful-paint",
+        "value": 641.35015,
+        "unit": "ms"
+      },
+      "weight": 10.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "font-display-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "forced-reflow-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "image-delivery-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "interactive",
+        "value": 752.7003,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "largest-contentful-paint",
+        "value": 752.7003,
+        "unit": "ms"
+      },
+      "weight": 25.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "legacy-javascript-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "mainthread-work-breakdown",
+        "value": 232.00800000000004,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "max-potential-fid",
+        "value": 56.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "modern-http-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "network-dependency-tree-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "redirects",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "render-blocking-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "server-response-time",
+        "value": 2.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "speed-index",
+        "value": 641.35015,
+        "unit": "ms"
+      },
+      "weight": 10.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "third-parties-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "total-blocking-time",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 30.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "total-byte-weight",
+        "value": 1102.0,
+        "unit": "bytes"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "unminified-css",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "unminified-javascript",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "unsized-images",
+        "value": 0.5,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "unused-css-rules",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "unused-javascript",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/",
+      "metric": {
+        "name": "viewport-insight",
+        "value": 0.5,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "bootup-time",
+        "value": 9864.103999999814,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "cache-insight",
+        "value": 0.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "cumulative-layout-shift",
+        "value": 0.02527378135078181,
+        "unit": "ratio"
+      },
+      "weight": 25.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "document-latency-insight",
+        "value": 0.5,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "dom-size-insight",
+        "value": 34.0,
+        "unit": "count"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "duplicated-javascript-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "first-contentful-paint",
+        "value": 681.13695,
+        "unit": "ms"
+      },
+      "weight": 10.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "font-display-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "forced-reflow-insight",
+        "value": 0.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "image-delivery-insight",
+        "value": 0.5,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "interactive",
+        "value": 160016.48552750002,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "largest-contentful-paint",
+        "value": 1190.2739,
+        "unit": "ms"
+      },
+      "weight": 25.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "lcp-discovery-insight",
+        "value": 0.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "legacy-javascript-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "mainthread-work-breakdown",
+        "value": 11244.871999999785,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "max-potential-fid",
+        "value": 4310.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "modern-http-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "network-dependency-tree-insight",
+        "value": 0.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "redirects",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "render-blocking-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "server-response-time",
+        "value": 1.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "speed-index",
+        "value": 57781.36374629719,
+        "unit": "ms"
+      },
+      "weight": 10.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "total-blocking-time",
+        "value": 7738.568475000007,
+        "unit": "ms"
+      },
+      "weight": 30.0,
+      "toolScore": 0.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "total-byte-weight",
+        "value": 32815219.0,
+        "unit": "bytes"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "unminified-css",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "unminified-javascript",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "unsized-images",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "unused-css-rules",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "unused-javascript",
+        "value": 0.0,
+        "unit": "ms"
+      },
+      "weight": 0.0,
+      "toolScore": 0.5
+    },
+    {
+      "source": "lighthouse",
+      "category": "perf",
+      "route": "/login",
+      "metric": {
+        "name": "viewport-insight",
+        "value": 1.0,
+        "unit": "score"
+      },
+      "weight": 0.0,
+      "toolScore": 1.0
+    }
+  ]
+}

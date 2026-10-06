@@ -1,0 +1,6 @@
+app: quark
+reportDir: ../../../build/e2e
+baseline: flighthouse-baseline.json
+sources:
+  lighthouse:
+    dir: ../lighthouse/13.5.0

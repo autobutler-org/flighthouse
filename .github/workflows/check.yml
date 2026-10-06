@@ -36,5 +36,7 @@ jobs:
         run: make check
       - name: Test
         run: make test
+      - name: Run the CLI against recorded fixtures
+        run: make test/cli
       - name: Score the package like pub.dev
         run: make check/pana
