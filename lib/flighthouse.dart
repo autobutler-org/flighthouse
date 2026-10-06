@@ -22,6 +22,13 @@ export 'src/pipeline/fingerprint.dart' show fingerprint, fingerprintVersion;
 export 'src/pipeline/gate.dart';
 export 'src/pipeline/log_normal.dart' show logNormalScore;
 export 'src/pipeline/scoring.dart' show measurementScore, score;
+export 'src/pipeline/normalize.dart'
+    show
+        Observations,
+        TargetNormalizer,
+        dedupe,
+        defaultTargetNormalizers,
+        normalize;
 export 'src/pipeline/route.dart'
     show RoutePattern, compileRoutePattern, normalizeRoute;
 export 'src/render/html_renderer.dart' show renderHtml;
