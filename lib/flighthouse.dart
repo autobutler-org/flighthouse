@@ -5,6 +5,8 @@
 /// against a baseline, and renders JSON and HTML reports.
 library;
 
+export 'src/config/config.dart';
+export 'src/config/parse_config.dart';
 export 'src/model/enums.dart';
 export 'src/model/observations.dart';
 export 'src/model/report.dart';
