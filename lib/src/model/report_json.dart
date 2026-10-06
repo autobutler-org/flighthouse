@@ -2,32 +2,9 @@ import '../result/failure.dart';
 import '../result/result.dart';
 import 'enums.dart';
 import 'json_decode.dart';
+import 'model_decoders.dart';
 import 'observations.dart';
 import 'report.dart';
-
-final _fingerprintPattern = RegExp(r'^[0-9a-f]{64}$');
-
-String _categoryId(Category category) => category.id;
-String _sourceId(Source source) => source.id;
-
-final Decoder<Category> _decodeCategory = enumDecoder(
-  Category.values,
-  _categoryId,
-);
-final Decoder<Severity> _decodeSeverity = enumDecoder(
-  Severity.values,
-  (severity) => severity.id,
-);
-final Decoder<Source> _decodeSource = enumDecoder(Source.values, _sourceId);
-final Decoder<MetricUnit> _decodeUnit = enumDecoder(
-  MetricUnit.values,
-  (unit) => unit.id,
-);
-
-Decoded<String> _decodeFingerprint(Object? json, String path) => switch (json) {
-  final String text when _fingerprintPattern.hasMatch(text) => Ok(text),
-  _ => mismatch(path, '64 lowercase hex characters', json),
-};
 
 Decoded<int> _decodeSchemaVersion(Object? json, String path) => switch (json) {
   currentSchemaVersion => const Ok(currentSchemaVersion),
@@ -49,7 +26,7 @@ Result<Metric, SchemaFailure> metricFromJson(
   (object) => switch ((
     readField(object, 'name', path, decodeNonEmptyString),
     readField(object, 'value', path, decodeNumber),
-    readField(object, 'unit', path, _decodeUnit),
+    readField(object, 'unit', path, decodeUnit),
   )) {
     (Ok(value: final name), Ok(value: final value), Ok(value: final unit)) =>
       Ok((name: name, value: value, unit: unit)),
@@ -92,10 +69,10 @@ Result<Finding, SchemaFailure> findingFromJson(
       'metric',
     ]).flatMap(
       (object) => switch ((
-        readField(object, 'fingerprint', path, _decodeFingerprint),
-        readField(object, 'source', path, _decodeSource),
-        readField(object, 'category', path, _decodeCategory),
-        readField(object, 'severity', path, _decodeSeverity),
+        readField(object, 'fingerprint', path, decodeFingerprint),
+        readField(object, 'source', path, decodeSource),
+        readField(object, 'category', path, decodeCategory),
+        readField(object, 'severity', path, decodeSeverity),
         readField(object, 'rule', path, decodeNonEmptyString),
         readField(object, 'route', path, decodeString),
         readField(object, 'target', path, nullable(decodeString)),
@@ -175,8 +152,8 @@ Result<RuleOutcome, SchemaFailure> ruleOutcomeFromJson(
       'passed',
     ]).flatMap(
       (object) => switch ((
-        readField(object, 'source', path, _decodeSource),
-        readField(object, 'category', path, _decodeCategory),
+        readField(object, 'source', path, decodeSource),
+        readField(object, 'category', path, decodeCategory),
         readField(object, 'rule', path, decodeNonEmptyString),
         readField(object, 'route', path, decodeString),
         readField(object, 'weight', path, decodeNonNegative),
@@ -234,8 +211,8 @@ Result<Measurement, SchemaFailure> measurementFromJson(
       'toolScore',
     ]).flatMap(
       (object) => switch ((
-        readField(object, 'source', path, _decodeSource),
-        readField(object, 'category', path, _decodeCategory),
+        readField(object, 'source', path, decodeSource),
+        readField(object, 'category', path, decodeCategory),
         readField(object, 'route', path, decodeString),
         readField(object, 'metric', path, metricFromJson),
         readField(object, 'weight', path, decodeNonNegative),
@@ -304,7 +281,7 @@ Result<ReportMetadata, SchemaFailure> reportMetadataFromJson(
           path,
           keyedDecoder(
             Source.values,
-            _sourceId,
+            sourceId,
             decodeNonEmptyString,
             requireAll: false,
           ),
@@ -365,7 +342,7 @@ Result<Scores, SchemaFailure> scoresFromJson(
       object,
       'categories',
       path,
-      keyedDecoder(Category.values, _categoryId, nullable(decodeUnitInterval)),
+      keyedDecoder(Category.values, categoryId, nullable(decodeUnitInterval)),
     ),
   )) {
     (Ok(value: final overall), Ok(value: final categories)) => Ok(

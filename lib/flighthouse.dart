@@ -7,10 +7,13 @@ library;
 
 export 'src/config/config.dart';
 export 'src/config/parse_config.dart';
+export 'src/model/baseline.dart';
+export 'src/model/baseline_json.dart';
 export 'src/model/enums.dart';
 export 'src/model/observations.dart';
 export 'src/model/report.dart';
 export 'src/model/report_json.dart';
+export 'src/pipeline/baseline_update.dart';
 export 'src/pipeline/fingerprint.dart' show fingerprint, fingerprintVersion;
 export 'src/pipeline/log_normal.dart' show logNormalScore;
 export 'src/pipeline/scoring.dart' show measurementScore, score;
