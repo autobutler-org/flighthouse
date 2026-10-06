@@ -11,7 +11,7 @@
   integration test.
 - The name `flighthouse` is free on pub.dev: `GET https://pub.dev/api/packages/flighthouse` returned 404 on
   2026-10-06.
-- The repository is `github.com/brandonapol/flighthouse`.
+- The repository is `github.com/autobutler-org/flighthouse` ([ADR 0020](0020-repository-in-autobutler-org.md)).
 
 ## Decision
 

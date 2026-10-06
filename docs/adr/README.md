@@ -24,5 +24,6 @@ maintainer; nothing is built on it.
 | [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted  |
 | [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted  |
 | [0019](0019-testing-and-ci.md)                        | Testing and CI                                        | Accepted  |
+| [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.

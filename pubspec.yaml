@@ -3,8 +3,8 @@ description: >-
   Flutter accessibility, performance, Lighthouse-style report, and CI gate. Merges attest, Lighthouse,
   axe, and integration_test results into one scored report with a baseline diff.
 version: 0.0.1
-repository: https://github.com/brandonapol/flighthouse
-issue_tracker: https://github.com/brandonapol/flighthouse/issues
+repository: https://github.com/autobutler-org/flighthouse
+issue_tracker: https://github.com/autobutler-org/flighthouse/issues
 
 environment:
   sdk: ^3.13.0
