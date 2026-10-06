@@ -5,6 +5,9 @@
 /// against a baseline, and renders JSON and HTML reports.
 library;
 
+export 'src/adapters/adapter.dart';
+export 'src/adapters/lighthouse/lighthouse_adapter.dart'
+    show parseLighthouse, testedLighthouseMajors;
 export 'src/config/config.dart';
 export 'src/config/parse_config.dart';
 export 'src/model/baseline.dart';

@@ -57,7 +57,28 @@ Decoded<T> readField<T>(
   String key,
   String path,
   Decoder<T> decode,
-) => decode(object[key], '$path.$key');
+) => object.containsKey(key)
+    ? decode(object[key], '$path.$key')
+    : Err(
+        SchemaFailure(
+          jsonPath: '$path.$key',
+          expected: 'a value',
+          found: 'nothing',
+        ),
+      );
+
+Decoded<T?> readOptionalField<T extends Object>(
+  JsonObject object,
+  String key,
+  String path,
+  Decoder<T> decode,
+) => object[key] == null ? const Ok(null) : decode(object[key], '$path.$key');
+
+Decoded<JsonObject> decodeAnyObject(Object? json, String path) =>
+    switch (json) {
+      final Map<String, Object?> object => Ok(object),
+      _ => mismatch(path, 'an object', json),
+    };
 
 Decoded<String> decodeString(Object? json, String path) => switch (json) {
   final String text => Ok(text),
