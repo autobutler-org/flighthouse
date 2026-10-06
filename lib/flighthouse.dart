@@ -12,6 +12,8 @@ export 'src/model/observations.dart';
 export 'src/model/report.dart';
 export 'src/model/report_json.dart';
 export 'src/pipeline/fingerprint.dart' show fingerprint, fingerprintVersion;
+export 'src/pipeline/log_normal.dart' show logNormalScore;
+export 'src/pipeline/scoring.dart' show measurementScore, score;
 export 'src/pipeline/route.dart'
     show RoutePattern, compileRoutePattern, normalizeRoute;
 export 'src/result/failure.dart' hide firstLine;
