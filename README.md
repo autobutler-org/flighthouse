@@ -3,7 +3,7 @@
 One Lighthouse-style scored report for Flutter apps, covering accessibility, performance, responsiveness, and
 memory, that works as a CI gate.
 
-> **Status: pre-release.** The package is scaffolded but nothing below works yet. Progress is tracked in the
+> **Status: pre-release.** The pipeline and CLI work with Lighthouse reports; other sources are in progress. Progress is tracked in the
 > [phase epics](https://github.com/autobutler-org/flighthouse/issues?q=is%3Aissue+label%3Aepic).
 
 ## What it does
@@ -29,14 +29,19 @@ against a list of routes. That part needs Node, Lighthouse, and Chrome. Everythi
 dart pub global activate flighthouse
 ```
 
-## Planned usage
+## Usage
 
 ```sh
-flighthouse collect             # gather raw tool outputs
+flighthouse collect             # copy each source's raw outputs into <reportDir>/raw
 flighthouse report              # write report.json and report.html
 flighthouse ci                  # report, then gate against the baseline
-flighthouse baseline --update   # accept the current findings as the baseline
+flighthouse baseline --update   # accept the current findings and scores as the baseline
 ```
+
+Exit codes: `0` passed, `1` the gate failed, `2` usage or config error, `3` unusable input or missing tool.
+
+Today flighthouse reads Lighthouse JSON reports. attest, axe, `TimelineSummary`, and flutter_lighthouse
+adapters are in progress.
 
 Configuration lives in `flighthouse.yaml`. See [`example/`](example/README.md).
 
