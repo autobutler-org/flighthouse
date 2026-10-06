@@ -1,0 +1,38 @@
+name: Check
+on:
+  pull_request:
+  merge_group:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container: dart:stable
+    steps:
+      - name: Install make and git
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends make git >/dev/null
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Prove the image has no Node
+        run: |
+          if command -v node >/dev/null; then
+            echo "node is on PATH; the core must build and test without it"
+            exit 1
+          fi
+      - name: Resolve dependencies
+        run: make setup/deps
+      - name: Check formatting and analysis
+        run: make check
+      - name: Test
+        run: make test

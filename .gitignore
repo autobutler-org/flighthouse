@@ -11,3 +11,4 @@ pubspec_overrides.yaml
 flighthouse-report/
 
 .env
+pubspec.lock
