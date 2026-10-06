@@ -14,7 +14,9 @@ export 'src/model/observations.dart';
 export 'src/model/report.dart';
 export 'src/model/report_json.dart';
 export 'src/pipeline/baseline_update.dart';
+export 'src/pipeline/diff.dart';
 export 'src/pipeline/fingerprint.dart' show fingerprint, fingerprintVersion;
+export 'src/pipeline/gate.dart';
 export 'src/pipeline/log_normal.dart' show logNormalScore;
 export 'src/pipeline/scoring.dart' show measurementScore, score;
 export 'src/pipeline/route.dart'
