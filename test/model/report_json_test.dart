@@ -209,6 +209,11 @@ void main() {
       expect(pathOf(reportMetadataFromJson(json)), r'$.timestamp');
     });
 
+    test('a negative measurement weight is refused', () {
+      final json = {...measurementToJson(lcpMeasurement), 'weight': -0.5};
+      expect(pathOf(measurementFromJson(json)), r'$.weight');
+    });
+
     test('a negative rule weight is refused', () {
       final json = {...ruleOutcomeToJson(labelOutcome), 'weight': -1};
       expect(pathOf(ruleOutcomeFromJson(json)), r'$.weight');

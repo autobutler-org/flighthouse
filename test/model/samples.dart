@@ -59,6 +59,7 @@ const Measurement lcpMeasurement = (
   category: Category.perf,
   route: '/login',
   metric: (name: 'largest-contentful-paint', value: 1800, unit: MetricUnit.ms),
+  weight: 25,
   toolScore: 0.92,
 );
 
@@ -67,6 +68,7 @@ const Measurement frameMeasurement = (
   category: Category.responsiveness,
   route: '/photos',
   metric: frameBuild,
+  weight: 10,
   toolScore: null,
 );
 
