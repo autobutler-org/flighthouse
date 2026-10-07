@@ -40,3 +40,5 @@ jobs:
         run: make test/cli
       - name: Score the package like pub.dev
         run: make check/pana
+      - name: Validate the package for publishing
+        run: make check/publish

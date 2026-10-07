@@ -44,6 +44,10 @@ check/pana: ## Score the package the way pub.dev does
 	dart pub global activate pana >/dev/null
 	dart pub global run pana --exit-code-threshold 0 .
 
+.PHONY: check/publish
+check/publish: ## Validate the package for pub.dev with no warnings
+	dart pub publish --dry-run
+
 .PHONY: fix
 fix: ## Format and apply analyzer fixes
 	dart fix --apply

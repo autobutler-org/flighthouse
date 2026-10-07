@@ -1,0 +1,16 @@
+.DS_Store
+.dart_tool/
+.packages
+build/
+coverage/
+doc/api/
+pubspec_overrides.yaml
+.flighthouse/
+flighthouse-report/
+.env
+
+.claude/
+.github/
+docs/
+git/
+test/fixtures/
