@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "fingerprintVersion": "v1",
   "scores": {
-    "overall": 0.769368131868132,
+    "overall": 0.777848946633477,
     "categories": {
-      "a11y": 0.7067307692307693,
+      "a11y": 0.7265193370165746,
       "perf": 0.8,
       "responsiveness": null,
       "memory": null,
@@ -29,6 +29,15 @@
       "rule": "unused-javascript",
       "route": "/login",
       "target": null
+    },
+    {
+      "fingerprint": "19316b58dde9a3f9a316285faaee423c6a322d139c05a9977f0b80df1a23513f",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/image-alt",
+      "route": "Settings",
+      "target": "3ebe6ab22c8d429c"
     },
     {
       "fingerprint": "1c3e86e3dfa925180bbd6d6da535dcff2a90b5f1f12cfb96e51fd40a29191501",
@@ -94,6 +103,15 @@
       "target": null
     },
     {
+      "fingerprint": "60b33ecd71a80e2877aac2f5abfed79026f719289ed302a9c2b6cd3fbc4dd0c4",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/interactive-name",
+      "route": "Settings",
+      "target": "57308ae3ce70200c"
+    },
+    {
       "fingerprint": "60b797f9f0ab0d1854de7001aa31562cd5fe937287089b57bf32898c3ce06c6a",
       "source": "lighthouse",
       "category": "perf",
@@ -148,6 +166,15 @@
       "target": null
     },
     {
+      "fingerprint": "a1ae7f0de890c550e19bdc6f613cfd633b55f4a11bef9d9b5d773178f073caba",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "moderate",
+      "rule": "attest/heading-structure",
+      "route": "SignIn",
+      "target": "1d8cd040b461f6a7"
+    },
+    {
       "fingerprint": "a1c2b8b1962a24d426759db916edcb39779cc224858c3ad81cc290ee72b3fec2",
       "source": "lighthouse",
       "category": "best-practices",
@@ -193,6 +220,15 @@
       "target": null
     },
     {
+      "fingerprint": "b400abfa7d7d9d33afe221839a6fadbd4edc4f6b9060e06796e93a6ef52e7db0",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "Settings",
+      "target": "6285b1bfee38b1e3"
+    },
+    {
       "fingerprint": "b5aec874b44ec03caee4fd5aacd7789bf9e4924a3a1b8413fdbb6a938195c6b3",
       "source": "lighthouse",
       "category": "perf",
@@ -211,6 +247,15 @@
       "target": null
     },
     {
+      "fingerprint": "c812b0bb61341e8a78c94203468edf293ec47df9ed110f91f739b34dbbd0a9ee",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "SignIn",
+      "target": "-67d6298c587ef6b"
+    },
+    {
       "fingerprint": "cd8a2495171eef429c9d993ccdb8dffd2f6356037a567be444c354921577f657",
       "source": "lighthouse",
       "category": "perf",
@@ -218,6 +263,15 @@
       "rule": "viewport-insight",
       "route": "/",
       "target": null
+    },
+    {
+      "fingerprint": "cfcd76ec30acb7dd27c0bb64f12f4be78a1fce5da3da06958bf1df3c36390d53",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/field-label",
+      "route": "Settings",
+      "target": "15c8e38b788ecb74"
     },
     {
       "fingerprint": "d87549581923b04f0c6bd1d9c01e6b1fc797d94853f5f040a9bf46e9127879e8",

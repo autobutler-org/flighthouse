@@ -4,3 +4,5 @@ baseline: flighthouse-baseline.json
 sources:
   lighthouse:
     dir: ../lighthouse/13.5.0
+  attest:
+    dir: ../attest/1.5.0
