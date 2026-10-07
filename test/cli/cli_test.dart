@@ -178,13 +178,13 @@ void main() {
     () async {
       workspace.write(
         'flighthouse.yaml',
-        '$lighthouseConfig  attest:\n    dir: attest\n',
+        '$lighthouseConfig  axe:\n    dir: axe\n',
       );
-      workspace.write('attest/report.json', '{}');
+      workspace.write('axe/results.json', '{}');
       await workspace.run(['collect']);
       final run = await workspace.run(['report']);
       expect(run.code, exitInputError);
-      expect(run.err, contains('flighthouse cannot read attest output yet'));
+      expect(run.err, contains('flighthouse cannot read axe output yet'));
       expect(workspace.exists('.flighthouse/report.json'), isTrue);
     },
   );

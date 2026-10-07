@@ -42,19 +42,22 @@ void main() {
     expect(actual, golden.readAsStringSync(), reason: 'golden $name is stale');
   }
 
-  test('collect then ci passes against the committed baseline', () async {
-    expect((await run('collect')).code, exitPassed);
-    final ci = await run('ci');
-    expect(ci.err, isEmpty);
-    expect(ci.code, exitPassed);
-    expect(
-      ci.out,
-      'quark: overall 77 | a11y 71 | perf 80 | responsiveness n/a | '
-      'memory n/a | best-practices 87\n'
-      '0 new, 0 fixed, 29 unchanged\n'
-      'gate passed\n',
-    );
-    expectGolden('report.json');
-    expectGolden('report.html');
-  });
+  test(
+    'attest and Lighthouse merge into one report that passes the gate',
+    () async {
+      expect((await run('collect')).code, exitPassed);
+      final ci = await run('ci');
+      expect(ci.err, isEmpty);
+      expect(ci.code, exitPassed);
+      expect(
+        ci.out,
+        'quark: overall 78 | a11y 73 | perf 80 | responsiveness n/a | '
+        'memory n/a | best-practices 87\n'
+        '0 new, 0 fixed, 35 unchanged\n'
+        'gate passed\n',
+      );
+      expectGolden('report.json');
+      expectGolden('report.html');
+    },
+  );
 }

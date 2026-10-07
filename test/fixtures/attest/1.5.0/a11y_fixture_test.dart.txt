@@ -1,0 +1,48 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:attest_flutter/attest_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+Widget app(Widget home) => MaterialApp(home: Scaffold(body: home));
+
+final clean = Column(
+  children: [
+    const Text('Sign in', style: TextStyle(fontSize: 24)),
+    const TextField(decoration: InputDecoration(labelText: 'Email')),
+    ElevatedButton(onPressed: () {}, child: const Text('Continue')),
+  ],
+);
+
+final broken = Column(
+  children: [
+    IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+    Image.memory(
+      base64Decode(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+      ),
+      width: 48,
+      height: 48,
+    ),
+    const Text(
+      'Low contrast',
+      style: TextStyle(color: Color(0xFFCCCCCC), fontSize: 14),
+    ),
+    const TextField(),
+  ],
+);
+
+Future<void> audit(WidgetTester tester, String screen, Widget body) async {
+  await tester.pumpWidget(app(body));
+  await tester.pumpAndSettle();
+  final report = await tester.auditAccessibility(screenName: screen);
+  File('build/a11y/$screen.json')
+    ..parent.createSync(recursive: true)
+    ..writeAsStringSync(jsonEncode(report.toJson()));
+}
+
+void main() {
+  testWidgets('clean screen', (tester) => audit(tester, 'SignIn', clean));
+  testWidgets('broken screen', (tester) => audit(tester, 'Settings', broken));
+}

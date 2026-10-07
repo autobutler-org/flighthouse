@@ -4,7 +4,7 @@ import 'package:flighthouse/flighthouse.dart';
 import 'package:test/test.dart';
 
 final config = parseConfig(
-  'app: quark\nsources:\n  lighthouse: {dir: lh}\n  attest: {dir: attest}\n',
+  'app: quark\nsources:\n  lighthouse: {dir: lh}\n  axe: {dir: axe}\n',
 ).fold((config) => config, (failure) => throw StateError('$failure'));
 
 RawArtifact lighthouse(String name) => (
@@ -53,12 +53,12 @@ void main() {
 
   test('a source without an adapter fails once, naming its directory', () {
     final assembled = assemble([
-      (source: Source.attest, path: 'a.json', contents: '{}'),
-      (source: Source.attest, path: 'b.json', contents: '{}'),
+      (source: Source.axe, path: 'a.json', contents: '{}'),
+      (source: Source.axe, path: 'b.json', contents: '{}'),
     ]);
     final failure = assembled.failures.single as AdapterFailure;
-    expect(failure.tool, 'attest');
-    expect(failure.artifactPath, 'attest');
+    expect(failure.tool, 'axe');
+    expect(failure.artifactPath, 'axe');
   });
 
   test('different tool versions of one source are all recorded', () {
