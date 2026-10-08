@@ -27,5 +27,7 @@ maintainer; nothing is built on it.
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
 | [0021](0021-configuration-refinements.md)             | Configuration refinements found while implementing    | Accepted, flagged for review |
 | [0022](0022-measurement-weights.md)                   | Measurements carry a weight                           | Accepted  |
+| [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Proposed, checkpoint |
+| [0024](0024-axe-target-identity.md)                   | Preserve distinct axe targets without generated IDs   | Proposed, checkpoint |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
