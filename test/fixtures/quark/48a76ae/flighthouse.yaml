@@ -1,0 +1,6 @@
+app: quark
+sources:
+  attest:
+    dir: ../../attest/1.5.0/quark-48a76ae
+  lighthouse:
+    dir: ../../lighthouse/13.5.0/quark-48a76ae
