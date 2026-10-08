@@ -2,6 +2,11 @@
 
 Epic #1. Written 2026-10-07 at `main` after #57.
 
+Updated 2026-10-08 with the completed local quark validation for #14. The
+[run summary](quark-phase-1.md) and [self-contained report](../reports/quark-phase-1.html)
+record the new evidence. Repository write access was restored after the initial
+capture; the merge stack remains unmerged and its hosted checks must pass.
+
 ## What works
 
 `flighthouse collect`, `report`, `ci`, and `baseline [--update]` run end to end on **attest** and **Lighthouse**
@@ -22,7 +27,9 @@ findings or on score drops past configured thresholds.
 | attest adapter | #57 | real attest_flutter 1.5.0 output; hand-computed accessibility scores match |
 | CLI | #52 | 21 tests over real temporary workspaces, covering every exit code |
 | End to end | #53, #57 | attest and Lighthouse merged into one report, compared byte for byte with goldens |
-| Real quark report | #14 | release build of quark `main` @ `78c7912`: overall 80, a11y 100, perf 60, best practices 81 |
+| Real quark report | #14 | quark `48a76ae` release build, a real backend, four distinct public browser pages and eight attest widget audits: overall 81, a11y 94, perf 69, best practices 81; 71 findings |
+| Collection input preservation | #14 | four reproducing tests failed before the fix; collecting from the raw directory is a no-op, and replacing an ancestor of the source is refused before deleting it, including symlink aliases |
+| Quark gate regression checks | #14 | 415 tests pass locally, with one Windows-only skip on Linux; a new recorded screen fails the gate, unchanged inputs pass, and unusable input cannot pass or replace the baseline; `make test/cli` replays the quark fixtures |
 
 ## What was assumed
 
@@ -54,14 +61,14 @@ Each is written down where it lives. Changing one is a small, local edit.
 
 - **Publishing.** It needs your pub.dev account: #55, assigned to you. Everything up to `dart pub publish` is
   checked in CI.
-- **attest on quark** (the open half of #14). Getting attest reports from quark means adding `attest_flutter` to
-  quark's tests, a change to quark that waits on your decision. The adapter is proven on a scratch app instead.
-- **Distinct quark pages.** With no backend, every public route redirects to `/terms`, so the quark report
-  measures one screen six times. Authenticated and distinct pages need the phase 2 runner and a running backend.
+- **Authenticated quark browser pages.** Public pages now run with an isolated real backend, and every recorded
+  final URL matches its requested route. Authenticated collection remains phase 2 work. The eight attest audits
+  cover actual quark page widgets at two widths, not authenticated browser flows.
 - **The real accessibility signal on Flutter web.** a11y 100 on quark is not a pass: most Lighthouse accessibility
   audits don't apply to a default canvas build. #18 measures a semantics-enabled build.
-- **macOS and Windows.** CI runs Linux only. The core is pure Dart and `io/` uses `package:path`, but nothing has
-  run on the other two.
+- **Complete macOS and Windows workflows.** Core CI runs Linux. A separate native Windows regression proved
+  unavailable-drive handling during the collection review, but the complete package and quark workflow have not
+  been exercised on Windows or macOS.
 - **Publishing from a workspace root** (ADR 0003). There is no workspace until #30.
 - **pub.dev's own score.** pana is run locally and in CI with the same version pub.dev uses as of today. The
   server can apply additional checks at upload.
@@ -72,9 +79,14 @@ Each is written down where it lives. Changing one is a small, local edit.
   on one screen; the release build is 8.7 MB and steady. Audits must use release builds.
 - Lighthouse 13 has new categories (`agentic-browsing`), and `details.items` isn't always a list.
 - attest emits negative hex fingerprints (a 64-bit overflow in its FNV hash), likely worth reporting upstream.
+- An unclaimed backend sends `/login` to `/setup`; the validation recorded setup first, claimed the isolated
+  backend, and then measured login. Backend reachability alone is not enough to prove distinct routes.
+- The default browser build gave accessibility 100 with only 17 of 76 audits applicable on each page. Combining
+  it with attest gave 94, with real widget findings still present. Neither number certifies accessibility.
+- `collect` previously deleted its input when the configured source was the destination or a descendant of it.
+  The fix checks resolved directory paths before any deletion and retains normal replacement behavior.
 
 ## Open decisions
 
-1. attest on quark: add `attest_flutter` to quark's tests, or leave attest on quark for later?
-2. For the phase 2 runner: start a quark backend itself, or assume one is running?
-3. Review ADR 0021.
+1. For the phase 2 runner: start a quark backend itself, or assume one is running?
+2. Review ADR 0021.
