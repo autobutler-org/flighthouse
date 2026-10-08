@@ -1,0 +1,16 @@
+import {Audit} from './web-tools/node_modules/lighthouse/core/audits/audit.js';
+
+export default class IntentionalAuditError extends Audit {
+  static get meta() {
+    return {
+      id:'flighthouse-test-audit-error',
+      title:'Weighted audit failure fixture',
+      failureTitle:'Weighted audit failure fixture',
+      description:'This test-only audit throws to capture a real Lighthouse partial-error result.',
+      requiredArtifacts:[],
+    };
+  }
+  static audit() {
+    throw new Error('Intentional test-only audit failure');
+  }
+}

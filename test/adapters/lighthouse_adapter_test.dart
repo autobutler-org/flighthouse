@@ -222,6 +222,55 @@ void main() {
       );
     });
 
+    test('an unknown score display mode with a null score', () {
+      expect(
+        failureOf(
+          withAudit(lhr, 'html-has-lang', {
+            'scoreDisplayMode': 'vibes',
+            'score': null,
+          }),
+        ),
+        contains('audit html-has-lang has untested scoreDisplayMode "vibes"'),
+      );
+    });
+
+    test('a positively weighted audit error is unusable input', () {
+      final failure = failureOf(fixture('audit-errors/weighted-error.json'));
+      expect(failure, contains('audit flighthouse-test-audit-error failed'));
+      expect(
+        failure,
+        contains(r'$.audits.flighthouse-test-audit-error.scoreDisplayMode'),
+      );
+    });
+
+    test('a positively weighted scored audit needs a score', () {
+      final failure = failureOf(
+        withAudit(lhr, 'html-has-lang', {'score': null}),
+      );
+      expect(
+        failure,
+        contains('audit html-has-lang has no score despite a positive weight'),
+      );
+      expect(failure, contains(r'$.audits.html-has-lang.score'));
+    });
+
+    test('an unweighted audit error does not contribute to scoring', () {
+      final json = fixtureJson('audit-errors/weighted-error.json');
+      final categories = json['categories']! as Map<String, Object?>;
+      final category = categories['accessibility']! as Map<String, Object?>;
+      final refs = category['auditRefs']! as List<Object?>;
+      final ref = refs.cast<Map<String, Object?>>().singleWhere(
+        (ref) => ref['id'] == 'flighthouse-test-audit-error',
+      );
+      ref['weight'] = 0;
+      final output = parsed(jsonEncode(json));
+      expect(
+        output.ruleOutcomes.map((outcome) => outcome.rule),
+        isNot(contains('flighthouse-test-audit-error')),
+      );
+      expect(scoresOf(output)[Category.a11y], isNotNull);
+    });
+
     test('an unknown unit', () {
       expect(
         failureOf(
