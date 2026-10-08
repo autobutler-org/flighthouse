@@ -1,8 +1,8 @@
 # Quark semantics signal measurement
 
 Measured for [#18](https://github.com/autobutler-org/flighthouse/issues/18) on 2026-10-08.
-The findings inform [ADR 0016](../adr/0016-semantics-enabled-web-builds.md) and the #19 checkpoint; the ADR remains
-Proposed. The experiment changed only an isolated quark entrypoint and temporary Make targets, not its normal
+The findings informed [ADR 0016](../adr/0016-semantics-enabled-web-builds.md), which the maintainer accepted at the
+#19 checkpoint. The experiment changed only an isolated quark entrypoint and temporary Make targets, not its normal
 startup or any flighthouse production code.
 
 ## Result

@@ -1,6 +1,6 @@
 # 0015. Browser automation and axe
 
-- Status: Proposed, pending the phase 2 spike
+- Status: Accepted
 - Date: 2026-10-06
 
 ## Context
@@ -20,7 +20,7 @@ Candidates, checked on pub.dev and GitHub on 2026-10-06:
 axe-core is a single JavaScript file (`axe.min.js`, MPL-2.0) that runs in the page. With either Dart driver it can be
 injected and `axe.run()` evaluated, with no Node involved at runtime.
 
-## Decision (proposed)
+## Decision
 
 - Define a small interface in `io/`: open a URL, wait for a selector, click, type, evaluate a script returning JSON,
   close. The web runner depends only on it.
@@ -47,9 +47,11 @@ upstream CI provides Ubuntu and macOS corroboration. Our own native macOS ARM64 
 navigation, and 500-node axe probe also passed. Our Ubuntu job acquired Chrome but its default launch failed with
 `No usable sandbox!`; the supported Linux launch policy remains a checkpoint requirement.
 A second isolated Ubuntu probe passed with `--no-sandbox`, while macOS passed again with its default sandbox.
-These results are recorded separately and do not imply default-sandbox support on that Ubuntu runner.
+These results are recorded separately and do not imply default-sandbox support on that Ubuntu runner. Production
+launches keep Chrome's sandbox enabled by default and return an actionable failure when the host cannot support it;
+they never select `--no-sandbox` implicitly. The web CI policy remains task #27's explicit decision.
 
 Ten quark navigations showed that the glass pane and semantics host precede the first frame. Install a
 `flutter-first-frame` listener before navigation, apply a timeout, and follow it with application readiness.
-Chrome acquisition requires `unzip` on Linux and should happen before parallel route work. These findings inform
-the proposal; this ADR remains Proposed until the #19 maintainer checkpoint.
+Chrome acquisition requires `unzip` on Linux and should happen before parallel route work. These findings support
+the accepted Puppeteer boundary.
