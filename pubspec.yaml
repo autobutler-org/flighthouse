@@ -30,4 +30,5 @@ dependencies:
   args: ^2.7.0
   crypto: ^3.0.7
   path: ^1.9.1
+  puppeteer: ^3.26.0
   yaml: ^3.1.4
