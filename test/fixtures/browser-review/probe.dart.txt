@@ -1,0 +1,104 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:puppeteer/puppeteer.dart';
+
+final class EnvironmentProxy extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) =>
+      super.createHttpClient(context)
+        ..findProxy = HttpClient.findProxyFromEnvironment;
+}
+
+Future<void> main(
+  List<String> arguments,
+) => HttpOverrides.runWithHttpOverrides(() async {
+  final output = File(arguments.single);
+  final sandboxDisabled =
+      Platform.environment['BROWSER_REVIEW_NO_SANDBOX'] == 'true';
+  final downloaded = await downloadChrome(cachePath: 'chrome-cache')
+      .timeout(const Duration(minutes: 3));
+  final metadata = <String, Object?>{
+    'driver': 'puppeteer 3.26.0',
+    'platform': Platform.operatingSystem,
+    'dart': Platform.version,
+    'downloadedVersion': downloaded.version,
+    'sandboxDisabled': sandboxDisabled,
+  };
+  await output.writeAsString(jsonEncode(metadata));
+  final browser = await puppeteer.launch(
+    executablePath: downloaded.executablePath,
+    noSandboxFlag: sandboxDisabled,
+    timeout: const Duration(seconds: 30),
+  );
+  final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+  final serving = server.forEach((request) async {
+    request.response.headers.contentType = ContentType.html;
+    request.response.write(
+      '<!doctype html><html lang="en"><title>Native browser probe</title>'
+      '<body><main><h1>Actions</h1>'
+      '${[for (var index = 0; index < 500; index++) '<button id="action-$index"></button>'].join()}'
+      '</main></body></html>',
+    );
+    await request.response.close();
+  });
+  try {
+    final page = await browser.newPage();
+    final url = 'http://127.0.0.1:${server.port}/';
+    await page.goto(url).timeout(const Duration(seconds: 30));
+    await page.waitForSelector('#action-499');
+    await page.addScriptTag(file: File('node_modules/axe-core/axe.min.js'));
+    final raw = await page
+        .evaluate<Map<String, dynamic>>('async () => await axe.run()')
+        .timeout(const Duration(minutes: 2));
+    final violations = raw['violations'] as List<dynamic>;
+    final buttonRule = violations.cast<Map<String, dynamic>>().singleWhere(
+      (violation) => violation['id'] == 'button-name',
+    );
+    final nodes = buttonRule['nodes'] as List<dynamic>;
+    if (nodes.length != 500) {
+      throw StateError('Expected 500 button nodes, received ${nodes.length}');
+    }
+    for (var index = 0; index < nodes.length; index++) {
+      final node = nodes[index] as Map<String, dynamic>;
+      if (jsonEncode(node['target']) != '["#action-$index"]' ||
+          node['html'] != '<button id="action-$index"></button>' ||
+          node['impact'] != 'critical') {
+        throw StateError('Node $index lost its target, HTML, or impact');
+      }
+      for (final key in ['any', 'all', 'none']) {
+        final checks = node[key] as List<dynamic>;
+        for (final check in checks.cast<Map<String, dynamic>>()) {
+          if (check['id'] is! String ||
+              check['message'] is! String ||
+              check['relatedNodes'] is! List<dynamic>) {
+            throw StateError('Node $index lost nested check data');
+          }
+        }
+      }
+      if ((node['any'] as List<dynamic>).isEmpty) {
+        throw StateError('Node $index lost its button-name checks');
+      }
+    }
+    final engine = raw['testEngine'] as Map<String, dynamic>;
+    if (engine['version'] != '4.11.1' || raw['url'] != url) {
+      throw StateError('Unexpected axe version or final navigation URL');
+    }
+    final result = {
+      ...metadata,
+      'browserVersion': await browser.version,
+      'axeVersion': engine['version'],
+      'axeBytes': utf8.encode(jsonEncode(raw)).length,
+      'buttonNodes': nodes.length,
+      'exactTargetsHtmlImpactAndChecks': true,
+      'navigation': 'loopback HTTP page',
+      'passed': true,
+    };
+    await output.writeAsString('${jsonEncode(result)}\n');
+    stdout.writeln(jsonEncode(result));
+  } finally {
+    await server.close(force: true);
+    await serving;
+    await browser.close();
+  }
+}, EnvironmentProxy());

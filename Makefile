@@ -57,6 +57,26 @@ fix: ## Format and apply analyzer fixes
 test: ## Run every unit, fixture, and end-to-end test
 	dart test
 
+.PHONY: test/browser-platform
+test/browser-platform: ## Run the unmerged native browser acquisition and axe probe
+	probe_dir=$$(mktemp -d)
+	trap 'rm -rf "$$probe_dir"' EXIT
+	cp test/fixtures/browser-review/pubspec.yaml.txt "$$probe_dir/pubspec.yaml"
+	cp test/fixtures/browser-review/pubspec.lock.txt "$$probe_dir/pubspec.lock"
+	cp test/fixtures/browser-review/probe.dart.txt "$$probe_dir/probe.dart"
+	sed '/^include:/d' analysis_options.yaml > "$$probe_dir/analysis_options.yaml"
+	result_path="$(abspath $(BROWSER_REVIEW_RESULT))"
+	cd "$$probe_dir"
+	dart pub get --enforce-lockfile
+	dart format --output=none --set-exit-if-changed probe.dart
+	dart analyze --fatal-infos
+	npm install --ignore-scripts --no-save --no-audit --no-fund axe-core@4.11.1
+	dart run probe.dart "$$result_path"
+
+.PHONY: fix/browser-probe
+fix/browser-probe: ## Format the isolated browser probe source fixture
+	dart format test/fixtures/browser-review/probe.dart.txt
+
 .PHONY: test/cli
 test/cli: ## Run the CLI's collect and ci commands against recorded fixtures
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml collect

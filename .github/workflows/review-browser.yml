@@ -1,0 +1,56 @@
+name: Temporary native browser review
+on:
+  push:
+    branches: [test/17-browser-platform-review]
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            disable-sandbox: true
+          - os: macos-latest
+            disable-sandbox: false
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    env:
+      BROWSER_REVIEW_NO_SANDBOX: ${{ matrix.disable-sandbox }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.13.5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Ensure GNU Make
+        if: runner.os == 'macOS'
+        run: command -v gmake || brew install make
+      - name: Resolve core dependencies
+        run: |
+          if [[ "$RUNNER_OS" == macOS ]]; then
+            gmake setup/deps
+          else
+            make setup/deps
+          fi
+      - name: Check core and run the isolated browser probe
+        run: |
+          if [[ "$RUNNER_OS" == macOS ]]; then
+            gmake check
+            gmake test/browser-platform BROWSER_REVIEW_RESULT="$RUNNER_TEMP/browser-review.json"
+          else
+            make check
+            make test/browser-platform BROWSER_REVIEW_RESULT="$RUNNER_TEMP/browser-review.json"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-review-${{ matrix.os }}
+          path: ${{ runner.temp }}/browser-review.json
+          if-no-files-found: error
