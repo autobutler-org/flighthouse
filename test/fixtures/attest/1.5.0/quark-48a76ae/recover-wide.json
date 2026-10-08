@@ -1,0 +1,71 @@
+{
+  "findings": [
+    {
+      "ruleId": "attest/contrast",
+      "criterion": {
+        "wcag": "1.4.3",
+        "wcagLevel": "AA",
+        "en301549": "11.1.4.3",
+        "title": "Contrast (Minimum)",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Text contrast is 1.3:1; normal text needs at least 4.5:1.",
+      "suggestion": "Darken the text colour or lighten the background until the ratio meets the minimum.",
+      "fingerprint": "-59773b4cf5fdd9d1",
+      "bounds": {
+        "left": 492.0,
+        "top": 316.0,
+        "width": 132.0,
+        "height": 16.0
+      }
+    },
+    {
+      "ruleId": "attest/contrast",
+      "criterion": {
+        "wcag": "1.4.3",
+        "wcagLevel": "AA",
+        "en301549": "11.1.4.3",
+        "title": "Contrast (Minimum)",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Text contrast is 1.9:1; normal text needs at least 4.5:1.",
+      "suggestion": "Darken the text colour or lighten the background until the ratio meets the minimum.",
+      "fingerprint": "5baf04aae4e60685",
+      "bounds": {
+        "left": 440.0,
+        "top": 212.0,
+        "width": 400.0,
+        "height": 60.0
+      }
+    }
+  ],
+  "meta": {
+    "screenName": "/recover/wide",
+    "standard": "en301549_v3_2_1",
+    "toolVersion": "1.5.0",
+    "timestamp": "2026-10-08T05:11:15.172150Z"
+  },
+  "gateSeverity": "error",
+  "transcript": [
+    "Recover account, heading",
+    "button",
+    "Recovery",
+    "Reset your password",
+    "Enter your username and recovery phrase, then choose a new password.",
+    "Username, edit box",
+    "Recovery phrase, edit box",
+    "The 6 words Quark showed once when your account was set up, joined by hyphens, in the same order.",
+    "New password, edit box",
+    "button",
+    "At least 8 characters",
+    "0",
+    "Confirm new password, edit box",
+    "button",
+    "Reset password, button",
+    "Back to sign in, button"
+  ]
+}

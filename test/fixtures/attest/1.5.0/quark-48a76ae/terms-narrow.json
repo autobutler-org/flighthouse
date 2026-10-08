@@ -1,0 +1,21 @@
+{
+  "findings": [],
+  "meta": {
+    "screenName": "/terms/narrow",
+    "standard": "en301549_v3_2_1",
+    "toolVersion": "1.5.0",
+    "timestamp": "2026-10-08T05:11:15.270710Z"
+  },
+  "gateSeverity": "error",
+  "transcript": [
+    "Terms & Conditions, heading",
+    "button",
+    "Terms and Conditions",
+    "Last updated: September 8, 2026",
+    "In plain English",
+    "Your files stay on your Quark",
+    "You own everything you put here, and by default it lives on hardware you control. Anything that leaves it \u2014 remote access, an import from another service \u2014 happens because you switched it on.",
+    "Keep your own backup",
+    "I Agree, button"
+  ]
+}

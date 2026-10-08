@@ -1,0 +1,93 @@
+{
+  "findings": [
+    {
+      "ruleId": "attest/contrast",
+      "criterion": {
+        "wcag": "1.4.3",
+        "wcagLevel": "AA",
+        "en301549": "11.1.4.3",
+        "title": "Contrast (Minimum)",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Text contrast is 1.3:1; normal text needs at least 4.5:1.",
+      "suggestion": "Darken the text colour or lighten the background until the ratio meets the minimum.",
+      "fingerprint": "-59773b4cf5fdd9d1",
+      "bounds": {
+        "left": 76.0,
+        "top": 392.0,
+        "width": 132.0,
+        "height": 16.0
+      }
+    },
+    {
+      "ruleId": "attest/contrast",
+      "criterion": {
+        "wcag": "1.4.3",
+        "wcagLevel": "AA",
+        "en301549": "11.1.4.3",
+        "title": "Contrast (Minimum)",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Text contrast is 1.3:1; normal text needs at least 4.5:1.",
+      "suggestion": "Darken the text colour or lighten the background until the ratio meets the minimum.",
+      "fingerprint": "-72d55a3876a5e552",
+      "bounds": {
+        "left": 76.0,
+        "top": 464.0,
+        "width": 132.0,
+        "height": 16.0
+      }
+    },
+    {
+      "ruleId": "attest/heading-structure",
+      "criterion": {
+        "wcag": "1.3.1",
+        "wcagLevel": "A",
+        "en301549": "11.1.3.1",
+        "title": "Info and Relationships",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships.html"
+      },
+      "severity": "warning",
+      "confidence": "heuristic",
+      "message": "Text \"Welcome back\" looks like a heading (large or bold) but is not exposed as one, so it cannot be navigated to as a heading.",
+      "suggestion": "Wrap it in Semantics(header: true, child: \u2026).",
+      "fingerprint": "3d3c436b565f5f19",
+      "codeExample": "// Before \u2014 looks like a heading but is plain text\nText('Account settings', style: theme.textTheme.headlineSmall)\n\n// After \u2014 expose it as a heading so it can be navigated to\nSemantics(\n  header: true,\n  child: Text('Account settings', style: theme.textTheme.headlineSmall),\n)",
+      "location": {
+        "file": "Text:file:///work/quark/lib/widgets/login/sign_in_form.dart",
+        "line": 113,
+        "column": 11
+      },
+      "bounds": {
+        "left": 24.0,
+        "top": 104.0,
+        "width": 312.0,
+        "height": 72.0
+      }
+    }
+  ],
+  "meta": {
+    "screenName": "/login/narrow",
+    "standard": "en301549_v3_2_1",
+    "toolVersion": "1.5.0",
+    "timestamp": "2026-10-08T05:11:14.366111Z"
+  },
+  "gateSeverity": "error",
+  "transcript": [
+    "Quark",
+    "Welcome back",
+    "Sign in to your Quark.",
+    "Audit\nhttp://localhost:8080",
+    "Change, button",
+    "Username, edit box",
+    "Password, edit box",
+    "button",
+    "Sign in, button",
+    "Forgot password?, button",
+    "First time here? Set up this Quark, button"
+  ]
+}

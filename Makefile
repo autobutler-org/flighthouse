@@ -57,7 +57,16 @@ fix: ## Format and apply analyzer fixes
 test: ## Run every unit, fixture, and end-to-end test
 	dart test
 
+.PHONY: run/cli
+run/cli: ## Run the CLI (CLI_ARGS supplies the command and options)
+	dart run bin/flighthouse.dart $(CLI_ARGS)
+
 .PHONY: test/cli
-test/cli: ## Run the CLI's collect and ci commands against recorded fixtures
+test/cli: test/quark ## Run the CLI's collect and ci commands against recorded fixtures
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml collect
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml ci
+
+.PHONY: test/quark
+test/quark: ## Run the CI gate against real quark page audits
+	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/48a76ae/flighthouse.yaml collect
+	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/48a76ae/flighthouse.yaml ci

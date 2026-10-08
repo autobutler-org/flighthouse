@@ -1,0 +1,27 @@
+{
+  "findings": [],
+  "meta": {
+    "screenName": "/terms/wide",
+    "standard": "en301549_v3_2_1",
+    "toolVersion": "1.5.0",
+    "timestamp": "2026-10-08T05:11:15.347436Z"
+  },
+  "gateSeverity": "error",
+  "transcript": [
+    "Terms & Conditions, heading",
+    "button",
+    "Terms and Conditions",
+    "Last updated: September 8, 2026",
+    "In plain English",
+    "Your files stay on your Quark",
+    "You own everything you put here, and by default it lives on hardware you control. Anything that leaves it \u2014 remote access, an import from another service \u2014 happens because you switched it on.",
+    "Keep your own backup",
+    "Quark comes with no warranty and no promise about uptime or data integrity. Whatever you cannot afford to lose should exist somewhere else too.",
+    "It's for your household",
+    "Quark is for managing your own photos and files. What you store on it, and staying on the right side of the law while you do, is yours to answer for.",
+    "A summary, not the agreement \u2014 the full terms below are what you accept.",
+    "Definitions",
+    "AutoButler (or AutoButler LLC, \"we\", \"us\", \"our\") means the company that owns and sells Quark and operates autobutler.org.\n\nQuark means the personal cloud hardware product and related software experience sold or distributed by AutoButler.\n\nSoftware means the Quark application and related open-source components that run on your Quark device (or other supported hardware you control). The Software is not \"the AutoButler application.\"\n\nWebsite means autobutler.org and related AutoButler-operated web properties (including waitlist and marketing pages).",
+    "I Agree, button"
+  ]
+}

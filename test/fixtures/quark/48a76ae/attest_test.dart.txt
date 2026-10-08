@@ -1,0 +1,73 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:attest_flutter/attest_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:quark/pages/login_page.dart';
+import 'package:quark/pages/recover_page.dart';
+import 'package:quark/pages/setup_page.dart';
+import 'package:quark/pages/terms_page.dart';
+import 'package:quark/router.dart';
+import 'package:quark/services/app_settings.dart';
+import 'package:quark/services/auth_service.dart';
+import 'package:quark_widgets/quark_widgets.dart';
+
+void main() {
+  final settings = AppSettings.instance;
+  setUp(() async {
+    while (settings.hosts.isNotEmpty) {
+      await settings.removeHost(settings.hosts.length - 1);
+    }
+    await settings.addHost(
+      HostEntry(name: 'Audit', hostAddress: 'http://localhost:8080'),
+    );
+    authStatusProbe = () async => const AuthStatus(setupComplete: false);
+  });
+  tearDown(() async {
+    authStatusProbe = AuthService.checkStatus;
+    while (settings.hosts.isNotEmpty) {
+      await settings.removeHost(settings.hosts.length - 1);
+    }
+  });
+
+  for (final (name, screen) in <(String, Widget)>[
+    (
+      'login',
+      LoginPage(
+        onLoginSuccess: () {},
+        checkStatus: () async => const AuthStatus(setupComplete: false),
+      ),
+    ),
+    ('setup', SetupPage(onSetupComplete: () {})),
+    ('recover', const RecoverPage()),
+    ('terms', const TermsPage()),
+  ]) {
+    for (final (viewport, size) in [
+      ('narrow', const Size(360, 640)),
+      ('wide', const Size(1280, 800)),
+    ]) {
+      testWidgets('audit $name at $viewport', (tester) async {
+        tester.view.physicalSize = size;
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: QuarkTheme.from(QuarkTokens.dark, Brightness.dark),
+            home: screen,
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        final report = await tester.auditAccessibility(
+          screenName: '/$name/$viewport',
+        );
+        await tester.runAsync(() async {
+          final file = File('build/flighthouse/attest/$name-$viewport.json');
+          await file.parent.create(recursive: true);
+          await file.writeAsString(jsonEncode(report.toJson()));
+        });
+      });
+    }
+  }
+}

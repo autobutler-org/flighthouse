@@ -1,0 +1,121 @@
+{
+  "findings": [
+    {
+      "ruleId": "attest/contrast",
+      "criterion": {
+        "wcag": "1.4.3",
+        "wcagLevel": "AA",
+        "en301549": "11.1.4.3",
+        "title": "Contrast (Minimum)",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Text contrast is 1.4:1; normal text needs at least 4.5:1.",
+      "suggestion": "Darken the text colour or lighten the background until the ratio meets the minimum.",
+      "fingerprint": "-36b2d45fae5cbdbe",
+      "bounds": {
+        "left": 76.0,
+        "top": 396.0,
+        "width": 244.0,
+        "height": 24.0
+      }
+    },
+    {
+      "ruleId": "attest/contrast",
+      "criterion": {
+        "wcag": "1.4.3",
+        "wcagLevel": "AA",
+        "en301549": "11.1.4.3",
+        "title": "Contrast (Minimum)",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Text contrast is 1.3:1; normal text needs at least 4.5:1.",
+      "suggestion": "Darken the text colour or lighten the background until the ratio meets the minimum.",
+      "fingerprint": "-59773b4cf5fdd9d1",
+      "bounds": {
+        "left": 76.0,
+        "top": 328.0,
+        "width": 132.0,
+        "height": 16.0
+      }
+    },
+    {
+      "ruleId": "attest/focus-trap",
+      "criterion": {
+        "wcag": "2.1.1",
+        "wcagLevel": "A",
+        "en301549": "11.2.1.1",
+        "title": "Keyboard",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Interactive element is tappable but hidden from assistive technology, so a screen-reader or keyboard user cannot reach it.",
+      "suggestion": "Remove the erroneous ExcludeSemantics / hidden flag, or make the element genuinely non-interactive.",
+      "fingerprint": "-5354d0627ed051d8",
+      "location": {
+        "file": "TextButton:file:///work/quark/lib/pages/recover_page.dart",
+        "line": 312,
+        "column": 29
+      },
+      "bounds": {
+        "left": 24.0,
+        "top": 740.0,
+        "width": 312.0,
+        "height": 48.0
+      }
+    },
+    {
+      "ruleId": "attest/focus-trap",
+      "criterion": {
+        "wcag": "2.1.1",
+        "wcagLevel": "A",
+        "en301549": "11.2.1.1",
+        "title": "Keyboard",
+        "understanding": "https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html"
+      },
+      "severity": "error",
+      "confidence": "deterministic",
+      "message": "Interactive element is tappable but hidden from assistive technology, so a screen-reader or keyboard user cannot reach it.",
+      "suggestion": "Remove the erroneous ExcludeSemantics / hidden flag, or make the element genuinely non-interactive.",
+      "fingerprint": "3d8a3b1055a3e1c9",
+      "location": {
+        "file": "FilledButton:file:///work/quark/lib/pages/recover_page.dart",
+        "line": 305,
+        "column": 29
+      },
+      "bounds": {
+        "left": 24.0,
+        "top": 680.0,
+        "width": 312.0,
+        "height": 48.0
+      }
+    }
+  ],
+  "meta": {
+    "screenName": "/recover/narrow",
+    "standard": "en301549_v3_2_1",
+    "toolVersion": "1.5.0",
+    "timestamp": "2026-10-08T05:11:15.039147Z"
+  },
+  "gateSeverity": "error",
+  "transcript": [
+    "Recover account, heading",
+    "button",
+    "Recovery",
+    "Reset your password",
+    "Enter your username and recovery phrase, then choose a new password.",
+    "Username, edit box",
+    "Recovery phrase, edit box",
+    "The 6 words Quark showed once when your account was set up, joined by hyphens, in the same order.",
+    "New password, edit box",
+    "button",
+    "At least 8 characters",
+    "0",
+    "Confirm new password, edit box",
+    "button"
+  ]
+}
