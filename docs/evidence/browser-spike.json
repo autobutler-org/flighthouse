@@ -179,5 +179,64 @@
     "No flighthouse GitHub-hosted platform job run",
     "Ubuntu container launch used --no-sandbox"
   ],
-  "upstreamReleaseCI": "https://github.com/xvrh/puppeteer-dart/actions/runs/31691287237"
+  "upstreamReleaseCI": "https://github.com/xvrh/puppeteer-dart/actions/runs/31691287237",
+  "nativeProbes": {
+    "sourceBranch": "test/17-browser-platform-review",
+    "defaultPolicySourceCommit": "8b71ee7bf082c4de207581eef85124b1a705704b",
+    "macosDefaultPolicy": {
+      "driver": "puppeteer 3.26.0",
+      "platform": "macos",
+      "dart": "3.13.5 (stable) (Tue Sep 29 01:00:52 2026 -0700) on \"macos_arm64\"",
+      "downloadedVersion": "152.0.7977.42",
+      "sandboxDisabled": false,
+      "browserVersion": "Chrome/152.0.7977.42",
+      "axeVersion": "4.11.1",
+      "axeBytes": 1143601,
+      "buttonNodes": 500,
+      "exactTargetsHtmlImpactAndChecks": true,
+      "navigation": "loopback HTTP page",
+      "passed": true,
+      "jobUrl": "https://github.com/autobutler-org/flighthouse/actions/runs/37781192167/job/113324409910"
+    },
+    "ubuntuDefaultPolicy": {
+      "runner": "ubuntu-latest",
+      "downloadSucceeded": true,
+      "sandboxDisabled": false,
+      "launchSucceeded": false,
+      "problem": "No usable sandbox!",
+      "jobUrl": "https://github.com/autobutler-org/flighthouse/actions/runs/37781192167/job/113324410213"
+    },
+    "limitations": "Native probes use a loopback test page. Quark readiness and auth were measured separately on Linux. No host security configuration was modified.",
+    "isolatedPolicySourceCommit": "6a078056ea5bcc0c365b7ad7c0487f34ad6222ee",
+    "ubuntuSandboxDisabled": {
+      "driver": "puppeteer 3.26.0",
+      "platform": "linux",
+      "dart": "3.13.5 (stable) (Tue Sep 29 01:00:52 2026 -0700) on \"linux_x64\"",
+      "downloadedVersion": "152.0.7977.42",
+      "sandboxDisabled": true,
+      "browserVersion": "Chrome/152.0.7977.42",
+      "axeVersion": "4.11.1",
+      "axeBytes": 1143585,
+      "buttonNodes": 500,
+      "exactTargetsHtmlImpactAndChecks": true,
+      "navigation": "loopback HTTP page",
+      "passed": true,
+      "jobUrl": "https://github.com/autobutler-org/flighthouse/actions/runs/37781506761/job/113325474391"
+    },
+    "macosDefaultPolicyRepeated": {
+      "driver": "puppeteer 3.26.0",
+      "platform": "macos",
+      "dart": "3.13.5 (stable) (Tue Sep 29 01:00:52 2026 -0700) on \"macos_arm64\"",
+      "downloadedVersion": "152.0.7977.42",
+      "sandboxDisabled": false,
+      "browserVersion": "Chrome/152.0.7977.42",
+      "axeVersion": "4.11.1",
+      "axeBytes": 1143601,
+      "buttonNodes": 500,
+      "exactTargetsHtmlImpactAndChecks": true,
+      "navigation": "loopback HTTP page",
+      "passed": true,
+      "jobUrl": "https://github.com/autobutler-org/flighthouse/actions/runs/37781506761/job/113325474150"
+    }
+  }
 }

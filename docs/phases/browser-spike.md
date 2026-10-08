@@ -24,7 +24,24 @@ executable; it is an installation prerequisite in addition to Chrome's shared li
 `libnss3`, GTK, GBM, ALSA, X11/ATK libraries, and fonts resolved the failure. The container used the session proxy
 and its trusted CA. Container launches used `--no-sandbox` and `--disable-dev-shm-usage`.
 
-This session had no macOS executor and did not run a GitHub-hosted Ubuntu job. There is corroborating upstream CI:
+After repository write access was restored, an isolated branch ran our own native Ubuntu and macOS probes. The
+[macOS ARM64 job](https://github.com/autobutler-org/flighthouse/actions/runs/37781192167/job/113324409910)
+passed with Chrome's default sandbox enabled: fresh acquisition, headless launch, loopback HTTP navigation, and
+all 500 axe nodes with their exact targets, HTML, impacts, and nested checks.
+
+The [Ubuntu default-policy job](https://github.com/autobutler-org/flighthouse/actions/runs/37781192167/job/113324410213)
+acquired Chrome but launch failed with `No usable sandbox!`. Its error names Ubuntu's AppArmor restrictions on
+unprivileged user namespaces. This is an observed launch prerequisite, not a missing audit or an axe failure.
+The probe did not alter host AppArmor settings. The supported Linux launch policy must be selected before #27;
+a successful launch with the sandbox disabled cannot establish default-policy support.
+
+The [second native run](https://github.com/autobutler-org/flighthouse/actions/runs/37781506761)
+passed on both runners. Ubuntu's isolated probe explicitly used `--no-sandbox`; macOS kept the default sandbox
+and passed again. Both freshly acquired Chrome 152 and retained every one of the 500 axe nodes. No host security
+configuration was changed. The evidence records the launch policy per result so the green run cannot mask the
+earlier default-policy failure.
+
+There is also corroborating upstream CI:
 the [v3.26.0 release commit's Build run](https://github.com/xvrh/puppeteer-dart/actions/runs/31691287237) passed
 [macOS](https://github.com/xvrh/puppeteer-dart/actions/runs/31691287237/job/94418969470) and
 [Ubuntu](https://github.com/xvrh/puppeteer-dart/actions/runs/31691287237/job/94418969523). Its workflow includes Chrome
@@ -72,7 +89,8 @@ WebDriver used `executeAsync` with an explicit completion callback and a 60-seco
 to install the external script for the experiment, consistent with the proposed external-tool boundary.
 
 Navigation timings are recorded in the evidence but are not driver benchmarks: the two probes waited for different
-navigation conditions. The browser comparison did not test form typing, crash recovery, or macOS locally.
+navigation conditions. The initial comparison did not test form typing or crash recovery. The later macOS probe
+used a loopback test page; real quark readiness and auth remain Linux measurements.
 
 ## Upstream maintenance
 
@@ -96,5 +114,6 @@ not establish a response SLA. No upstream messages or changes were sent.
 observations. The throwaway package pinned `puppeteer: 3.26.0` and `webdriver: 3.2.0` and used Dart 3.13.5.
 ChromeDriver was downloaded from Chrome for Testing's public distribution for the exact matching version.
 
-Before accepting platform support, run the download, launch, navigation, and axe smoke checks in flighthouse's own
-Ubuntu and macOS jobs. Before implementing the browser abstraction, obtain the ADR checkpoint decision in #19.
+The native probes run from an unmerged throwaway branch; their dependencies and source are staged outside the
+root package. The production web workflow and its Linux launch policy still require the #19 checkpoint. These
+smoke checks do not cover a Flutter build, typed auth, or failure cleanup on every platform.

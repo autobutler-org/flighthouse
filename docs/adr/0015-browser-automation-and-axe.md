@@ -43,7 +43,11 @@ The first phase 2 task answers these and reports back before this ADR is accepte
 
 The [2026-10-08 investigation](../phases/browser-spike.md) recommends Puppeteer 3.26.0. Both Dart drivers preserved
 a 500-node axe result, and Chrome download and launch succeeded locally and in Ubuntu 24.04. The exact release's
-upstream CI provides Ubuntu and macOS corroboration; flighthouse's own platform jobs remain unverified.
+upstream CI provides Ubuntu and macOS corroboration. Our own native macOS ARM64 acquisition, default-sandbox launch,
+navigation, and 500-node axe probe also passed. Our Ubuntu job acquired Chrome but its default launch failed with
+`No usable sandbox!`; the supported Linux launch policy remains a checkpoint requirement.
+A second isolated Ubuntu probe passed with `--no-sandbox`, while macOS passed again with its default sandbox.
+These results are recorded separately and do not imply default-sandbox support on that Ubuntu runner.
 
 Ten quark navigations showed that the glass pane and semantics host precede the first frame. Install a
 `flutter-first-frame` listener before navigation, apply a timeout, and follow it with application readiness.
