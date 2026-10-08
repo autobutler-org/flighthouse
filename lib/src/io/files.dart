@@ -53,6 +53,14 @@ Future<Result<List<String>, IoFailure>> listJsonFiles(String directory) async {
   }
 }
 
+Future<String> _resolvedDirectory(Directory directory) async {
+  final parent = directory.parent;
+  if (await directory.exists() || p.equals(directory.path, parent.path)) {
+    return directory.resolveSymbolicLinks();
+  }
+  return p.join(await _resolvedDirectory(parent), p.basename(directory.path));
+}
+
 Future<Result<List<String>, IoFailure>> replaceJsonFiles({
   required String from,
   required String to,
@@ -64,6 +72,22 @@ Future<Result<List<String>, IoFailure>> replaceJsonFiles({
     case Ok(value: final paths):
       try {
         final target = Directory(to);
+        final sourcePath = await Directory(from).resolveSymbolicLinks();
+        final targetPath = await _resolvedDirectory(target.absolute);
+        if (p.equals(sourcePath, targetPath)) {
+          return Ok(paths);
+        }
+        if (p.isWithin(targetPath, sourcePath)) {
+          return Err(
+            IoFailure(
+              operation: 'copy into',
+              path: to,
+              reason:
+                  'destination contains the source directory $from; '
+                  'configure a separate collection directory',
+            ),
+          );
+        }
         if (await target.exists()) {
           await target.delete(recursive: true);
         }
