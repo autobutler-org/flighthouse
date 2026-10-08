@@ -1,7 +1,7 @@
 # Browser automation spike
 
 Measured for [#17](https://github.com/autobutler-org/flighthouse/issues/17) on 2026-10-08.
-This is evidence for the proposed [ADR 0015](../adr/0015-browser-automation-and-axe.md), not its acceptance.
+This evidence supported accepting [ADR 0015](../adr/0015-browser-automation-and-axe.md).
 The experiment programs and their dependencies stayed outside the package. No browser dependency was added.
 
 ## Recommendation

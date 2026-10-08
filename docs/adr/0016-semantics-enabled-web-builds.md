@@ -1,6 +1,6 @@
 # 0016. Semantics-enabled Flutter web builds
 
-- Status: Proposed, pending the phase 2 signal measurement
+- Status: Accepted
 - Date: 2026-10-06
 
 ## Context
@@ -23,7 +23,7 @@ quark specifics that affect the runner:
 - quark uses `PathUrlStrategy`, so routes are plain paths, and the dev server and the built app both need to serve
   `index.html` for unknown paths.
 
-## Decision (proposed)
+## Decision
 
 - **Measure before building.** The first web task builds quark twice, default and semantics-enabled, and for three
   routes (`/login`, `/files`, `/photos`) records the axe violation, pass, and incomplete counts, and Lighthouse's
@@ -56,4 +56,5 @@ production auth runner remains task #22.
 Two builds initially returned identical targets, but later navigation changed generated IDs. Axe ancestry paths
 preserved distinct nodes and matched across the measured builds and activation modes. Blanket removal of ordinals
 would collapse actual findings and needs a separate normalization decision. There is no startup-semantics option
-in the pinned Flutter build help; the define needs app-side code. This ADR remains Proposed pending #19.
+in the pinned Flutter build help; the define needs app-side code. The maintainer accepted that app-side opt-in for
+phase 2, preserving the phase-3 companion package timing.

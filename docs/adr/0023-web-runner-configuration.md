@@ -1,6 +1,6 @@
 # 0023. Web runner configuration
 
-- Status: Proposed, pending the #19 maintainer checkpoint
+- Status: Accepted
 - Date: 2026-10-08
 
 ## Context
@@ -14,7 +14,7 @@ The experiment also exposed constraints: DOM hosts appear before the first frame
 redirect; persistent network requests prevent a universal network-idle condition; mobile Lighthouse and desktop
 axe can observe different layouts. The configuration must make those conditions explicit.
 
-## Decision (proposed)
+## Decision
 
 Add `web` as an optional immutable configuration value. Absence preserves imported-output collection exactly.
 Only `collect` with this section performs web work. `report`, `ci`, and `baseline` always read existing files and
@@ -118,7 +118,7 @@ backend, create an account, or guess an application's auth flow.
 - Use one explicit viewport for axe and Lighthouse: defaults 1280 × 800, device scale factor 1. Width and height
   are positive integers; scale factor is finite and positive. Pass matching Lighthouse screen-emulation settings
   and desktop form factor. The recorded experiment used Lighthouse's default mobile settings, so its numbers
-  are evidence for semantics, not the proposed production viewport's baseline.
+  are evidence for semantics, not the production viewport's baseline.
 - Attach Lighthouse to the driver's debugging port and disable storage reset. Inspect `runtimeError` and final
   displayed URL before accepting the output. The measured stored-session transfer worked without extra headers.
 
@@ -133,7 +133,7 @@ backend, create an account, or guess an application's auth flow.
   resolve it relative to the config file. Otherwise acquire the pinned external script into the user's cache,
   inject it, and capture the actual engine version. Do not vendor upstream code.
 - Run axe with `ancestry: true`, keeping the unmodified JSON result. Store per-route raw outputs beneath
-  `<reportDir>/raw/axe/` and `<reportDir>/raw/lighthouse/`. See proposed ADR 0024 for fingerprint use of ancestry.
+  `<reportDir>/raw/axe/` and `<reportDir>/raw/lighthouse/`. See ADR 0024 for fingerprint use of ancestry.
 - Reject an imported `sources.axe` or `sources.lighthouse` together with `web`, so competing writers cannot replace
   each other's raw results. Imported attest and other sources still work in the same collection.
 - Collection failures remain tool/IO failures; `ci` must not turn them into a passing audit or overwrite a baseline.
@@ -167,7 +167,6 @@ behavior before those platforms are declared supported.
 
 ## Open questions
 
-- Maintainer acceptance of ADRs 0015, 0016, this config, and the target-normalization revision in 0024.
 - The final app readiness selector and quark host/terms bootstrap recipe must be demonstrated by #22.
 - Ubuntu's default Chrome launch failed with `No usable sandbox!`; an explicit isolated `--no-sandbox` probe passed.
   Select the supported production/CI launch policy before #27. No host security configuration was changed in the

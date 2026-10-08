@@ -1,7 +1,7 @@
-# Phase 2 checkpoint proposal
+# Phase 2 checkpoint decision
 
-Prepared for [#19](https://github.com/autobutler-org/flighthouse/issues/19) on 2026-10-08. This layer proposes the
-decisions needed to implement the web runner. It does not accept an ADR or add a production browser dependency.
+Prepared for [#19](https://github.com/autobutler-org/flighthouse/issues/19) on 2026-10-08. This layer records the
+accepted decisions needed to implement the web runner. It does not add a production browser dependency.
 
 ## Evidence presented
 
@@ -20,11 +20,11 @@ decisions needed to implement the web runner. It does not accept an ADR or add a
 
 | Option | Outcome | Tradeoff |
 | --- | --- | --- |
-| A: Dart Puppeteer, startup semantics, ancestry | Recommended. Accept 0015/0016 plus proposed 0023/0024, then implement #20–#27 in stacks. | Requires an app-side opt-in, explicit v2 baseline migration, and a supported Linux launch policy for web CI. |
+| A: Dart Puppeteer, startup semantics, ancestry | Accepted. Implement #20–#27 in stacks under ADRs 0015, 0016, 0023, and 0024. | Requires an app-side opt-in, explicit v2 baseline migration, and a supported Linux launch policy for web CI. |
 | B: Dart WebDriver with the same semantics and target policy | Uses the other working Dart transport. | Requires provisioning and matching ChromeDriver in addition to Chrome, with no observed transport benefit. |
 | C: Review the native launch policy before selecting a driver | Resolve the measured Ubuntu default-sandbox failure before accepting the runner. | Preserves the current package boundary while delaying production work; the isolated green probe does not establish default-policy support. |
 
-## Proposed design
+## Accepted design
 
 Option A follows the empirical recommendation without declaring untested platform support. The concrete config is
 [ADR 0023](../adr/0023-web-runner-configuration.md): optional `web`, argv commands, a loopback SPA server, one
@@ -83,6 +83,6 @@ These checks do not establish a full Flutter build/auth/cleanup workflow on both
 Ubuntu launch policy. Reusable production auth automation, gallery coverage with populated photo data, and a
 representative performance baseline remain unverified.
 
-All four ADRs in the recommended decision are Proposed until the maintainer checkpoint accepts them. The
-investigation tickets' blanket “do not start if Proposed” wording conflicts with their purpose; their acceptance
+The maintainer accepted all four ADRs in the recommended decision. The investigation tickets' blanket “do not start
+if Proposed” wording conflicts with their purpose; their acceptance
 criteria should authorize empirical investigation while blocking dependent production implementation.

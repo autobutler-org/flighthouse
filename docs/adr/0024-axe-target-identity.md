@@ -1,6 +1,6 @@
 # 0024. Preserve distinct axe targets without generated Flutter IDs
 
-- Status: Proposed, supersedes only ADR 0007's axe target-normalization rule upon acceptance
+- Status: Accepted; supersedes ADR 0007's axe target-normalization rule
 - Date: 2026-10-08
 
 ## Context
@@ -18,7 +18,7 @@ Raw axe targets also encode iframe and shadow boundaries as nested arrays. Flatt
 can create additional collisions. Accessible names are not a dedicated guaranteed field in axe's result, and
 HTML snippets can be truncated, so names cannot be reconstructed reliably from a snippet alone.
 
-## Decision (proposed)
+## Decision
 
 - The phase-2 axe runner requests `ancestry: true` and preserves the complete unmodified result. The adapter
   uses ancestry for `normalizedTarget` when present and keeps the original selector and HTML for display.
@@ -36,8 +36,8 @@ HTML snippets can be truncated, so names cannot be reconstructed reliably from a
 - Keep source, rule, route normalization, field escaping, and hashing from ADR 0007. Bump the global fingerprint
   version from `v1` to `v2` when this adapter ships, consistent with ADR 0007's migration rule. Existing baselines
   must be updated explicitly; `ci` explains the mismatch and never silently accepts a baseline migration.
-- The old ADR remains Accepted until this proposal is approved. On acceptance, mark its status as superseded by
-  0024 for the axe target rule only; do not rewrite its Accepted Decision section.
+- ADR 0007 remains Accepted for every other fingerprint and normalization rule. Its status records this narrow
+  supersession without rewriting its original decision in place.
 
 ## Consequences
 
@@ -61,7 +61,6 @@ its effects on the existing attest and Lighthouse baselines.
 
 ## Open questions
 
-- Approval of the narrowed supersession and baseline migration at #19.
 - Multi-view identity needs additional real fixtures before supporting more than the measured single Flutter view.
 - #25 must demonstrate unchanged fingerprints across the paired fixtures, non-collision for repeated siblings,
   frame/shadow boundary preservation, fallback errors, and fingerprint-version gate behavior.

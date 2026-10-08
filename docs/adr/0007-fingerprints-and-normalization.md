@@ -1,6 +1,6 @@
 # 0007. Fingerprints and normalization
 
-- Status: Accepted
+- Status: Accepted; axe target normalization superseded by ADR 0024
 - Date: 2026-10-06
 
 ## Context
@@ -24,9 +24,8 @@ Known sources of churn:
   - strip the query string and fragment, drop a trailing slash, keep case;
   - match against the configured route patterns (`routes.patterns` in config, go_router syntax) and replace the
     matched route with its pattern, so `/files/a/b.txt` becomes `/files/:path(.*)`.
-- Target normalization, per source: each adapter supplies a pure function that strips volatile parts. For axe that
-  means removing generated ids and `nth-child` indices from selectors, and preferring role plus accessible name when
-  the result provides them. The exact rules are decided against real output in phase 2.
+- Target normalization, per source: each adapter supplies a pure function that strips volatile parts. ADR 0024
+  supersedes the axe-specific rule after real output showed that removing child ordinals merges distinct findings.
 - `v1` is the fingerprint scheme version. Changing normalization bumps it, and `baseline --update` is the migration.
 
 ## Consequences
