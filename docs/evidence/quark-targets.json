@@ -1,0 +1,579 @@
+{
+  "comparison": [
+    {
+      "route": "login",
+      "sameBetweenBuilds": true,
+      "sameAfterActivation": true
+    },
+    {
+      "route": "files",
+      "sameBetweenBuilds": true,
+      "sameAfterActivation": true
+    },
+    {
+      "route": "photos",
+      "sameBetweenBuilds": true,
+      "sameAfterActivation": true
+    }
+  ],
+  "results": [
+    {
+      "build": "semantics-1",
+      "route": "login",
+      "url": "http://127.0.0.1:8771/login",
+      "rules": [
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-5"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(1)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-5\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 1; width: 400px; height: 56px;\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-6"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(2)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-6\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 2; width: 400px; height: 36px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 72);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-7"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(3)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-7\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 3; width: 400px; height: 20px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 116);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-8"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(4)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-8\" role=\"group\" aria-label=\"Audit\n/\" aria-current=\"false\" style=\"position: absolute; overflow: visible; pointer-events: none; z-index: 4; width: 400px; height: 64px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 160);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-10"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(5)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-10\" style=\"position: absolute; overflow: visible; pointer-events: all; z-index: 5; width: 400px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 248);\">"
+            },
+            {
+              "target": [
+                "input[aria-label=\"Password\"]"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(6) > input:nth-child(1)"
+              ],
+              "html": "<input spellcheck=\"false\" autocorrect=\"off\" autocomplete=\"off\" data-semantics-role=\"text-field\" aria-invalid=\"false\" aria-label=\"Password\" type=\"password\" style=\"position: absolute; top: 0px; left: 0px; width: 400px; height: 48px;\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-1",
+      "route": "files",
+      "url": "http://127.0.0.1:8771/files",
+      "rules": [
+        {
+          "id": "aria-command-name",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-14"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > header:nth-child(1) > flt-semantics:nth-child(3)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-14\" role=\"button\" aria-disabled=\"true\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 3; width: 48px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 134.502, 0);\"></flt-semantics>"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-40"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(6) > flt-semantics > flt-semantics:nth-child(1) > flt-semantics"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-40\" role=\"button\" tabindex=\"0\" aria-label=\"groups/\nOct 8, 2026\n...\" aria-current=\"false\" flt-tappable=\"\" style=\"position: absolute; ...\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-43"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(6) > flt-semantics > flt-semantics:nth-child(2) > flt-semantics"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-43\" role=\"button\" tabindex=\"0\" aria-label=\"users/\nOct 8, 2026\n-...\" aria-current=\"false\" flt-tappable=\"\" style=\"position: absolute; ...\">"
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-34"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics:nth-child(4)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-34\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 4; width: 48px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 12, 58.25);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-29"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics:nth-child(10)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-29\" aria-label=\"All your drives shown together\" style=\"position: absolute; overflow: visible; pointer-events: none; z-index: 10; width: 94.4705px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 1115.53, 58.25);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-3"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(2)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-3\" role=\"group\" style=\"position: absolute; scrollbar-width: none; pointer-events: none; z-index: 1; width: 319.5px; height: 34px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 480.25, 116);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-9"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(7)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-9\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 6; width: 1280px; height: 37px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 763);\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-1",
+      "route": "photos",
+      "url": "http://127.0.0.1:8771/photos",
+      "rules": [
+        {
+          "id": "label",
+          "nodes": [
+            {
+              "target": [
+                "input"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics > flt-semantics > flt-semantics:nth-child(2) > input"
+              ],
+              "html": "<input type=\"range\" role=\"slider\" tabindex=\"0\" aria-valuenow=\"1\" aria-valuetext=\"43%\" max=\"2\" aria-valuemax=\"2\" min=\"0\" aria-valuemin=\"0\">"
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "flt-semantics-host"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3)"
+              ],
+              "html": "<flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-2",
+      "route": "login",
+      "url": "http://127.0.0.1:8772/login",
+      "rules": [
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-5"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(1)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-5\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 1; width: 400px; height: 56px;\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-6"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(2)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-6\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 2; width: 400px; height: 36px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 72);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-7"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(3)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-7\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 3; width: 400px; height: 20px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 116);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-8"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(4)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-8\" role=\"group\" aria-label=\"Audit\n/\" aria-current=\"false\" style=\"position: absolute; overflow: visible; pointer-events: none; z-index: 4; width: 400px; height: 64px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 160);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-10"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(5)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-10\" style=\"position: absolute; overflow: visible; pointer-events: all; z-index: 5; width: 400px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 248);\">"
+            },
+            {
+              "target": [
+                "input[aria-label=\"Password\"]"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(6) > input:nth-child(1)"
+              ],
+              "html": "<input spellcheck=\"false\" autocorrect=\"off\" autocomplete=\"off\" data-semantics-role=\"text-field\" aria-invalid=\"false\" aria-label=\"Password\" type=\"password\" style=\"position: absolute; top: 0px; left: 0px; width: 400px; height: 48px;\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-2",
+      "route": "files",
+      "url": "http://127.0.0.1:8772/files",
+      "rules": [
+        {
+          "id": "aria-command-name",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-14"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > header:nth-child(1) > flt-semantics:nth-child(3)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-14\" role=\"button\" aria-disabled=\"true\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 3; width: 48px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 134.502, 0);\"></flt-semantics>"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-40"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(6) > flt-semantics > flt-semantics:nth-child(1) > flt-semantics"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-40\" role=\"button\" tabindex=\"0\" aria-label=\"groups/\nOct 8, 2026\n...\" aria-current=\"false\" flt-tappable=\"\" style=\"position: absolute; ...\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-43"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(6) > flt-semantics > flt-semantics:nth-child(2) > flt-semantics"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-43\" role=\"button\" tabindex=\"0\" aria-label=\"users/\nOct 8, 2026\n-...\" aria-current=\"false\" flt-tappable=\"\" style=\"position: absolute; ...\">"
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-34"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics:nth-child(4)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-34\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 4; width: 48px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 12, 58.25);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-29"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics:nth-child(10)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-29\" aria-label=\"All your drives shown together\" style=\"position: absolute; overflow: visible; pointer-events: none; z-index: 10; width: 94.4705px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 1115.53, 58.25);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-3"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(2)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-3\" role=\"group\" style=\"position: absolute; scrollbar-width: none; pointer-events: none; z-index: 1; width: 319.5px; height: 34px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 480.25, 116);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-9"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(7)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-9\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 6; width: 1280px; height: 37px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 763);\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-2",
+      "route": "photos",
+      "url": "http://127.0.0.1:8772/photos",
+      "rules": [
+        {
+          "id": "label",
+          "nodes": [
+            {
+              "target": [
+                "input"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics > flt-semantics > flt-semantics:nth-child(2) > input"
+              ],
+              "html": "<input type=\"range\" role=\"slider\" tabindex=\"0\" aria-valuenow=\"1\" aria-valuetext=\"43%\" max=\"2\" aria-valuemax=\"2\" min=\"0\" aria-valuemin=\"0\">"
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "flt-semantics-host"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3)"
+              ],
+              "html": "<flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "default-activated",
+      "route": "login",
+      "url": "http://127.0.0.1:8770/login",
+      "rules": [
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-5"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(1)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-5\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 1; width: 400px; height: 56px;\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-6"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(2)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-6\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 2; width: 400px; height: 36px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 72);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-7"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(3)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-7\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 3; width: 400px; height: 20px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 116);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-8"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(4)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-8\" role=\"group\" aria-label=\"Audit\n/\" aria-current=\"false\" style=\"position: absolute; overflow: visible; pointer-events: none; z-index: 4; width: 400px; height: 64px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 160);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-10"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(5)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-10\" style=\"position: absolute; overflow: visible; pointer-events: all; z-index: 5; width: 400px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 248);\">"
+            },
+            {
+              "target": [
+                "input[aria-label=\"Password\"]"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics > form > flt-semantics:nth-child(6) > input:nth-child(1)"
+              ],
+              "html": "<input spellcheck=\"false\" autocorrect=\"off\" autocomplete=\"off\" data-semantics-role=\"text-field\" aria-invalid=\"false\" aria-label=\"Password\" type=\"password\" style=\"position: absolute; top: 0px; left: 0px; width: 400px; height: 48px;\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "default-activated",
+      "route": "files",
+      "url": "http://127.0.0.1:8770/files",
+      "rules": [
+        {
+          "id": "aria-command-name",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-23"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > header:nth-child(1) > flt-semantics:nth-child(3)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-23\" role=\"button\" aria-disabled=\"true\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 3; width: 48px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 134.502, 0);\"></flt-semantics>"
+            }
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-12"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(6) > flt-semantics > flt-semantics:nth-child(1) > flt-semantics"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-12\" role=\"button\" tabindex=\"0\" aria-label=\"groups/\nOct 8, 2026\n...\" aria-current=\"false\" flt-tappable=\"\" style=\"position: absolute; ...\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-15"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(6) > flt-semantics > flt-semantics:nth-child(2) > flt-semantics"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-15\" role=\"button\" tabindex=\"0\" aria-label=\"users/\nOct 8, 2026\n-...\" aria-current=\"false\" flt-tappable=\"\" style=\"position: absolute; ...\">"
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "#flt-semantic-node-27"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics:nth-child(4)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-27\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 4; width: 48px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 12, 58.25);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-36"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics:nth-child(10)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-36\" aria-label=\"All your drives shown together\" style=\"position: absolute; overflow: visible; pointer-events: none; z-index: 10; width: 94.4705px; height: 48px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 1115.53, 58.25);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-3"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(2)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-3\" role=\"group\" style=\"position: absolute; scrollbar-width: none; pointer-events: none; z-index: 1; width: 319.5px; height: 34px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 480.25, 116);\">"
+            },
+            {
+              "target": [
+                "#flt-semantic-node-18"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics > flt-semantics:nth-child(7)"
+              ],
+              "html": "<flt-semantics id=\"flt-semantic-node-18\" style=\"position: absolute; overflow: visible; pointer-events: auto; z-index: 6; width: 1280px; height: 37px; transform-origin: 0px 0px 0px; transform: matrix(1, 0, 0, 1, 0, 763);\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "build": "default-activated",
+      "route": "photos",
+      "url": "http://127.0.0.1:8770/photos",
+      "rules": [
+        {
+          "id": "label",
+          "nodes": [
+            {
+              "target": [
+                "input"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3) > flt-semantics > flt-semantics > flt-semantics:nth-child(1) > flt-semantics > flt-semantics > flt-semantics:nth-child(2) > input"
+              ],
+              "html": "<input type=\"range\" role=\"slider\" tabindex=\"0\" aria-valuenow=\"1\" aria-valuetext=\"43%\" max=\"2\" aria-valuemax=\"2\" min=\"0\" aria-valuemin=\"0\">"
+            }
+          ]
+        },
+        {
+          "id": "region",
+          "nodes": [
+            {
+              "target": [
+                "flt-semantics-host"
+              ],
+              "ancestry": [
+                "html > body > flutter-view:nth-child(5) > flt-semantics-host:nth-child(3)"
+              ],
+              "html": "<flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\">"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
