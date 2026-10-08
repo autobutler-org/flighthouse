@@ -181,6 +181,40 @@ void main() {
     expect(workspace.read('flighthouse-baseline.json'), baseline);
   });
 
+  for (final arguments in [
+    ['ci'],
+    ['baseline', '--update'],
+  ]) {
+    test('${arguments.join(' ')} refuses weighted audit errors', () async {
+      final json = jsonDecode(
+        File('$lighthouseFixtures/audit-errors/weighted-error.json')
+            .readAsStringSync(),
+      ) as Map<String, Object?>;
+      final categories = json['categories']! as Map<String, Object?>;
+      final category = categories['accessibility']! as Map<String, Object?>;
+      final refs = category['auditRefs']! as List<Object?>;
+      final ref = refs.cast<Map<String, Object?>>().singleWhere(
+        (ref) => ref['id'] == 'flighthouse-test-audit-error',
+      );
+      ref['weight'] = 0;
+      workspace.write('lh/login.json', jsonEncode(json));
+      await workspace.run(['collect']);
+      final initial = await workspace.run(['baseline', '--update']);
+      expect(initial.code, exitPassed);
+      final baseline = workspace.read('flighthouse-baseline.json');
+      workspace.copyFixture(
+        'audit-errors/weighted-error.json',
+        'lh/login.json',
+      );
+      await workspace.run(['collect']);
+      final run = await workspace.run(arguments);
+      expect(run.code, exitInputError);
+      expect(run.err, contains('flighthouse-test-audit-error failed'));
+      expect(run.out, isNot(contains('gate passed')));
+      expect(workspace.read('flighthouse-baseline.json'), baseline);
+    });
+  }
+
   test('collect replaces earlier raw outputs', () async {
     workspace.write('.flighthouse/raw/lighthouse/stale.json', '{}');
     final run = await workspace.run(['collect']);

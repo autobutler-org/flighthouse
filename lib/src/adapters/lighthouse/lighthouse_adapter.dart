@@ -33,6 +33,12 @@ const Set<String> _unscoredModes = {
   'error',
 };
 
+const Set<String> _knownModes = {
+  ..._binaryModes,
+  ..._measuredModes,
+  ..._unscoredModes,
+};
+
 const double _passingScore = 0.9;
 
 typedef _AuditRef = ({String id, double weight});
@@ -292,7 +298,19 @@ Result<_Observed, String> _observe(
   Category category,
   String route,
 ) => switch ((audit.mode, audit.score)) {
+  (final mode, _) when !_knownModes.contains(mode) => Err(
+    '$rootPath.audits.${ref.id}.scoreDisplayMode: '
+    'audit ${audit.id} has untested scoreDisplayMode "$mode"',
+  ),
+  ('error', _) when ref.weight > 0 => Err(
+    '$rootPath.audits.${ref.id}.scoreDisplayMode: '
+    'audit ${audit.id} failed; its category cannot be scored',
+  ),
   (final mode, _) when _unscoredModes.contains(mode) => const Ok(_nothing),
+  (_, null) when ref.weight > 0 => Err(
+    '$rootPath.audits.${ref.id}.score: '
+    'audit ${audit.id} has no score despite a positive weight',
+  ),
   (_, null) => const Ok(_nothing),
   (final mode, final double score) when _binaryModes.contains(mode) => Ok((
     findings: score >= _passingScore
@@ -342,6 +360,7 @@ Result<_Observed, String> _observe(
       ),
     ),
   (final mode, _) => Err(
+    '$rootPath.audits.${ref.id}.scoreDisplayMode: '
     'audit ${audit.id} has untested scoreDisplayMode "$mode"',
   ),
 };
@@ -358,8 +377,9 @@ int? _majorOf(String version) => int.tryParse(version.split('.').first);
 /// Lighthouse's category scores. An audit scoring below 0.9 is a finding,
 /// one per failing element when Lighthouse names elements. The route is the
 /// requested URL, falling back to the final one. Reports from an untested
-/// major version, reports with a runtime error, and unknown score modes or
-/// units are failures rather than best-effort parses.
+/// major version, reports with a runtime error, positively weighted audit
+/// errors or missing scores, and unknown score modes or units are failures
+/// rather than best-effort parses.
 Result<AdapterOutput, Failure> parseLighthouse(RawArtifact artifact) {
   AdapterFailure failure(String problem) => AdapterFailure(
     tool: Source.lighthouse.id,

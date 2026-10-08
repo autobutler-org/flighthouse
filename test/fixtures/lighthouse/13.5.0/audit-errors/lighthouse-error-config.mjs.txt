@@ -1,0 +1,5 @@
+export default {
+  extends:'lighthouse:default',
+  audits:['/workspace/scratch/intentional-audit-error.mjs'],
+  categories:{accessibility:{auditRefs:[{id:'flighthouse-test-audit-error',weight:1,group:'a11y-names-labels'}]}},
+};
