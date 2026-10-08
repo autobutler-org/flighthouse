@@ -1,0 +1,876 @@
+{
+  "quarkCommit": "48a76aea65717d9968f1608fa84c2df34a5a1d93",
+  "flutter": "3.47.6",
+  "browserVersion": "Chrome/151.0.7922.173",
+  "results": [
+    {
+      "build": "default",
+      "route": "login",
+      "activated": false,
+      "url": "http://127.0.0.1:8770/login",
+      "before": {
+        "semantics": 0,
+        "placeholder": "<flt-semantics-placeholder role=\"button\" aria-live=\"polite\" tabindex=\"0\" aria-label=\"Enable accessibility\" style=\"position: absolute; left: -1px; top: -1px; width: 1px; height: 1px;\"></flt-semantics-placeholder>",
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"></flt-semantics-host><style id=\"flt-text-editing-stylesheet\">flutter-view flt-scene-host {  font: normal normal 14px sans-serif;}flutter-view flt-semantics input[type=range] {  appearance: none;  -webkit-appearance: none;  width: 100%;  position: absolute;  border: none;  top: 0;  right: 0;  bottom: 0;  l"
+      },
+      "nodes": {
+        "semantics": 0,
+        "textInputs": 0,
+        "buttons": 1,
+        "placeholder": 1,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 0,
+      "passes": 23,
+      "incomplete": 0,
+      "inapplicable": 66,
+      "violationNodes": 0,
+      "rules": [],
+      "absoluteRules": [],
+      "lighthouse": {
+        "version": "13.5.0",
+        "finalUrl": "http://127.0.0.1:8770/login",
+        "score": 1,
+        "audits": 76,
+        "applicable": 17,
+        "failed": []
+      }
+    },
+    {
+      "build": "default",
+      "route": "files",
+      "activated": false,
+      "url": "http://127.0.0.1:8770/files",
+      "before": {
+        "semantics": 0,
+        "placeholder": "<flt-semantics-placeholder role=\"button\" aria-live=\"polite\" tabindex=\"0\" aria-label=\"Enable accessibility\" style=\"position: absolute; left: -1px; top: -1px; width: 1px; height: 1px;\"></flt-semantics-placeholder>",
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"></flt-semantics-host><style id=\"flt-text-editing-stylesheet\">flutter-view flt-scene-host {  font: normal normal 14px sans-serif;}flutter-view flt-semantics input[type=range] {  appearance: none;  -webkit-appearance: none;  width: 100%;  position: absolute;  border: none;  top: 0;  right: 0;  bottom: 0;  l"
+      },
+      "nodes": {
+        "semantics": 0,
+        "textInputs": 0,
+        "buttons": 1,
+        "placeholder": 1,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 0,
+      "passes": 23,
+      "incomplete": 0,
+      "inapplicable": 66,
+      "violationNodes": 0,
+      "rules": [],
+      "absoluteRules": [],
+      "lighthouse": {
+        "version": "13.5.0",
+        "finalUrl": "http://127.0.0.1:8770/files",
+        "score": 1,
+        "audits": 76,
+        "applicable": 17,
+        "failed": []
+      }
+    },
+    {
+      "build": "default",
+      "route": "photos",
+      "activated": false,
+      "url": "http://127.0.0.1:8770/photos",
+      "before": {
+        "semantics": 0,
+        "placeholder": "<flt-semantics-placeholder role=\"button\" aria-live=\"polite\" tabindex=\"0\" aria-label=\"Enable accessibility\" style=\"position: absolute; left: -1px; top: -1px; width: 1px; height: 1px;\"></flt-semantics-placeholder>",
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"></flt-semantics-host><style id=\"flt-text-editing-stylesheet\">flutter-view flt-scene-host {  font: normal normal 14px sans-serif;}flutter-view flt-semantics input[type=range] {  appearance: none;  -webkit-appearance: none;  width: 100%;  position: absolute;  border: none;  top: 0;  right: 0;  bottom: 0;  l"
+      },
+      "nodes": {
+        "semantics": 0,
+        "textInputs": 0,
+        "buttons": 1,
+        "placeholder": 1,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 0,
+      "passes": 23,
+      "incomplete": 0,
+      "inapplicable": 66,
+      "violationNodes": 0,
+      "rules": [],
+      "absoluteRules": [],
+      "lighthouse": {
+        "version": "13.5.0",
+        "finalUrl": "http://127.0.0.1:8770/photos",
+        "score": 1,
+        "audits": 76,
+        "applicable": 17,
+        "failed": []
+      }
+    },
+    {
+      "build": "semantics-1",
+      "route": "login",
+      "activated": false,
+      "url": "http://127.0.0.1:8771/login",
+      "before": {
+        "semantics": 15,
+        "placeholder": null,
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"><flt-semantics id=\"flt-semantic-node-0\" style=\"position: absolute; overflow: visible; filter: opacity(0%); color: rgba(0, 0, 0, 0); pointer-events: none; width: 1280px; height: 800px;\"><flt-semantics id=\"flt-semantic-node-1\" style=\"position: absolute; overflow: visible; pointer-events: none; width: 1280px"
+      },
+      "nodes": {
+        "semantics": 15,
+        "textInputs": 2,
+        "buttons": 5,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 1,
+      "passes": 28,
+      "incomplete": 1,
+      "inapplicable": 61,
+      "violationNodes": 6,
+      "rules": [
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 6,
+          "targets": [
+            [
+              "#flt-semantic-node-5"
+            ],
+            [
+              "#flt-semantic-node-6"
+            ],
+            [
+              "#flt-semantic-node-7"
+            ],
+            [
+              "#flt-semantic-node-8"
+            ],
+            [
+              "#flt-semantic-node-10"
+            ],
+            [
+              "input[aria-label=\"Password\"]"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-5"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-6"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-7"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-8"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-10"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-11 > input[aria-label=\"Password\"]"
+            ]
+          ]
+        }
+      ],
+      "lighthouse": {
+        "version": "13.5.0",
+        "finalUrl": "http://127.0.0.1:8771/login",
+        "score": 1,
+        "audits": 76,
+        "applicable": 21,
+        "failed": []
+      }
+    },
+    {
+      "build": "semantics-1",
+      "route": "files",
+      "activated": false,
+      "url": "http://127.0.0.1:8771/files",
+      "before": {
+        "semantics": 37,
+        "placeholder": null,
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"><flt-semantics id=\"flt-semantic-node-0\" style=\"position: absolute; overflow: visible; filter: opacity(0%); color: rgba(0, 0, 0, 0); pointer-events: none; width: 1280px; height: 800px;\"><flt-semantics id=\"flt-semantic-node-1\" style=\"position: absolute; overflow: visible; pointer-events: none; width: 1280px"
+      },
+      "nodes": {
+        "semantics": 37,
+        "textInputs": 0,
+        "buttons": 20,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 3,
+      "passes": 28,
+      "incomplete": 2,
+      "inapplicable": 60,
+      "violationNodes": 7,
+      "rules": [
+        {
+          "id": "aria-command-name",
+          "impact": "serious",
+          "nodes": 1,
+          "targets": [
+            [
+              "#flt-semantic-node-10"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 2,
+          "targets": [
+            [
+              "#flt-semantic-node-34"
+            ],
+            [
+              "#flt-semantic-node-37"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 4,
+          "targets": [
+            [
+              "#flt-semantic-node-14"
+            ],
+            [
+              "#flt-semantic-node-23"
+            ],
+            [
+              "#flt-semantic-node-3"
+            ],
+            [
+              "#flt-semantic-node-5"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "aria-command-name",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-6 > #flt-semantic-node-7 > #flt-semantic-node-10"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-32 > #flt-semantic-node-39 > #flt-semantic-node-33 > #flt-semantic-node-34"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-32 > #flt-semantic-node-39 > #flt-semantic-node-36 > #flt-semantic-node-37"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-6 > #flt-semantic-node-14"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-6 > #flt-semantic-node-23"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-5"
+            ]
+          ]
+        }
+      ],
+      "lighthouse": {
+        "version": "13.5.0",
+        "finalUrl": "http://127.0.0.1:8771/files",
+        "score": 0.95,
+        "audits": 76,
+        "applicable": 21,
+        "failed": [
+          "aria-command-name",
+          "label-content-name-mismatch"
+        ]
+      }
+    },
+    {
+      "build": "semantics-1",
+      "route": "photos",
+      "activated": false,
+      "url": "http://127.0.0.1:8771/photos",
+      "before": {
+        "semantics": 32,
+        "placeholder": null,
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"><flt-semantics id=\"flt-semantic-node-0\" style=\"position: absolute; overflow: visible; filter: opacity(0%); color: rgba(0, 0, 0, 0); pointer-events: none; width: 1280px; height: 800px;\"><flt-semantics id=\"flt-semantic-node-1\" style=\"position: absolute; overflow: visible; pointer-events: none; width: 1280px"
+      },
+      "nodes": {
+        "semantics": 32,
+        "textInputs": 1,
+        "buttons": 14,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 2,
+      "passes": 25,
+      "incomplete": 2,
+      "inapplicable": 62,
+      "violationNodes": 2,
+      "rules": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "targets": [
+            [
+              "input"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 1,
+          "targets": [
+            [
+              "flt-semantics-host"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "label",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-6 > input"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host"
+            ]
+          ]
+        }
+      ],
+      "lighthouse": {
+        "version": "13.5.0",
+        "finalUrl": "http://127.0.0.1:8771/photos",
+        "score": 0.94,
+        "audits": 76,
+        "applicable": 20,
+        "failed": [
+          "label"
+        ]
+      }
+    },
+    {
+      "build": "semantics-2",
+      "route": "login",
+      "activated": false,
+      "url": "http://127.0.0.1:8772/login",
+      "before": {
+        "semantics": 15,
+        "placeholder": null,
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"><flt-semantics id=\"flt-semantic-node-0\" style=\"position: absolute; overflow: visible; filter: opacity(0%); color: rgba(0, 0, 0, 0); pointer-events: none; width: 1280px; height: 800px;\"><flt-semantics id=\"flt-semantic-node-1\" style=\"position: absolute; overflow: visible; pointer-events: none; width: 1280px"
+      },
+      "nodes": {
+        "semantics": 15,
+        "textInputs": 2,
+        "buttons": 5,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 1,
+      "passes": 28,
+      "incomplete": 1,
+      "inapplicable": 61,
+      "violationNodes": 6,
+      "rules": [
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 6,
+          "targets": [
+            [
+              "#flt-semantic-node-5"
+            ],
+            [
+              "#flt-semantic-node-6"
+            ],
+            [
+              "#flt-semantic-node-7"
+            ],
+            [
+              "#flt-semantic-node-8"
+            ],
+            [
+              "#flt-semantic-node-10"
+            ],
+            [
+              "input[aria-label=\"Password\"]"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-5"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-6"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-7"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-8"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-10"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-11 > input[aria-label=\"Password\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-2",
+      "route": "files",
+      "activated": false,
+      "url": "http://127.0.0.1:8772/files",
+      "before": {
+        "semantics": 37,
+        "placeholder": null,
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"><flt-semantics id=\"flt-semantic-node-0\" style=\"position: absolute; overflow: visible; filter: opacity(0%); color: rgba(0, 0, 0, 0); pointer-events: none; width: 1280px; height: 800px;\"><flt-semantics id=\"flt-semantic-node-1\" style=\"position: absolute; overflow: visible; pointer-events: none; width: 1280px"
+      },
+      "nodes": {
+        "semantics": 37,
+        "textInputs": 0,
+        "buttons": 20,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 3,
+      "passes": 28,
+      "incomplete": 2,
+      "inapplicable": 60,
+      "violationNodes": 7,
+      "rules": [
+        {
+          "id": "aria-command-name",
+          "impact": "serious",
+          "nodes": 1,
+          "targets": [
+            [
+              "#flt-semantic-node-10"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 2,
+          "targets": [
+            [
+              "#flt-semantic-node-34"
+            ],
+            [
+              "#flt-semantic-node-37"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 4,
+          "targets": [
+            [
+              "#flt-semantic-node-14"
+            ],
+            [
+              "#flt-semantic-node-23"
+            ],
+            [
+              "#flt-semantic-node-3"
+            ],
+            [
+              "#flt-semantic-node-5"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "aria-command-name",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-6 > #flt-semantic-node-7 > #flt-semantic-node-10"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-32 > #flt-semantic-node-39 > #flt-semantic-node-33 > #flt-semantic-node-34"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-32 > #flt-semantic-node-39 > #flt-semantic-node-36 > #flt-semantic-node-37"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-6 > #flt-semantic-node-14"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-6 > #flt-semantic-node-23"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "build": "semantics-2",
+      "route": "photos",
+      "activated": false,
+      "url": "http://127.0.0.1:8772/photos",
+      "before": {
+        "semantics": 32,
+        "placeholder": null,
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"><flt-semantics id=\"flt-semantic-node-0\" style=\"position: absolute; overflow: visible; filter: opacity(0%); color: rgba(0, 0, 0, 0); pointer-events: none; width: 1280px; height: 800px;\"><flt-semantics id=\"flt-semantic-node-1\" style=\"position: absolute; overflow: visible; pointer-events: none; width: 1280px"
+      },
+      "nodes": {
+        "semantics": 32,
+        "textInputs": 1,
+        "buttons": 14,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 2,
+      "passes": 25,
+      "incomplete": 2,
+      "inapplicable": 62,
+      "violationNodes": 2,
+      "rules": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "targets": [
+            [
+              "input"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 1,
+          "targets": [
+            [
+              "flt-semantics-host"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "label",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-6 > input"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "build": "default",
+      "route": "login",
+      "activated": true,
+      "url": "http://127.0.0.1:8770/login",
+      "before": {
+        "semantics": 0,
+        "placeholder": "<flt-semantics-placeholder role=\"button\" aria-live=\"polite\" tabindex=\"0\" aria-label=\"Enable accessibility\" style=\"position: absolute; left: -1px; top: -1px; width: 1px; height: 1px;\"></flt-semantics-placeholder>",
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"></flt-semantics-host><style id=\"flt-text-editing-stylesheet\">flutter-view flt-scene-host {  font: normal normal 14px sans-serif;}flutter-view flt-semantics input[type=range] {  appearance: none;  -webkit-appearance: none;  width: 100%;  position: absolute;  border: none;  top: 0;  right: 0;  bottom: 0;  l"
+      },
+      "nodes": {
+        "semantics": 15,
+        "textInputs": 2,
+        "buttons": 5,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 1,
+      "passes": 28,
+      "incomplete": 1,
+      "inapplicable": 61,
+      "violationNodes": 6,
+      "rules": [
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 6,
+          "targets": [
+            [
+              "#flt-semantic-node-5"
+            ],
+            [
+              "#flt-semantic-node-6"
+            ],
+            [
+              "#flt-semantic-node-7"
+            ],
+            [
+              "#flt-semantic-node-8"
+            ],
+            [
+              "#flt-semantic-node-10"
+            ],
+            [
+              "input[aria-label=\"Password\"]"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-5"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-6"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-7"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-8"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-10"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-11 > input[aria-label=\"Password\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "build": "default",
+      "route": "files",
+      "activated": true,
+      "url": "http://127.0.0.1:8770/files",
+      "before": {
+        "semantics": 0,
+        "placeholder": "<flt-semantics-placeholder role=\"button\" aria-live=\"polite\" tabindex=\"0\" aria-label=\"Enable accessibility\" style=\"position: absolute; left: -1px; top: -1px; width: 1px; height: 1px;\"></flt-semantics-placeholder>",
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"></flt-semantics-host><style id=\"flt-text-editing-stylesheet\">flutter-view flt-scene-host {  font: normal normal 14px sans-serif;}flutter-view flt-semantics input[type=range] {  appearance: none;  -webkit-appearance: none;  width: 100%;  position: absolute;  border: none;  top: 0;  right: 0;  bottom: 0;  l"
+      },
+      "nodes": {
+        "semantics": 37,
+        "textInputs": 0,
+        "buttons": 20,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 3,
+      "passes": 28,
+      "incomplete": 2,
+      "inapplicable": 60,
+      "violationNodes": 7,
+      "rules": [
+        {
+          "id": "aria-command-name",
+          "impact": "serious",
+          "nodes": 1,
+          "targets": [
+            [
+              "#flt-semantic-node-23"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 2,
+          "targets": [
+            [
+              "#flt-semantic-node-12"
+            ],
+            [
+              "#flt-semantic-node-15"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 4,
+          "targets": [
+            [
+              "#flt-semantic-node-27"
+            ],
+            [
+              "#flt-semantic-node-36"
+            ],
+            [
+              "#flt-semantic-node-3"
+            ],
+            [
+              "#flt-semantic-node-18"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "aria-command-name",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-19 > #flt-semantic-node-20 > #flt-semantic-node-23"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-10 > #flt-semantic-node-17 > #flt-semantic-node-11 > #flt-semantic-node-12"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-10 > #flt-semantic-node-17 > #flt-semantic-node-14 > #flt-semantic-node-15"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-19 > #flt-semantic-node-27"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-19 > #flt-semantic-node-36"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3"
+            ],
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-18"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "build": "default",
+      "route": "photos",
+      "activated": true,
+      "url": "http://127.0.0.1:8770/photos",
+      "before": {
+        "semantics": 0,
+        "placeholder": "<flt-semantics-placeholder role=\"button\" aria-live=\"polite\" tabindex=\"0\" aria-label=\"Enable accessibility\" style=\"position: absolute; left: -1px; top: -1px; width: 1px; height: 1px;\"></flt-semantics-placeholder>",
+        "view": "<flutter-view flt-view-id=\"0\" tabindex=\"-1\" style=\"position: absolute; inset: 0px; width: 1280px; height: 800px;\"><flt-glass-pane></flt-glass-pane><flt-text-editing-host></flt-text-editing-host><flt-semantics-host style=\"position: absolute; transform-origin: 0px 0px 0px; transform: scale(1);\"></flt-semantics-host><style id=\"flt-text-editing-stylesheet\">flutter-view flt-scene-host {  font: normal normal 14px sans-serif;}flutter-view flt-semantics input[type=range] {  appearance: none;  -webkit-appearance: none;  width: 100%;  position: absolute;  border: none;  top: 0;  right: 0;  bottom: 0;  l"
+      },
+      "nodes": {
+        "semantics": 32,
+        "textInputs": 1,
+        "buttons": 14,
+        "placeholder": 0,
+        "canvases": 1
+      },
+      "axeVersion": "4.11.1",
+      "violations": 2,
+      "passes": 26,
+      "incomplete": 2,
+      "inapplicable": 61,
+      "violationNodes": 2,
+      "rules": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "targets": [
+            [
+              "input"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "impact": "moderate",
+          "nodes": 1,
+          "targets": [
+            [
+              "flt-semantics-host"
+            ]
+          ]
+        }
+      ],
+      "absoluteRules": [
+        {
+          "id": "label",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host > #flt-semantic-node-0 > #flt-semantic-node-1 > #flt-semantic-node-2 > #flt-semantic-node-3 > #flt-semantic-node-4 > #flt-semantic-node-6 > input"
+            ]
+          ]
+        },
+        {
+          "id": "region",
+          "targets": [
+            [
+              "html > body > flutter-view > flt-semantics-host"
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

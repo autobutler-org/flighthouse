@@ -41,3 +41,16 @@ quark specifics that affect the runner:
 - Is an app-side opt-in acceptable for quark, given that it is a change to quark itself?
 - Whether `flutter build web` offers any flag that enables semantics at startup is to be verified against the
   Flutter version quark pins (3.47.6). None is assumed here.
+
+## Measurement evidence
+
+The [2026-10-08 quark measurement](../phases/semantics-signal.md) found no semantics nodes and perfect Lighthouse
+accessibility scores on untouched default builds. Startup semantics exposed 15–37 nodes on the three routes;
+Lighthouse found failing audits on `/files` and `/photos`, and axe found violations on all three. Activating the
+default placeholder gave axe similar coverage. An API-issued session persisted into all authenticated Lighthouse
+navigations with storage reset disabled; form-based sign-in remains unverified.
+
+Two builds initially returned identical targets, but later navigation changed generated IDs. Axe ancestry paths
+preserved distinct nodes and matched across the measured builds and activation modes. Blanket removal of ordinals
+would collapse actual findings and needs a separate normalization decision. There is no startup-semantics option
+in the pinned Flutter build help; the define needs app-side code. This ADR remains Proposed pending #19.
