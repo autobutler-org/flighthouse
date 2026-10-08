@@ -1,0 +1,183 @@
+{
+  "measuredAt": "2026-10-08",
+  "dart": "3.13.5",
+  "puppeteer": "3.26.0",
+  "webdriver": "3.2.0",
+  "localDownload": {
+    "downloadedVersion": "152.0.7977.42",
+    "browserVersion": "Chrome/152.0.7977.42",
+    "rendered": "Ready",
+    "platform": "linux"
+  },
+  "ubuntuDownload": {
+    "downloadedVersion": "152.0.7977.42",
+    "browserVersion": "Chrome/152.0.7977.42",
+    "rendered": "Ready",
+    "platform": "linux",
+    "osRelease": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n"
+  },
+  "puppeteerTransport": {
+    "driver": "puppeteer 3.26.0",
+    "version": "Chrome/152.0.7977.42",
+    "navigationMs": 4431,
+    "quark": {
+      "url": "http://127.0.0.1:8766/recover",
+      "viewCount": 1,
+      "shadow": false,
+      "canvas": 0,
+      "semantics": 0,
+      "glassPane": 0,
+      "children": [
+        "FLT-GLASS-PANE",
+        "FLT-TEXT-EDITING-HOST",
+        "FLT-SEMANTICS-HOST",
+        "STYLE"
+      ],
+      "inspectionLimitation": "The original probe queried flutter-view.shadowRoot; the separate readiness probe correctly counted the canvas inside flt-glass-pane.shadowRoot."
+    },
+    "axeVersion": "4.11.1",
+    "axeBytes": 1143573,
+    "violationRules": 1,
+    "buttonNodes": 500,
+    "targetFirst": [
+      "#action-0"
+    ],
+    "targetLast": [
+      "#action-499"
+    ]
+  },
+  "webdriverTransport": {
+    "driver": "webdriver 3.2.0",
+    "browserVersion": "152.0.7977.42",
+    "chromedriverVersion": "152.0.7977.42 (db8ceb709fe92f3bb010fb982d6300e54de6dc6a-refs/branch-heads/7977@{#1253})",
+    "navigationMs": 1601,
+    "quark": {
+      "children": [
+        "FLT-GLASS-PANE",
+        "FLT-TEXT-EDITING-HOST",
+        "FLT-SEMANTICS-HOST",
+        "STYLE"
+      ],
+      "url": "http://127.0.0.1:8766/recover",
+      "viewCount": 1
+    },
+    "axeVersion": "4.11.1",
+    "axeBytes": 1143627,
+    "violationRules": 1,
+    "buttonNodes": 500,
+    "targetFirst": [
+      "#action-0"
+    ],
+    "targetLast": [
+      "#action-499"
+    ]
+  },
+  "flutterReadiness": {
+    "driver": "puppeteer 3.26.0",
+    "browserVersion": "Chrome/152.0.7977.42",
+    "samples": [
+      {
+        "view": 1363.1000000000931,
+        "glassPane": 1363.1000000000931,
+        "frame": 1580.7999999998137,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 1036.7999999998137,
+        "glassPane": 1036.8999999999069,
+        "frame": 1258.8999999999069,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 411.89999999990687,
+        "glassPane": 411.89999999990687,
+        "frame": 656.5,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 363.20000000018626,
+        "glassPane": 363.20000000018626,
+        "frame": 575.5,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 325.79999999981374,
+        "glassPane": 325.79999999981374,
+        "frame": 529.5,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 388.20000000018626,
+        "glassPane": 388.20000000018626,
+        "frame": 653,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 363.5,
+        "glassPane": 363.5,
+        "frame": 605.1000000000931,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 360.89999999990687,
+        "glassPane": 360.89999999990687,
+        "frame": 573.1000000000931,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 359.39999999990687,
+        "glassPane": 359.5,
+        "frame": 577.1000000000931,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      },
+      {
+        "view": 359.5,
+        "glassPane": 359.5,
+        "frame": 595,
+        "url": "http://127.0.0.1:8766/recover",
+        "viewCount": 1,
+        "semanticsHost": 1,
+        "canvases": 1
+      }
+    ]
+  },
+  "transportValidation": {
+    "all500TargetsMatch": true,
+    "all500HtmlSnippetsMatch": true,
+    "all500ImpactsCritical": true,
+    "all500NestedCheckArraysPresent": true
+  },
+  "platformLimitations": [
+    "No local macOS executor",
+    "No flighthouse GitHub-hosted platform job run",
+    "Ubuntu container launch used --no-sandbox"
+  ],
+  "upstreamReleaseCI": "https://github.com/xvrh/puppeteer-dart/actions/runs/31691287237"
+}

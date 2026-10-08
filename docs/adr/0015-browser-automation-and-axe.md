@@ -38,3 +38,14 @@ The first phase 2 task answers these and reports back before this ADR is accepte
 2. Can it wait for Flutter's first frame reliably (a selector on `flt-glass-pane` or the semantics host)?
 3. Does injecting `axe.min.js` and returning `axe.run()` results round-trip intact for a large page?
 4. How responsive are the maintainers? Look at recent issues and fixed bugs for CDP version drift.
+
+## Spike evidence
+
+The [2026-10-08 investigation](../phases/browser-spike.md) recommends Puppeteer 3.26.0. Both Dart drivers preserved
+a 500-node axe result, and Chrome download and launch succeeded locally and in Ubuntu 24.04. The exact release's
+upstream CI provides Ubuntu and macOS corroboration; flighthouse's own platform jobs remain unverified.
+
+Ten quark navigations showed that the glass pane and semantics host precede the first frame. Install a
+`flutter-first-frame` listener before navigation, apply a timeout, and follow it with application readiness.
+Chrome acquisition requires `unzip` on Linux and should happen before parallel route work. These findings inform
+the proposal; this ADR remains Proposed until the #19 maintainer checkpoint.
