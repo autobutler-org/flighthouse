@@ -182,6 +182,18 @@ void main() {
     expect(workspace.read('.flighthouse/report.html'), 'previous html');
   });
 
+  test('report reads generated sources for a web-only config', () async {
+    workspace.write(
+      'flighthouse.yaml',
+      'app: quark\nweb:\n  routes: [/files]\n',
+    );
+    final run = await workspace.run(['report']);
+    expect(run.code, exitInputError);
+    expect(run.err, isNot(contains('configure at least one input')));
+    expect(run.err, contains(workspace.path('.flighthouse/raw/lighthouse')));
+    expect(run.err, contains(workspace.path('.flighthouse/raw/axe')));
+  });
+
   test('ci with no sources preserves reports and does not pass', () async {
     workspace.write('flighthouse.yaml', 'app: quark\n');
     workspace.write(
