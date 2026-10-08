@@ -238,21 +238,23 @@ abstract base class _FlighthouseCommand extends Command<int> {
   Future<int> runWith(_Context context);
 
   @override
-  Future<int> run() async => switch (await _load(
-    globalResults!,
-    environment,
-    version,
-  )) {
-    Err(:final error) => _reportFailures([error], environment),
-    Ok(value: final context) when context.config.sources.isEmpty =>
-      _reportFailures([
-        const ConfigFailure(
-          keyPath: 'sources',
-          problem: 'no sources are configured; configure at least one input',
-        ),
-      ], environment),
-    Ok(value: final context) => await runWith(context),
-  };
+  Future<int> run() async {
+    final arguments = argResults!.rest;
+    if (arguments.isNotEmpty) {
+      usageException('Unexpected positional arguments: ${arguments.join(' ')}');
+    }
+    return switch (await _load(globalResults!, environment, version)) {
+      Err(:final error) => _reportFailures([error], environment),
+      Ok(value: final context) when context.config.sources.isEmpty =>
+        _reportFailures([
+          const ConfigFailure(
+            keyPath: 'sources',
+            problem: 'no sources are configured; configure at least one input',
+          ),
+        ], environment),
+      Ok(value: final context) => await runWith(context),
+    };
+  }
 }
 
 final class _CollectCommand extends _FlighthouseCommand {

@@ -93,6 +93,61 @@ void main() {
     expect(run.err, contains('Could not find a command named "frobnicate"'));
   });
 
+  for (final command in ['collect', 'report', 'ci', 'baseline']) {
+    test(
+      '$command rejects positional arguments before changing files',
+      () async {
+        await workspace.run(['collect']);
+        await workspace.run(['baseline', '--update']);
+        workspace.copyFixture(
+          'quark-login.json',
+          '.flighthouse/raw/lighthouse/stale.json',
+        );
+        final raw = workspace.read('.flighthouse/raw/lighthouse/stale.json');
+        workspace.write('.flighthouse/report.json', 'previous JSON report');
+        workspace.write('.flighthouse/report.html', 'previous HTML report');
+        final baseline = workspace.read('flighthouse-baseline.json');
+        final run = await workspace.run([command, 'unexpected.json']);
+        expect(run.code, exitUsageError);
+        expect(run.err, contains('Unexpected positional arguments'));
+        expect(run.err, contains('unexpected.json'));
+        expect(run.out, isEmpty);
+        expect(workspace.read('.flighthouse/raw/lighthouse/stale.json'), raw);
+        expect(
+          workspace.read('.flighthouse/report.json'),
+          'previous JSON report',
+        );
+        expect(
+          workspace.read('.flighthouse/report.html'),
+          'previous HTML report',
+        );
+        expect(workspace.read('flighthouse-baseline.json'), baseline);
+      },
+    );
+  }
+
+  test(
+    'baseline update with an unexpected path preserves the baseline',
+    () async {
+      await workspace.run(['collect']);
+      await workspace.run(['baseline', '--update']);
+      final baseline = workspace.read('flighthouse-baseline.json');
+      workspace.copyFixture('a11y-failures.json', 'lh/login.json');
+      await workspace.run(['collect']);
+      final run = await workspace.run([
+        'baseline',
+        '--update',
+        'alternative-baseline.json',
+      ]);
+      expect(run.code, exitUsageError);
+      expect(run.err, contains('Unexpected positional arguments'));
+      expect(run.err, contains('alternative-baseline.json'));
+      expect(run.out, isEmpty);
+      expect(workspace.read('flighthouse-baseline.json'), baseline);
+      expect(workspace.exists('alternative-baseline.json'), isFalse);
+    },
+  );
+
   test('a missing config file is a config error', () async {
     File(workspace.path('flighthouse.yaml')).deleteSync();
     final run = await workspace.run(['report']);
