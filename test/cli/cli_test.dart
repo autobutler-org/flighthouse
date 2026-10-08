@@ -114,6 +114,47 @@ void main() {
     expect(run.err, contains('no sources are configured'));
   });
 
+  for (final command in ['report', 'ci', 'baseline']) {
+    test('$command with no sources is a config error', () async {
+      workspace.write('flighthouse.yaml', 'app: quark\n');
+      workspace.write(
+        'flighthouse-baseline.json',
+        jsonEncode({
+          'schemaVersion': 1,
+          'fingerprintVersion': 'v1',
+          'scores': {
+            'overall': null,
+            'categories': {
+              'a11y': null,
+              'perf': null,
+              'responsiveness': null,
+              'memory': null,
+              'best-practices': null,
+            },
+          },
+          'findings': <Object?>[],
+        }),
+      );
+      final run = await workspace.run([command]);
+      expect(run.code, exitUsageError);
+      expect(run.err, contains('no sources are configured'));
+      expect(run.out, isNot(contains('gate passed')));
+      expect(workspace.exists('.flighthouse/report.json'), isFalse);
+      expect(workspace.exists('.flighthouse/report.html'), isFalse);
+    });
+  }
+
+  test('empty sources cannot overwrite an existing baseline', () async {
+    await workspace.run(['collect']);
+    await workspace.run(['baseline', '--update']);
+    final baseline = workspace.read('flighthouse-baseline.json');
+    workspace.write('flighthouse.yaml', 'app: quark\n');
+    final run = await workspace.run(['baseline', '--update']);
+    expect(run.code, exitUsageError);
+    expect(run.err, contains('no sources are configured'));
+    expect(workspace.read('flighthouse-baseline.json'), baseline);
+  });
+
   test('collect replaces earlier raw outputs', () async {
     workspace.write('.flighthouse/raw/lighthouse/stale.json', '{}');
     final run = await workspace.run(['collect']);

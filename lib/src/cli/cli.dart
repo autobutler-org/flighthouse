@@ -238,11 +238,22 @@ abstract base class _FlighthouseCommand extends Command<int> {
   Future<int> runWith(_Context context);
 
   @override
-  Future<int> run() async =>
-      switch (await _load(globalResults!, environment, version)) {
-        Err(:final error) => _reportFailures([error], environment),
-        Ok(value: final context) => await runWith(context),
-      };
+  Future<int> run() async => switch (await _load(
+    globalResults!,
+    environment,
+    version,
+  )) {
+    Err(:final error) => _reportFailures([error], environment),
+    Ok(value: final context) when context.config.sources.isEmpty =>
+      _reportFailures([
+        const ConfigFailure(
+          keyPath: 'sources',
+          problem:
+              'no sources are configured; configure at least one input source',
+        ),
+      ], environment),
+    Ok(value: final context) => await runWith(context),
+  };
 }
 
 final class _CollectCommand extends _FlighthouseCommand {
@@ -257,14 +268,6 @@ final class _CollectCommand extends _FlighthouseCommand {
 
   @override
   Future<int> runWith(_Context context) async {
-    if (context.config.sources.isEmpty) {
-      return _reportFailures([
-        const ConfigFailure(
-          keyPath: 'sources',
-          problem: 'no sources are configured, so there is nothing to collect',
-        ),
-      ], environment);
-    }
     final failures = <Failure>[];
     for (final MapEntry(key: source, value: sourceConfig)
         in context.config.sources.entries) {
