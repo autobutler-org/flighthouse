@@ -57,6 +57,10 @@ fix: ## Format and apply analyzer fixes
 test: ## Run every unit, fixture, and end-to-end test
 	dart test
 
+.PHONY: test/windows-root
+test/windows-root: ## Probe an unavailable Windows drive in the throwaway review branch
+	dart test test/io/files_test.dart --name 'unavailable filesystem root' --reporter expanded
+
 .PHONY: test/cli
 test/cli: ## Run the CLI's collect and ci commands against recorded fixtures
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml collect

@@ -1,0 +1,37 @@
+name: Temporary Windows path review
+on:
+  push:
+    branches: [test/14-windows-review]
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  unavailable-drive:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.13.5
+      - name: Install GNU Make
+        shell: pwsh
+        run: choco install make --no-progress -y
+      - name: Resolve dependencies
+        run: make setup/deps
+      - name: Check fixed code and unavailable drive handling
+        run: |
+          make check
+          make test/windows-root
+      - name: Reproduce the previous resolver timeout
+        run: |
+          cp test/fixtures/collection-review/previous-files.dart.txt lib/src/io/files.dart
+          if make test/windows-root > before.log 2>&1; then
+            cat before.log
+            exit 1
+          fi
+          cat before.log
+          python -c "from pathlib import Path; text = Path('before.log').read_text(); assert 'TimeoutException' in text; assert 'unavailable filesystem root' in text"
+          git restore lib/src/io/files.dart
