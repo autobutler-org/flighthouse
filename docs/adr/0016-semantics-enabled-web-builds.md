@@ -29,8 +29,9 @@ quark specifics that affect the runner:
   routes (`/login`, `/files`, `/photos`) records the axe violation, pass, and incomplete counts, and Lighthouse's
   accessibility score and number of applicable audits. The numbers go back to the maintainer before more web work.
 - If semantics has to be on at load, the supported way is an app-side opt-in behind a define, for example
-  `--dart-define=FLIGHTHOUSE_SEMANTICS=true`, with a one-line helper in `flighthouse_flutter` that calls
-  `ensureSemantics()` when it is set. The runner passes the define when it builds.
+  `--dart-define=FLIGHTHOUSE_SEMANTICS=true`, calling `ensureSemantics()` when it is set. The runner passes the
+  define when it builds. Keep this code app-side during phase 2; a reusable helper can move into
+  `flighthouse_flutter` when phase 3 creates that package, preserving Accepted ADR 0003's package timing.
 - Lighthouse gets the session by attaching to the runner's Chrome (`--port`) with storage reset disabled, after the
   runner has signed in. If that does not work, the fallback is passing the session through `--extra-headers`.
 - The runner's config (`web:` section) gets its own ADR after the measurement, covering the build command, serve
@@ -48,7 +49,9 @@ The [2026-10-08 quark measurement](../phases/semantics-signal.md) found no seman
 accessibility scores on untouched default builds. Startup semantics exposed 15–37 nodes on the three routes;
 Lighthouse found failing audits on `/files` and `/photos`, and axe found violations on all three. Activating the
 default placeholder gave axe similar coverage. An API-issued session persisted into all authenticated Lighthouse
-navigations with storage reset disabled; form-based sign-in remains unverified.
+navigations with storage reset disabled. The later [checkpoint auth experiment](../phases/web-checkpoint.md)
+also verified real form-based sign-in with Dart Puppeteer and session transfer into Lighthouse; a reusable
+production auth runner remains task #22.
 
 Two builds initially returned identical targets, but later navigation changed generated IDs. Axe ancestry paths
 preserved distinct nodes and matched across the measured builds and activation modes. Blanket removal of ordinals

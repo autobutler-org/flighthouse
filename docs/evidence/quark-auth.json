@@ -1,0 +1,41 @@
+{
+  "measuredAt": "2026-10-08",
+  "flutter": "3.47.6",
+  "dart": "3.13.5",
+  "nodeFormFlow": {
+    "backend": "quark 0.49.0 on isolated port 8081",
+    "sourceCommit": "48a76aea65717d9968f1608fa84c2df34a5a1d93",
+    "setupStatus": 200,
+    "setupFinalPath": "/files",
+    "loginStatus": 200,
+    "authKeyMatchesSetup": true,
+    "loginFinalPath": "/files",
+    "sessionStored": true,
+    "lighthouse": {
+      "version": "13.5.0",
+      "finalPath": "/photos",
+      "score": 0.94
+    }
+  },
+  "dartFormFlow": {
+    "driver": "puppeteer 3.26.0",
+    "browserVersion": "Chrome/152.0.7977.42",
+    "loginStatus": 200,
+    "finalPath": "/files",
+    "sessionStored": true,
+    "typedValuesMatch": true,
+    "lighthouse": {
+      "version": "13.5.0",
+      "finalPath": "/photos",
+      "score": 0.94
+    }
+  },
+  "inputMethod": "focus; two animation frames; CDP insertText; two animation frames; verify full value before submitting",
+  "limitations": [
+    "Throwaway code only, not reusable production runner",
+    "Two-frame timing observed on this SDK/app only",
+    "Semantic button activation, not arbitrary pointer behavior",
+    "Empty photo library",
+    "Native macOS not exercised"
+  ]
+}
