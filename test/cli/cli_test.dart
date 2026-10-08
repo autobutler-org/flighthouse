@@ -109,9 +109,76 @@ void main() {
 
   test('collect with no sources is a config error', () async {
     workspace.write('flighthouse.yaml', 'app: quark\n');
+    workspace.write('.flighthouse/raw/lighthouse/previous.json', '{}');
     final run = await workspace.run(['collect']);
     expect(run.code, exitUsageError);
-    expect(run.err, contains('no sources are configured'));
+    expect(run.err, contains('configure at least one input'));
+    expect(workspace.read('.flighthouse/raw/lighthouse/previous.json'), '{}');
+  });
+
+  test('report with no sources preserves existing reports', () async {
+    workspace.write('flighthouse.yaml', 'app: quark\n');
+    workspace.write('.flighthouse/report.json', 'previous json');
+    workspace.write('.flighthouse/report.html', 'previous html');
+    final run = await workspace.run(['report']);
+    expect(run.code, exitUsageError);
+    expect(run.err, contains('configure at least one input'));
+    expect(workspace.read('.flighthouse/report.json'), 'previous json');
+    expect(workspace.read('.flighthouse/report.html'), 'previous html');
+  });
+
+  test('ci with no sources preserves reports and does not pass', () async {
+    workspace.write('flighthouse.yaml', 'app: quark\n');
+    workspace.write(
+      'flighthouse-baseline.json',
+      jsonEncode({
+        'schemaVersion': 1,
+        'fingerprintVersion': 'v1',
+        'scores': {
+          'overall': null,
+          'categories': {
+            'a11y': null,
+            'perf': null,
+            'responsiveness': null,
+            'memory': null,
+            'best-practices': null,
+          },
+        },
+        'findings': <Object?>[],
+      }),
+    );
+    final baseline = workspace.read('flighthouse-baseline.json');
+    workspace.write('.flighthouse/report.json', 'previous json');
+    workspace.write('.flighthouse/report.html', 'previous html');
+    final run = await workspace.run(['ci']);
+    expect(run.code, exitUsageError);
+    expect(run.err, contains('configure at least one input'));
+    expect(run.out, isNot(contains('gate passed')));
+    expect(workspace.read('.flighthouse/report.json'), 'previous json');
+    expect(workspace.read('.flighthouse/report.html'), 'previous html');
+    expect(workspace.read('flighthouse-baseline.json'), baseline);
+  });
+
+  test('baseline with no sources preserves the existing baseline', () async {
+    await workspace.run(['collect']);
+    await workspace.run(['baseline', '--update']);
+    final baseline = workspace.read('flighthouse-baseline.json');
+    workspace.write('flighthouse.yaml', 'app: quark\n');
+    final run = await workspace.run(['baseline']);
+    expect(run.code, exitUsageError);
+    expect(run.err, contains('configure at least one input'));
+    expect(workspace.read('flighthouse-baseline.json'), baseline);
+  });
+
+  test('baseline update with no sources preserves the baseline', () async {
+    await workspace.run(['collect']);
+    await workspace.run(['baseline', '--update']);
+    final baseline = workspace.read('flighthouse-baseline.json');
+    workspace.write('flighthouse.yaml', 'app: quark\n');
+    final run = await workspace.run(['baseline', '--update']);
+    expect(run.code, exitUsageError);
+    expect(run.err, contains('configure at least one input'));
+    expect(workspace.read('flighthouse-baseline.json'), baseline);
   });
 
   test('collect replaces earlier raw outputs', () async {
