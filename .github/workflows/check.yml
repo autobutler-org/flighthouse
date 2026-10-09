@@ -17,7 +17,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container: dart:stable
+    container: mirror.gcr.io/library/dart:stable
     steps:
       - name: Install make and git
         run: |
