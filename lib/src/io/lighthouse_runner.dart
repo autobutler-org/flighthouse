@@ -10,12 +10,8 @@ import '../result/failure.dart';
 import '../result/result.dart';
 import 'browser.dart';
 import 'files.dart';
+import 'required_tools.dart';
 import 'web_build.dart';
-
-const _missingLighthouse = MissingToolFailure(
-  tool: 'Lighthouse',
-  installHint: 'npm install -g lighthouse',
-);
 
 const _scoredCategories = <String>[
   'performance',
@@ -105,7 +101,7 @@ Future<Result<ProcessResult, Failure>> _start(
   try {
     return Ok(await run(executable, arguments));
   } on ProcessException {
-    return const Err(_missingLighthouse);
+    return const Err(missingLighthouse);
   }
 }
 

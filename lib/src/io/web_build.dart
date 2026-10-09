@@ -5,6 +5,7 @@ import 'package:path/path.dart' as p;
 import '../config/config.dart';
 import '../result/failure.dart';
 import '../result/result.dart';
+import 'required_tools.dart';
 
 typedef ProcessRun = Future<ProcessResult> Function(
   String executable,
@@ -93,13 +94,7 @@ Future<Result<ProcessResult, Failure>> _runBuild(
         workingDirectory: projectDir,
       ),
     );
-  } on ProcessException catch (error) {
-    return Err(
-      IoFailure(
-        operation: 'run web build command',
-        path: command.first,
-        reason: error.message,
-      ),
-    );
+  } on ProcessException {
+    return Err(missingBuildTool(command.first));
   }
 }

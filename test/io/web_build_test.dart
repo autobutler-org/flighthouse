@@ -112,8 +112,8 @@ void main() {
       ),
     );
     final failure = (result as Err<BuiltWebApp, Failure>).error;
-    expect(failure, isA<IoFailure>());
-    expect(describe(failure), contains('flutter'));
-    expect(describe(failure), contains('No such file'));
+    expect(failure, isA<MissingToolFailure>());
+    expect(describe(failure), contains('Flutter not found'));
+    expect(describe(failure), contains('docs.flutter.dev'));
   });
 }

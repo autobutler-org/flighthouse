@@ -323,6 +323,9 @@ final class Workspace {
         err: err,
       ),
       runProcess: (executable, processArguments, {workingDirectory}) async {
+        if (processArguments.contains('--version')) {
+          return ProcessResult(1, 0, '12.0.0\n', '');
+        }
         onProcess?.call(executable);
         session.events.add(executable);
         if (executable == 'flutter') {

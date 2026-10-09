@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flighthouse/src/result/failure.dart';
 import 'package:flighthouse/src/result/result.dart';
 
+import 'required_tools.dart';
+
 typedef AcquireBrowser = Future<BrowserInstallation> Function(String cachePath);
 typedef LaunchBrowser = Future<BrowserBindings> Function(
   BrowserInstallation installation,
@@ -207,7 +209,16 @@ Future<Result<BrowserSession, IoFailure>> launchBrowser({
       IoFailure(
         operation: 'acquire Chrome into',
         path: cachePath,
-        reason: error.toString(),
+        reason: chromeAcquireHint(error.toString()),
+      ),
+    );
+  }
+  if (installation.version.trim().isEmpty) {
+    return Err(
+      IoFailure(
+        operation: 'read the Chrome version of',
+        path: installation.executablePath,
+        reason: 'no version was reported; remove $cachePath and run again',
       ),
     );
   }
@@ -302,7 +313,7 @@ String _launchFailureReason(Exception error) {
         'supported Chrome sandbox for this host; flighthouse does not disable '
         'the sandbox automatically.';
   }
-  return detail;
+  return chromeAcquireHint(detail);
 }
 
 String _durationText(Duration duration) => '${duration.inMilliseconds} ms';
