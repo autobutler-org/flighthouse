@@ -12,6 +12,7 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 const _routes = ['/files', '/photos?album=a/../../b#top'];
+const _crashFixtures = 'test/fixtures/lighthouse/13.5.0/target-crashed';
 const _viewport = WebViewportConfig(
   width: 1440,
   height: 900,
@@ -216,6 +217,67 @@ void main() {
     expect(describe(failure), isNot(contains('more')));
     expect(File(p.join(output.path, 'stale.json')).readAsStringSync(), 'keep');
     expect(Directory(output.path).listSync().whereType<File>(), hasLength(1));
+  });
+
+  test('names a renderer crash recorded from a real Lighthouse run', () async {
+    final recorder = Recorder(
+      (_) async => ProcessResult(
+        1,
+        1,
+        File(p.join(_crashFixtures, 'stdout.json')).readAsStringSync(),
+        File(p.join(_crashFixtures, 'stderr.txt')).readAsStringSync(),
+      ),
+    );
+
+    final result = await _run(
+      output.path,
+      recorder.call,
+      routes: const ['/files'],
+    );
+
+    final failure = (result as Err<List<String>, Failure>).error;
+    final message = describe(failure);
+    expect(failure, isA<AdapterFailure>());
+    expect(message, startsWith('lighthouse: /files: '));
+    expect(message, contains('renderer crashed'));
+    expect(message, contains('TARGET_CRASHED'));
+    expect(message, contains('memory'));
+    expect(message, contains('load'));
+    expect(message, contains('sandbox'));
+    expect(message, isNot(contains('Found existing Chrome')));
+    expect(_jsonFiles(output), isEmpty);
+  });
+
+  test('reports the runtime error of a nonzero exit', () async {
+    final recorder = Recorder(
+      (arguments) async => ProcessResult(
+        1,
+        1,
+        lighthouseReport(
+          arguments.firstWhere((argument) => argument.startsWith('http://')),
+          runtimeError: const {
+            'code': 'NO_FCP',
+            'message': 'No first contentful paint',
+          },
+        ),
+        'LH:status Connecting to browser\nRuntime error encountered',
+      ),
+    );
+
+    final result = await _run(
+      output.path,
+      recorder.call,
+      routes: const ['/files'],
+    );
+
+    final failure = (result as Err<List<String>, Failure>).error;
+    expect(failure, isA<AdapterFailure>());
+    expect(
+      describe(failure),
+      'lighthouse: /files: Lighthouse reported a runtime error: '
+      'NO_FCP: No first contentful paint',
+    );
+    expect(_jsonFiles(output), isEmpty);
   });
 
   test('a missing executable is a missing Lighthouse tool', () async {

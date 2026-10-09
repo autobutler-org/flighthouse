@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>crash</title></head>
+<body><p>Allocating until the renderer runs out of memory.</p>
+<script>
+const hoard = [];
+setTimeout(function grow() { for (let i = 0; i < 2000; i++) hoard.push(new Array(100000).fill(i)); setTimeout(grow, 0); }, 0);
+</script></body></html>
