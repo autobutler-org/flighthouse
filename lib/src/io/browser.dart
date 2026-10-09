@@ -3,8 +3,26 @@ import 'dart:convert';
 
 import 'package:flighthouse/src/result/failure.dart';
 import 'package:flighthouse/src/result/result.dart';
+import 'package:path/path.dart' as p;
 
 import 'required_tools.dart';
+
+const chromeNoSandboxSwitch = 'FLIGHTHOUSE_CI_CHROME_NO_SANDBOX';
+
+bool chromeSandboxDisabled(Map<String, String> environment) =>
+    environment[chromeNoSandboxSwitch] == 'true';
+
+String chromeCacheDirectory({
+  String? home,
+  String? userProfile,
+  required String fallback,
+}) {
+  final root = _nonEmpty(home) ?? _nonEmpty(userProfile) ?? fallback;
+  return p.join(root, '.cache', 'flighthouse', 'chrome');
+}
+
+String? _nonEmpty(String? value) =>
+    value == null || value.trim().isEmpty ? null : value;
 
 typedef AcquireBrowser = Future<BrowserInstallation> Function(String cachePath);
 typedef LaunchBrowser = Future<BrowserBindings> Function(

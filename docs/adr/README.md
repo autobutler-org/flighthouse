@@ -19,7 +19,7 @@ maintainer; nothing is built on it.
 | [0012](0012-renderers.md)                             | JSON and self-contained HTML renderers                | Accepted  |
 | [0013](0013-adapter-contract.md)                      | Adapter contract and the docs-first rule              | Accepted  |
 | [0014](0014-external-tools.md)                        | External tools are optional subprocesses              | Accepted  |
-| [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted  |
+| [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted; Linux CI launch is 0026 |
 | [0016](0016-semantics-enabled-web-builds.md)          | Semantics-enabled Flutter web builds                  | Accepted  |
 | [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025 |
 | [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted  |
@@ -30,5 +30,6 @@ maintainer; nothing is built on it.
 | [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Accepted  |
 | [0024](0024-axe-target-identity.md)                   | Preserve distinct axe targets without generated IDs   | Accepted  |
 | [0025](0025-renovate-replaces-dependabot.md)          | Renovate replaces Dependabot                          | Accepted  |
+| [0026](0026-linux-chrome-launch.md)                   | Linux Chrome sandbox stays on; Ubuntu CI opts in     | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.

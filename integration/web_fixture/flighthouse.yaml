@@ -1,0 +1,43 @@
+app: web-fixture
+reportDir: ../../build/web-fixture
+baseline: ../../build/web-fixture/flighthouse-baseline.json
+web:
+  projectDir: .
+  build:
+    command:
+      - flutter
+      - build
+      - web
+      - --release
+      - --dart-define=FLIGHTHOUSE_SEMANTICS=true
+      - --dart-define=FIXTURE_API_ORIGIN=http://127.0.0.1:8090
+    outputDir: build/web
+  serve:
+    port: 0
+  routes:
+    - /account
+    - /public
+  readiness:
+    timeoutSeconds: 90
+    selector: '[role="main"]'
+  viewport:
+    width: 1280
+    height: 800
+    deviceScaleFactor: 1
+  auth:
+    url: /login
+    steps:
+      - type: type
+        selector: 'input[aria-label="Username"]'
+        valueFromEnv: FLIGHTHOUSE_USERNAME
+      - type: type
+        selector: 'input[aria-label="Password"]'
+        valueFromEnv: FLIGHTHOUSE_PASSWORD
+      - type: click
+        selector: '[role="button"][flt-semantics-identifier="sign-in"]'
+      - type: wait
+        selector: '[role="main"][aria-label="Account"]'
+  lighthouse:
+    command: [lighthouse]
+  axe:
+    version: 4.11.1

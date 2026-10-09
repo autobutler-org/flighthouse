@@ -1,6 +1,6 @@
 # 0015. Browser automation and axe
 
-- Status: Accepted
+- Status: Accepted; the Linux CI launch policy is [ADR 0026](0026-linux-chrome-launch.md)
 - Date: 2026-10-06
 
 ## Context
