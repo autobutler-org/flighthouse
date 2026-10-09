@@ -200,7 +200,7 @@ void main() {
       'flighthouse-baseline.json',
       jsonEncode({
         'schemaVersion': 1,
-        'fingerprintVersion': 'v1',
+        'fingerprintVersion': 'v2',
         'scores': {
           'overall': null,
           'categories': {
@@ -352,7 +352,12 @@ void main() {
       await workspace.run(['collect']);
       final run = await workspace.run(['report']);
       expect(run.code, exitInputError);
-      expect(run.err, contains('flighthouse cannot read axe output yet'));
+      expect(run.err, contains(r'$.testEngine'));
+      expect(run.err, contains('axe'));
+      expect(
+        run.err,
+        isNot(contains('flighthouse cannot read axe output yet')),
+      );
       expect(workspace.exists('.flighthouse/report.json'), isTrue);
     },
   );
@@ -436,11 +441,13 @@ void main() {
       ) as Map<String, Object?>;
       workspace.write(
         'flighthouse-baseline.json',
-        jsonEncode({...baseline, 'fingerprintVersion': 'v0'}),
+        jsonEncode({...baseline, 'fingerprintVersion': 'v1'}),
       );
       final run = await workspace.run(['ci']);
       expect(run.code, exitInputError);
-      expect(run.err, contains('it uses fingerprint scheme v0'));
+      expect(run.err, contains('it uses fingerprint scheme v1'));
+      expect(run.err, contains('this run uses v2'));
+      expect(run.err, contains('flighthouse baseline --update'));
     });
 
     test('a corrupt baseline is an input error', () async {

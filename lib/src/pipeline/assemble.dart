@@ -1,5 +1,6 @@
 import '../adapters/adapter.dart';
 import '../adapters/attest/attest_adapter.dart';
+import '../adapters/axe/axe_adapter.dart';
 import '../adapters/lighthouse/lighthouse_adapter.dart';
 import '../config/config.dart';
 import '../model/enums.dart';
@@ -15,6 +16,7 @@ typedef Adapter = Result<AdapterOutput, Failure> Function(RawArtifact artifact);
 /// The adapter for each source that has one.
 const Map<Source, Adapter> defaultAdapters = {
   Source.attest: parseAttest,
+  Source.axe: parseAxe,
   Source.lighthouse: parseLighthouse,
 };
 

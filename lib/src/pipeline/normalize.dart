@@ -1,3 +1,4 @@
+import '../adapters/axe/axe_adapter.dart';
 import '../model/enums.dart';
 import '../model/observations.dart';
 import 'fingerprint.dart';
@@ -17,9 +18,11 @@ String? keepTarget(String? target) => target;
 
 /// The target normalizer for each source; sources not listed keep targets.
 ///
-/// Every source keeps its targets as reported until real Flutter web output
-/// shows which parts are volatile (ADR 0007).
-const Map<Source, TargetNormalizer> defaultTargetNormalizers = {};
+/// Axe anchors Flutter view ancestry (ADR 0024). Other sources keep the
+/// target the adapter reported.
+const Map<Source, TargetNormalizer> defaultTargetNormalizers = {
+  Source.axe: normalizeAxeTarget,
+};
 
 /// Normalizes routes and targets and recomputes fingerprints from them.
 Observations normalize(

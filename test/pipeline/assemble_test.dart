@@ -4,7 +4,8 @@ import 'package:flighthouse/flighthouse.dart';
 import 'package:test/test.dart';
 
 final config = parseConfig(
-  'app: quark\nsources:\n  lighthouse: {dir: lh}\n  axe: {dir: axe}\n',
+  'app: quark\nsources:\n  lighthouse: {dir: lh}\n  axe: {dir: axe}\n'
+  '  timeline: {dir: traces}\n',
 ).fold((config) => config, (failure) => throw StateError('$failure'));
 
 RawArtifact lighthouse(String name) => (
@@ -53,12 +54,30 @@ void main() {
 
   test('a source without an adapter fails once, naming its directory', () {
     final assembled = assemble([
-      (source: Source.axe, path: 'a.json', contents: '{}'),
-      (source: Source.axe, path: 'b.json', contents: '{}'),
+      (source: Source.timeline, path: 'a.json', contents: '{}'),
+      (source: Source.timeline, path: 'b.json', contents: '{}'),
     ]);
     final failure = assembled.failures.single as AdapterFailure;
-    expect(failure.tool, 'axe');
-    expect(failure.artifactPath, 'axe');
+    expect(failure.tool, 'timeline');
+    expect(failure.artifactPath, 'traces');
+    expect(failure.problem, contains('cannot read timeline output yet'));
+  });
+
+  test('axe output is read into the report', () {
+    final assembled = assemble([
+      (
+        source: Source.axe,
+        path: 'login.json',
+        contents: File('test/fixtures/axe/4.11.1/quark-48a76ae/login.json')
+            .readAsStringSync(),
+      ),
+    ]);
+    expect(assembled.failures, isEmpty);
+    expect(assembled.report.metadata.toolVersions[Source.axe], '4.11.1');
+    expect(assembled.report.findings, isNotEmpty);
+    expect(assembled.report.findings.map((finding) => finding.route).toSet(), {
+      '/login',
+    });
   });
 
   test('different tool versions of one source are all recorded', () {
