@@ -38,7 +38,7 @@ check/format: ## Fail on unformatted Dart
 	dart format --output=none --set-exit-if-changed .
 
 .PHONY: check/lint
-check/lint: ## Analyze with strict options, infos are fatal
+check/lint: setup/deps ## Analyze with strict options, infos are fatal
 	dart analyze --fatal-infos
 
 .PHONY: check/pana
@@ -51,7 +51,7 @@ check/publish: ## Validate the package for pub.dev with no warnings
 	dart pub publish --dry-run
 
 .PHONY: fix
-fix: ## Format and apply analyzer fixes
+fix: setup/deps ## Format and apply analyzer fixes
 	dart fix --apply
 	dart format .
 
