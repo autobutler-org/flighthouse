@@ -3,7 +3,7 @@
 One Lighthouse-style scored report for Flutter apps, covering accessibility, performance, responsiveness, and
 memory, that works as a CI gate.
 
-> **Status: pre-release.** The pipeline and CLI work with attest and Lighthouse reports; other sources are in progress. Progress is tracked in the
+> **Status: pre-release.** The pipeline reads attest, Lighthouse, and axe JSON; other sources are in progress. Progress is tracked in the
 > [phase epics](https://github.com/autobutler-org/flighthouse/issues?q=is%3Aissue+label%3Aepic).
 
 ## What it does
@@ -20,8 +20,11 @@ It normalizes them to one schema, scores them with Lighthouse's log-normal curve
 baseline, and writes `report.json` and a self-contained `report.html`. In CI it fails only on new findings or on
 score drops past a threshold you set.
 
-For Flutter web apps it can also build the app with semantics enabled, serve it, and run Lighthouse and axe
-against a list of routes. That part needs Node, Lighthouse, and Chrome. Everything else needs only a Dart SDK.
+For Flutter web apps, a `web:` config makes `collect` build the app with semantics enabled, serve it,
+authenticate if configured, and run Lighthouse, writing `<reportDir>/raw/lighthouse/`. That part needs Node,
+Lighthouse, and Chrome. Everything else needs only a Dart SDK. `report`, `ci`, and `baseline` read existing
+files and do not launch Chrome, Node, Lighthouse, or Flutter. See [`example/`](example/README.md) and
+[ADR 0023](docs/adr/0023-web-runner-configuration.md) for `web:`.
 
 ## Install
 
@@ -32,7 +35,7 @@ dart pub global activate flighthouse
 ## Usage
 
 ```sh
-flighthouse collect             # copy each source's raw outputs into <reportDir>/raw
+flighthouse collect             # copy imported raw outputs into <reportDir>/raw and run Lighthouse when web is configured
 flighthouse report              # write report.json and report.html
 flighthouse ci                  # report, then gate against the baseline
 flighthouse baseline --update   # accept the current findings and scores as the baseline
@@ -40,8 +43,8 @@ flighthouse baseline --update   # accept the current findings and scores as the 
 
 Exit codes: `0` passed, `1` the gate failed, `2` usage or config error, `3` unusable input or missing tool.
 
-Today flighthouse reads attest and Lighthouse JSON reports. axe, `TimelineSummary`, and flutter_lighthouse
-adapters are in progress.
+Today flighthouse reads attest, Lighthouse, and axe JSON. `TimelineSummary` and flutter_lighthouse adapters are
+in progress.
 
 Configuration lives in `flighthouse.yaml`. See [`example/`](example/README.md).
 
