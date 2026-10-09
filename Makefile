@@ -11,7 +11,7 @@ unexport GIT_PREFIX
 
 FIXTURES := test/fixtures
 VERSION := $(shell sed -n 's/^version: //p' pubspec.yaml)
-RELEASE_TAG := flighthouse-v$(VERSION)
+RELEASE_TAG := v-$(VERSION)
 
 .PHONY: help
 help: ## List targets
