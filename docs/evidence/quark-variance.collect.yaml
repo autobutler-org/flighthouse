@@ -1,0 +1,61 @@
+app: quark
+reportDir: ../runs/current
+baseline: ../runs/flighthouse-baseline.json
+web:
+  projectDir: ../odroid-web
+  build:
+    command: ['true']
+    outputDir: .
+  serve:
+    port: 0
+  routes:
+    - /files
+    - /photos
+    - /settings/general
+  readiness:
+    timeoutSeconds: 60
+  viewport:
+    width: 1280
+    height: 800
+    deviceScaleFactor: 1
+  auth:
+    url: /terms
+    steps:
+      - type: wait
+        selector: 'flt-semantics[role="group"] + flt-semantics[role="button"]'
+      - type: click
+        selector: 'flt-semantics[role="group"] + flt-semantics[role="button"]'
+      - type: wait
+        selector: 'flt-semantics[role="group"][aria-current] > flt-semantics[role="button"]'
+      - type: click
+        selector: 'flt-semantics[role="group"][aria-current] > flt-semantics[role="button"]'
+      - type: wait
+        selector: 'flt-semantics[role="radiogroup"] + flt-semantics[role="button"]'
+      - type: click
+        selector: 'flt-semantics[role="radiogroup"] + flt-semantics[role="button"]'
+      - type: type
+        selector: 'flt-semantics[role="alertdialog"] flt-semantics:nth-child(1 of :has(> input)) > input'
+        valueFromEnv: FLIGHTHOUSE_QUARK_NAME
+      - type: type
+        selector: 'flt-semantics[role="alertdialog"] flt-semantics:nth-child(2 of :has(> input)) > input'
+        valueFromEnv: FLIGHTHOUSE_QUARK_HOST
+      - type: click
+        selector: 'flt-semantics[role="alertdialog"] flt-semantics[role="button"]:last-child'
+      - type: wait
+        selector: 'flt-semantics[role="group"] + flt-semantics[role="button"]'
+      - type: click
+        selector: 'flt-semantics[role="group"] + flt-semantics[role="button"]'
+      - type: type
+        selector: 'input[aria-label="Username"]'
+        valueFromEnv: FLIGHTHOUSE_USERNAME
+      - type: type
+        selector: 'input[aria-label="Password"]'
+        valueFromEnv: FLIGHTHOUSE_PASSWORD
+      - type: click
+        selector: 'flt-semantics:has(> input[aria-label="Password"]) + flt-semantics[role="button"]'
+      - type: wait
+        selector: 'flt-semantics[role="checkbox"][aria-label="My files"]'
+  lighthouse:
+    command: [npx, --yes, lighthouse@13.5.0]
+  axe:
+    version: 4.11.1
