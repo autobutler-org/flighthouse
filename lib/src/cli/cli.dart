@@ -12,6 +12,8 @@ import '../model/baseline.dart';
 import '../model/baseline_json.dart';
 import '../model/enums.dart';
 import '../model/report.dart';
+import '../io/axe_runner.dart';
+import '../io/axe_script.dart';
 import '../io/browser.dart';
 import '../io/files.dart';
 import '../io/git.dart';
@@ -277,12 +279,16 @@ final class _CollectCommand extends _FlighthouseCommand {
     required this.launchBrowser,
     required this.platformEnvironment,
     required this.browserCloseTimeout,
+    required this.downloadAxe,
+    required this.axeCacheDir,
   });
 
   final ProcessRun runProcess;
   final WebBrowserLauncher launchBrowser;
   final Map<String, String> platformEnvironment;
   final Duration browserCloseTimeout;
+  final AxeScriptDownload downloadAxe;
+  final String axeCacheDir;
 
   @override
   String get name => 'collect';
@@ -290,7 +296,7 @@ final class _CollectCommand extends _FlighthouseCommand {
   @override
   String get description =>
       'Copy imported raw outputs into <reportDir>/raw and run Lighthouse '
-      'when web is configured.';
+      'and axe when web is configured.';
 
   @override
   Future<int> runWith(_Context context) async {
@@ -309,28 +315,54 @@ final class _CollectCommand extends _FlighthouseCommand {
       }
     }
     if (context.config.web case final web?) {
-      final collected = await runWebCollection<List<String>>(
+      final collected = await runWebCollection<_WebAudits>(
         configBaseDir: context.baseDir,
         config: web,
         environment: platformEnvironment,
         runProcess: runProcess,
         launch: launchBrowser,
         closeTimeout: browserCloseTimeout,
-        collect: (browser, origin, routes) => runLighthouseRoutes(
-          lighthouse: web.lighthouse,
-          viewport: web.viewport,
-          browser: browser,
-          origin: origin,
-          routes: routes,
-          outputDir: _rawDir(context, Source.lighthouse),
-          run: runProcess,
-        ),
+        collect: (browser, origin, routes) async {
+          final lighthouse = await runLighthouseRoutes(
+            lighthouse: web.lighthouse,
+            viewport: web.viewport,
+            browser: browser,
+            origin: origin,
+            routes: routes,
+            outputDir: _rawDir(context, Source.lighthouse),
+            run: runProcess,
+          );
+          switch (lighthouse) {
+            case Err(:final error):
+              return Err(error);
+            case Ok(value: final lighthousePaths):
+              final axe = await runAxeRoutes(
+                axe: web.axe,
+                configBaseDir: context.baseDir,
+                readiness: web.readiness,
+                browser: browser,
+                origin: origin,
+                routes: routes,
+                outputDir: _rawDir(context, Source.axe),
+                cacheDir: axeCacheDir,
+                download: downloadAxe,
+              );
+              return switch (axe) {
+                Err(:final error) => Err(error),
+                Ok(value: final axePaths) => Ok((
+                  lighthouse: lighthousePaths,
+                  axe: axePaths,
+                )),
+              };
+          }
+        },
       );
       switch (collected) {
-        case Ok(value: final paths):
+        case Ok(value: final audits):
           environment.out.writeln(
-            _collected(Source.lighthouse.id, paths.length),
+            _collected(Source.lighthouse.id, audits.lighthouse.length),
           );
+          environment.out.writeln(_collected(Source.axe.id, audits.axe.length));
         case Err(:final error):
           failures.add(error);
       }
@@ -517,6 +549,8 @@ String _chromeCachePath() {
   return p.join(home, '.cache', 'flighthouse', 'chrome');
 }
 
+typedef _WebAudits = ({List<String> lighthouse, List<String> axe});
+
 Future<Result<BrowserSession, IoFailure>> _launchCollectedBrowser(
   BrowserViewport viewport,
 ) => launchPuppeteerBrowser(
@@ -533,11 +567,15 @@ Future<int> runCli(
   ProcessRun? runProcess,
   WebBrowserLauncher? launchBrowser,
   Map<String, String>? platformEnvironment,
+  AxeScriptDownload? downloadAxe,
+  String? axeCacheDir,
 }) async {
   final effects = environment ?? defaultEnvironment();
   final process = runProcess ?? _runExternalProcess;
   final launch = launchBrowser ?? _launchCollectedBrowser;
   final variables = platformEnvironment ?? Platform.environment;
+  final download = downloadAxe ?? downloadAxeScript;
+  final axeCache = axeCacheDir ?? defaultAxeCacheDir();
   if (arguments.length == 1 && arguments.single == '--version') {
     effects.out.writeln('flighthouse $version');
     return exitPassed;
@@ -571,6 +609,8 @@ Future<int> runCli(
             launchBrowser: launch,
             platformEnvironment: variables,
             browserCloseTimeout: _browserCloseTimeout,
+            downloadAxe: download,
+            axeCacheDir: axeCache,
           ),
         )
         ..addCommand(_ReportCommand(effects, version))

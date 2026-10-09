@@ -40,6 +40,8 @@ web:
         selector: "#submit"
   lighthouse:
     command: [lighthouse]
+  axe:
+    scriptPath: tools/axe.min.js
 ''';
 
 void main() {
@@ -56,6 +58,7 @@ void main() {
     () async {
       final workspace = Workspace(root);
       workspace.write('flighthouse.yaml', _webConfig);
+      workspace.write('tools/axe.min.js', 'local axe script');
       workspace.write('attest-out/sample.json', '{"tool":"attest"}\n');
       workspace.write('.flighthouse/raw/lighthouse/stale.json', '{}');
       final browser = RecordingBrowser();
@@ -81,6 +84,7 @@ void main() {
       expect(run.err, isEmpty);
       expect(run.out, contains('collected 1 attest file'));
       expect(run.out, contains('collected 2 lighthouse files'));
+      expect(run.out, contains('collected 2 axe files'));
       expect(run.out, isNot(contains(_secret)));
       expect(
         workspace.read('.flighthouse/raw/attest/sample.json'),
@@ -88,10 +92,6 @@ void main() {
       );
       expect(
         workspace.exists('.flighthouse/raw/lighthouse/stale.json'),
-        isFalse,
-      );
-      expect(
-        Directory(workspace.path('.flighthouse/raw/axe')).existsSync(),
         isFalse,
       );
       expect(browser.values['#password'], _secret);
@@ -153,6 +153,16 @@ void main() {
         final scored = audits['accessibility-audit'] as Map<String, Object?>;
         expect(scored['score'], 0);
         expect(workspace.read(relative), isNot(contains(_secret)));
+        final axeRelative = '.flighthouse/raw/axe/$name';
+        expect(workspace.exists(axeRelative), isTrue);
+        final axe =
+            jsonDecode(workspace.read(axeRelative)) as Map<String, Object?>;
+        final page = Uri.parse(axe['url'] as String);
+        final requested = Uri.parse(route);
+        expect(page.path, requested.path);
+        expect(page.query, requested.query);
+        expect(page.fragment, requested.fragment);
+        expect(workspace.read(axeRelative), isNot(contains(_secret)));
       }
     },
   );
@@ -316,6 +326,9 @@ final class Workspace {
       runProcess: runProcess,
       launchBrowser: launchBrowser,
       platformEnvironment: platformEnvironment,
+      downloadAxe: (url) async =>
+          throw SocketException('downloaded axe-core from $url'),
+      axeCacheDir: path('.cache/axe'),
     );
     return (code: code, out: '$out', err: '$err');
   }
@@ -372,7 +385,10 @@ final class RecordingBrowser {
           values[selector] = value;
         },
         readInput: (selector) async => values[selector],
-        evaluate: (_, _) async => 3,
+        evaluate: (script, _) async {
+          if (script.contains('axe.run')) return axeResult(url.toString());
+          return 3;
+        },
         close: () async {
           closes++;
         },
@@ -386,6 +402,15 @@ final class RecordingBrowser {
   bool authenticated = false;
   int closes = 0;
 }
+
+String axeResult(String pageUrl) => jsonEncode({
+  'testEngine': {'name': 'axe-core', 'version': '4.11.1'},
+  'url': pageUrl,
+  'violations': <Object?>[],
+  'passes': <Object?>[],
+  'incomplete': <Object?>[],
+  'inapplicable': <Object?>[],
+});
 
 String lighthouseReport(String finalUrl) => jsonEncode({
   'lighthouseVersion': '13.5.0',
