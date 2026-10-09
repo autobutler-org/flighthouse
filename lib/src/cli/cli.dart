@@ -19,6 +19,7 @@ import '../io/files.dart';
 import '../io/git.dart';
 import '../io/lighthouse_runner.dart';
 import '../io/puppeteer_browser.dart';
+import '../io/required_tools.dart';
 import '../io/web_build.dart';
 import '../io/web_collection.dart';
 import '../pipeline/assemble.dart';
@@ -315,6 +316,14 @@ final class _CollectCommand extends _FlighthouseCommand {
       }
     }
     if (context.config.web case final web?) {
+      final probed = await checkLighthouse(
+        command: web.lighthouse.command,
+        run: runProcess,
+      );
+      if (probed case Err(:final error)) {
+        failures.add(error);
+        return _reportFailures(failures, environment);
+      }
       final collected = await runWebCollection<_WebAudits>(
         configBaseDir: context.baseDir,
         config: web,

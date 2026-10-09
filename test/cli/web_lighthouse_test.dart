@@ -201,7 +201,7 @@ void main() {
       ),
     );
     expect(run.err, isNot(contains(_secret)));
-    expect(browser.closes, 1);
+    expect(browser.closes, 0);
     expect(
       Directory(workspace.path('.flighthouse/raw/lighthouse')).existsSync(),
       isFalse,
@@ -230,7 +230,12 @@ void main() {
               ..writeAsStringSync('app');
             return ProcessResult(1, 0, '', '');
           }
-          return ProcessResult(1, 0, '{nope', '');
+          return ProcessResult(
+            1,
+            0,
+            arguments.contains('--version') ? '12.0.0' : '{nope',
+            '',
+          );
         },
         launchBrowser: (_) async => Ok(browser.session),
       );
@@ -345,6 +350,9 @@ final class Script {
     List<String> arguments, {
     String? workingDirectory,
   }) async {
+    if (arguments.contains('--version')) {
+      return ProcessResult(1, 0, '12.0.0\n', '');
+    }
     calls.add((executable: executable, arguments: arguments));
     if (executable == 'flutter') {
       File(p.join(workingDirectory!, 'build/web/index.html'))

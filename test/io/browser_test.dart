@@ -62,6 +62,64 @@ void main() {
     },
   );
 
+  test('acquisition failures say what to install', () async {
+    for (final (detail, hint) in [
+      (
+        'ProcessException: unzip: No such file or directory',
+        'apt install unzip',
+      ),
+      ('error while loading shared libraries: libnss3.so', 'libnss3'),
+    ]) {
+      final result = await launchBrowser(
+        cachePath: _installation.cachePath,
+        viewport: _viewport,
+        acquireTimeout: _timeout,
+        launchTimeout: _timeout,
+        acquire: (_) async => throw Exception(detail),
+        launch: (_, _, _) async => fail('launched after a failed acquire'),
+      );
+      final failure = (result as Err<BrowserSession, IoFailure>).error;
+      expect(describe(failure), contains(hint));
+    }
+  });
+
+  test('missing shared libraries at launch say what to install', () async {
+    final result = await launchBrowser(
+      cachePath: _installation.cachePath,
+      viewport: _viewport,
+      acquireTimeout: _timeout,
+      launchTimeout: _timeout,
+      acquire: (_) async => _installation,
+      launch: (_, _, _) async => throw Exception(
+        'chrome: error while loading shared libraries: libnss3.so',
+      ),
+    );
+    final failure = (result as Err<BrowserSession, IoFailure>).error;
+    expect(describe(failure), contains('apt install'));
+  });
+
+  test('an installation without a version is a failure', () async {
+    var launches = 0;
+    final result = await launchBrowser(
+      cachePath: _installation.cachePath,
+      viewport: _viewport,
+      acquireTimeout: _timeout,
+      launchTimeout: _timeout,
+      acquire: (_) async => const BrowserInstallation(
+        cachePath: '/cache/chrome',
+        executablePath: '/cache/chrome/152/chrome',
+        version: ' ',
+      ),
+      launch: (_, _, _) async {
+        launches++;
+        return _bindings();
+      },
+    );
+    final failure = (result as Err<BrowserSession, IoFailure>).error;
+    expect(describe(failure), contains('no version was reported'));
+    expect(launches, 0);
+  });
+
   test('launch explains a host without a usable Chrome sandbox', () async {
     final result = await launchBrowser(
       cachePath: _installation.cachePath,
