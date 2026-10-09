@@ -1,0 +1,6 @@
+app: quark
+sources:
+  lighthouse:
+    dir: ../../lighthouse/13.5.0/quark-d8d2618e
+  axe:
+    dir: ../../axe/4.11.1/quark-d8d2618e

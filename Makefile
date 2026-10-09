@@ -79,7 +79,7 @@ release: ## Tag the pubspec version on main and push the tag, which publishes it
 	echo "Pushed $(RELEASE_TAG); the Publish workflow takes it from here"
 
 .PHONY: test/cli
-test/cli: test/quark ## Run the CLI's collect and ci commands against recorded fixtures
+test/cli: test/quark test/quark/web ## Run the CLI's collect and ci commands against recorded fixtures
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml collect
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml ci
 
@@ -87,6 +87,15 @@ test/cli: test/quark ## Run the CLI's collect and ci commands against recorded f
 test/quark: ## Run the CI gate against real quark page audits
 	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/48a76ae/flighthouse.yaml collect
 	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/48a76ae/flighthouse.yaml ci
+
+.PHONY: test/quark/web
+test/quark/web: ## Run the CI gate against the recorded authenticated quark web collection
+	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/d8d2618e/flighthouse.yaml collect
+	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/d8d2618e/flighthouse.yaml ci
+
+.PHONY: run/quark/web
+run/quark/web: ## Collect quark live (needs ../quark, its backend, and FLIGHTHOUSE_* variables)
+	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/d8d2618e/collect.yaml collect
 
 .PHONY: run/chrome-acquire
 run/chrome-acquire: ## Download the pinned Chrome and print its version
