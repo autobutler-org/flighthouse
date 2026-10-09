@@ -1,6 +1,6 @@
 # 0017. Dependency policy
 
-- Status: Accepted
+- Status: Accepted; update tooling amended by [ADR 0025](0025-renovate-replaces-dependabot.md)
 - Date: 2026-10-06
 
 ## Context

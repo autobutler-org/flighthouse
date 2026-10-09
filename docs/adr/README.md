@@ -21,7 +21,7 @@ maintainer; nothing is built on it.
 | [0014](0014-external-tools.md)                        | External tools are optional subprocesses              | Accepted  |
 | [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted  |
 | [0016](0016-semantics-enabled-web-builds.md)          | Semantics-enabled Flutter web builds                  | Accepted  |
-| [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted  |
+| [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025 |
 | [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted  |
 | [0019](0019-testing-and-ci.md)                        | Testing and CI                                        | Accepted  |
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
@@ -29,5 +29,6 @@ maintainer; nothing is built on it.
 | [0022](0022-measurement-weights.md)                   | Measurements carry a weight                           | Accepted  |
 | [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Accepted  |
 | [0024](0024-axe-target-identity.md)                   | Preserve distinct axe targets without generated IDs   | Accepted  |
+| [0025](0025-renovate-replaces-dependabot.md)          | Renovate replaces Dependabot                          | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
