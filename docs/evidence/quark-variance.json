@@ -1,0 +1,2518 @@
+{
+  "measuredAt": "2026-10-09",
+  "issue": "https://github.com/autobutler-org/flighthouse/issues/100",
+  "scope": "Specific to the quark instance at http://odroid.lan:8080 as observed on 2026-10-09; not quark d8d2618e and not the phase-2 dataset.",
+  "instance": {
+    "url": "http://odroid.lan:8080",
+    "versionJson": {
+      "app_name": "quark",
+      "package_name": "quark",
+      "version": "0.49.1"
+    },
+    "flutterEngineRevision": "deb287481e3ce9468f3434937ced4240a70539ca",
+    "authStatus": {
+      "accessRequestsEnabled": true,
+      "setup": true
+    },
+    "backendCommit": null,
+    "backendCommitNote": "GET /api/v0/version requires an admin session; it was not queried, so the backend commit is unknown.",
+    "frontendSha256": {
+      "index.html": "0ce2853e18e7d2cb84479b6bbfce25aa53d9aba77bd9bcd3c094e73f1e229304",
+      "main.dart.js": "95adcdf1aad0686deae09d3a84dc8c73eb97f03dbe6200e570ac47ca17d51225",
+      "flutter_bootstrap.js": "99fc2e8b4e7759c313f220ff0835e1399f51176e821ad0939079b4c1eaeeab33",
+      "flutter.js": "2beb1ce6b159c71540aa66030af1d7964b6a92377cc78473745e02f97b74effe",
+      "sodium.js": "dedbeb3a33be1cf9d1b923832c5f188f990a6ed543f94eae366c5e73aed3c34e",
+      "version.json": "90cd9d9a1a3ff3ff66aa0df7d56e98bb1ffd2dfbcda923581d412ee11967be80"
+    },
+    "frontendUnchangedAfterRuns": "index.html and main.dart.js fetched again at 2026-10-09T22:13:42Z had the same sha256",
+    "account": "an existing account supplied by the owner through FLIGHTHOUSE_USERNAME and FLIGHTHOUSE_PASSWORD; its data was the instance's own and was not modified"
+  },
+  "routes": [
+    "/files",
+    "/photos",
+    "/settings/general"
+  ],
+  "tools": {
+    "flighthouseCommit": "6506f22d312d",
+    "browser": "Chrome/152.0.7977.42 (Puppeteer 3.26.0)",
+    "lighthouse": "13.5.0 via npx on Node 26.8.2",
+    "axe": "4.11.1",
+    "lighthouseThrottling": {
+      "method": "simulate",
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "cpuSlowdownMultiplier": 4,
+      "formFactor": "desktop",
+      "viewport": "1280x800@1"
+    }
+  },
+  "machine": {
+    "os": "Linux",
+    "cpus": 8,
+    "loadAverage1m": {
+      "min": 9.18,
+      "max": 30.14,
+      "samples": 45
+    },
+    "note": "Other agents shared the machine during the runs; load was not controlled."
+  },
+  "method": "15 serial `flighthouse collect` runs of quark-variance.collect.yaml, no parallel load from flighthouse. Each run signs in once, then runs Lighthouse and axe on each route. Run 01 became the baseline with `baseline --update`; `ci` ran on every run against it with the default gate (minSeverity minor, overall 2, perf 5, other categories 2).",
+  "summary": {
+    "collectSucceeded": "15/15",
+    "combinedScoreSpreadPoints": {
+      "overall": {
+        "min": 60.91,
+        "max": 71.17,
+        "range": 10.26,
+        "median": 70.32,
+        "stdev": 2.68
+      },
+      "a11y": {
+        "min": 86.62,
+        "max": 86.62,
+        "range": 0.0,
+        "median": 86.62,
+        "stdev": 0.0
+      },
+      "perf": {
+        "min": 34.98,
+        "max": 58.92,
+        "range": 23.94,
+        "median": 56.93,
+        "stdev": 6.25
+      },
+      "best-practices": {
+        "min": 61.54,
+        "max": 61.54,
+        "range": 0.0,
+        "median": 61.54,
+        "stdev": 0.0
+      }
+    },
+    "perRouteLighthouseScoreSpread": {
+      "/files": {
+        "performance": {
+          "min": 35,
+          "max": 59,
+          "range": 24,
+          "median": 57,
+          "stdev": 9.37
+        },
+        "accessibility": {
+          "min": 91,
+          "max": 91,
+          "range": 0,
+          "median": 91,
+          "stdev": 0.0
+        },
+        "best-practices": {
+          "min": 62,
+          "max": 62,
+          "range": 0,
+          "median": 62,
+          "stdev": 0.0
+        }
+      },
+      "/photos": {
+        "performance": {
+          "min": 35,
+          "max": 59,
+          "range": 24,
+          "median": 58,
+          "stdev": 8.16
+        },
+        "accessibility": {
+          "min": 94,
+          "max": 94,
+          "range": 0,
+          "median": 94,
+          "stdev": 0.0
+        },
+        "best-practices": {
+          "min": 62,
+          "max": 62,
+          "range": 0,
+          "median": 62,
+          "stdev": 0.0
+        }
+      },
+      "/settings/general": {
+        "performance": {
+          "min": 35,
+          "max": 59,
+          "range": 24,
+          "median": 58,
+          "stdev": 5.95
+        },
+        "accessibility": {
+          "min": 94,
+          "max": 94,
+          "range": 0,
+          "median": 94,
+          "stdev": 0.0
+        },
+        "best-practices": {
+          "min": 62,
+          "max": 62,
+          "range": 0,
+          "median": 62,
+          "stdev": 0.0
+        }
+      }
+    },
+    "axeRawResultsIdenticalAcrossRuns": true,
+    "axeFingerprintsIdenticalAcrossRuns": true,
+    "axeRulesPerRoute": {
+      "/files": {
+        "incomplete": [
+          "aria-prohibited-attr:serious:1",
+          "color-contrast:serious:30"
+        ],
+        "violations": [
+          "aria-command-name:serious:1",
+          "region:moderate:5"
+        ]
+      },
+      "/photos": {
+        "incomplete": [
+          "aria-prohibited-attr:serious:1",
+          "color-contrast:serious:27"
+        ],
+        "violations": [
+          "label:critical:1",
+          "nested-interactive:serious:16",
+          "region:moderate:1"
+        ]
+      },
+      "/settings/general": {
+        "incomplete": [
+          "color-contrast:serious:17"
+        ],
+        "violations": [
+          "label:critical:2",
+          "nested-interactive:serious:2",
+          "region:moderate:13"
+        ]
+      }
+    },
+    "stableFindingCounts": {
+      "axe critical": 3,
+      "axe moderate": 19,
+      "axe serious": 95,
+      "lighthouse critical": 3,
+      "lighthouse info": 55,
+      "lighthouse moderate": 6,
+      "lighthouse serious": 9
+    },
+    "unstableLighthouseFindings": [
+      "forced-reflow-insight /files ab33eabf3694 (info): present in 1/15",
+      "forced-reflow-insight /photos aab3a5fdd4b0 (info): present in 2/15",
+      "forced-reflow-insight /settings/general df7fd690a43f (info): present in 2/15",
+      "image-delivery-insight /files 67b1fc331b3c (info): present in 1/15",
+      "image-delivery-insight /files eb6667c11506 (info): present in 14/15",
+      "image-delivery-insight /settings/general 21200597216d (info): present in 13/15",
+      "image-delivery-insight /settings/general d3411becd731 (info): present in 2/15",
+      "largest-contentful-paint /files 2aa1bfc24dda (moderate/serious): present in 8/15",
+      "largest-contentful-paint /photos 717c65c3b0d2 (moderate/serious): present in 3/15",
+      "largest-contentful-paint /settings/general 5f339aeaf605 (moderate/serious): present in 6/15"
+    ],
+    "ciVerdictsAgainstRun01": {
+      "passed": 10,
+      "failed": 5
+    },
+    "largestContentfulPaintModes": "45 route runs: 39 have simulated LCP 888-1599 ms and performance 54-59; 6 have simulated LCP 7850-8035 ms and performance 35. Observed LCP is 59-404 ms in the first group and 102-460 ms in the second.",
+    "lcpScoreBoundary": "Lighthouse scores LCP 0.9 at p10 = 1200 ms; flighthouse emits a finding below 0.9. 27 of the 39 fast-mode samples are at or below 1197 ms and 12 at or above 1203 ms."
+  },
+  "runs": [
+    {
+      "run": "01",
+      "start": "2026-10-09T21:42:55Z",
+      "end": "2026-10-09T21:44:52Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.54,
+        "perf": 57.47
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 655.5,
+            "largest-contentful-paint": 1220.9,
+            "total-blocking-time": 14504.5,
+            "speed-index": 24670.6,
+            "interactive": 68930.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 118,
+          "observedFirstContentfulPaintMs": 118,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 671.9,
+            "largest-contentful-paint": 984.7,
+            "total-blocking-time": 8904.0,
+            "speed-index": 25744.9,
+            "interactive": 62675.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 95,
+          "observedFirstContentfulPaintMs": 95,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 654.2,
+            "largest-contentful-paint": 1247.5,
+            "total-blocking-time": 9887.5,
+            "speed-index": 25542.4,
+            "interactive": 63835.6
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 163,
+          "observedFirstContentfulPaintMs": 163,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "moderate largest-contentful-paint /files 2aa1bfc24dda",
+        "moderate largest-contentful-paint /settings/general 5f339aeaf605"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 71 | a11y 87 | perf 57 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 0 fixed, 194 unchanged",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "02",
+      "start": "2026-10-09T21:45:04Z",
+      "end": "2026-10-09T21:46:49Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 67.51,
+        "perf": 50.38
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 35,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 647.1,
+            "largest-contentful-paint": 7945.6,
+            "total-blocking-time": 14595.0,
+            "speed-index": 26535.6,
+            "interactive": 68874.4
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 136,
+          "observedFirstContentfulPaintMs": 114,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 660.2,
+            "largest-contentful-paint": 959.5,
+            "total-blocking-time": 7803.0,
+            "speed-index": 24967.3,
+            "interactive": 61633.6
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 84,
+          "observedFirstContentfulPaintMs": 84,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 675.8,
+            "largest-contentful-paint": 1128.6,
+            "total-blocking-time": 9347,
+            "speed-index": 25264.6,
+            "interactive": 63472.4
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 121,
+          "observedFirstContentfulPaintMs": 121,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "serious largest-contentful-paint /files 2aa1bfc24dda"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 1,
+        "output": [
+          "quark: overall 68 | a11y 87 | perf 50 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 1 fixed, 193 unchanged",
+          "FAIL perf score dropped from 57.5 to 50.4, more than the allowed 5.0 points",
+          "FAIL overall score dropped from 70.5 to 67.5, more than the allowed 2.0 points",
+          "1 fixed; run flighthouse baseline --update to accept them",
+          "gate failed"
+        ]
+      }
+    },
+    {
+      "run": "03",
+      "start": "2026-10-09T21:46:49Z",
+      "end": "2026-10-09T21:48:37Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.4,
+        "perf": 57.13
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 640.5,
+            "largest-contentful-paint": 1202.9,
+            "total-blocking-time": 11364.0,
+            "speed-index": 25115.5,
+            "interactive": 66332.9
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 97,
+          "observedFirstContentfulPaintMs": 78,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 654.8,
+            "largest-contentful-paint": 1056.5,
+            "total-blocking-time": 20961,
+            "speed-index": 32434.3,
+            "interactive": 75856.4
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 143,
+          "observedFirstContentfulPaintMs": 143,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 56,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 653.1,
+            "largest-contentful-paint": 1311.2,
+            "total-blocking-time": 9360.6,
+            "speed-index": 24980.6,
+            "interactive": 63287.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 114,
+          "observedFirstContentfulPaintMs": 102,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "moderate largest-contentful-paint /files 2aa1bfc24dda",
+        "moderate largest-contentful-paint /settings/general 5f339aeaf605"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 70 | a11y 87 | perf 57 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 0 fixed, 194 unchanged",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "04",
+      "start": "2026-10-09T21:48:37Z",
+      "end": "2026-10-09T21:50:27Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 60.91,
+        "perf": 34.98
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 35,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 694.6,
+            "largest-contentful-paint": 8034.3,
+            "total-blocking-time": 19242.5,
+            "speed-index": 24277.4,
+            "interactive": 71264.1
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 460,
+          "observedFirstContentfulPaintMs": 460,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 35,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 733.7,
+            "largest-contentful-paint": 7850.1,
+            "total-blocking-time": 7138.5,
+            "speed-index": 25108.8,
+            "interactive": 61155.6
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 113,
+          "observedFirstContentfulPaintMs": 113,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 35,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 731.0,
+            "largest-contentful-paint": 7932.9,
+            "total-blocking-time": 6728.3,
+            "speed-index": 24046.0,
+            "interactive": 60975.7
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 102,
+          "observedFirstContentfulPaintMs": 102,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info forced-reflow-insight /files ab33eabf3694",
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "serious largest-contentful-paint /files 2aa1bfc24dda",
+        "serious largest-contentful-paint /photos 717c65c3b0d2",
+        "serious largest-contentful-paint /settings/general 5f339aeaf605"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 1,
+        "output": [
+          "quark: overall 61 | a11y 87 | perf 35 | responsiveness n/a | memory n/a | best-practices 62",
+          "2 new, 0 fixed, 194 unchanged",
+          "FAIL new serious perf finding on /photos: largest-contentful-paint: Largest Contentful Paint",
+          "FAIL perf score dropped from 57.5 to 35.0, more than the allowed 5.0 points",
+          "FAIL overall score dropped from 70.5 to 60.9, more than the allowed 2.0 points",
+          "gate failed"
+        ]
+      }
+    },
+    {
+      "run": "05",
+      "start": "2026-10-09T21:50:27Z",
+      "end": "2026-10-09T21:52:43Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.32,
+        "perf": 56.93
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 680.3,
+            "largest-contentful-paint": 1196.6,
+            "total-blocking-time": 15275.0,
+            "speed-index": 26112.9,
+            "interactive": 69618.7
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 102,
+          "observedFirstContentfulPaintMs": 102,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 653.4,
+            "largest-contentful-paint": 1188.9,
+            "total-blocking-time": 11213.0,
+            "speed-index": 27006.4,
+            "interactive": 67465.2
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 113,
+          "observedFirstContentfulPaintMs": 113,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 56,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 706.8,
+            "largest-contentful-paint": 1314.6,
+            "total-blocking-time": 27795.0,
+            "speed-index": 34500.7,
+            "interactive": 79379.0
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 344,
+          "observedFirstContentfulPaintMs": 344,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info forced-reflow-insight /settings/general df7fd690a43f",
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "moderate largest-contentful-paint /settings/general 5f339aeaf605"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 70 | a11y 87 | perf 57 | responsiveness n/a | memory n/a | best-practices 62",
+          "1 new, 1 fixed, 193 unchanged",
+          "1 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "06",
+      "start": "2026-10-09T21:52:43Z",
+      "end": "2026-10-09T21:54:48Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.0,
+        "perf": 56.2
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 663.5,
+            "largest-contentful-paint": 1260.1,
+            "total-blocking-time": 15794.5,
+            "speed-index": 26329.2,
+            "interactive": 69156.7
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 168,
+          "observedFirstContentfulPaintMs": 140,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 55,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 741.6,
+            "largest-contentful-paint": 1441.1,
+            "total-blocking-time": 32105.0,
+            "speed-index": 41936.3,
+            "interactive": 86470.6
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 404,
+          "observedFirstContentfulPaintMs": 404,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 696.8,
+            "largest-contentful-paint": 1257.5,
+            "total-blocking-time": 13233,
+            "speed-index": 27136.0,
+            "interactive": 67012.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 158,
+          "observedFirstContentfulPaintMs": 158,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info forced-reflow-insight /photos aab3a5fdd4b0",
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "moderate largest-contentful-paint /files 2aa1bfc24dda",
+        "moderate largest-contentful-paint /photos 717c65c3b0d2",
+        "moderate largest-contentful-paint /settings/general 5f339aeaf605"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 1,
+        "output": [
+          "quark: overall 70 | a11y 87 | perf 56 | responsiveness n/a | memory n/a | best-practices 62",
+          "2 new, 0 fixed, 194 unchanged",
+          "FAIL new moderate perf finding on /photos: largest-contentful-paint: Largest Contentful Paint",
+          "gate failed"
+        ]
+      }
+    },
+    {
+      "run": "07",
+      "start": "2026-10-09T21:54:48Z",
+      "end": "2026-10-09T21:56:23Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.69,
+        "perf": 57.8
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 673.9,
+            "largest-contentful-paint": 1071.8,
+            "total-blocking-time": 13985.4,
+            "speed-index": 25856.0,
+            "interactive": 67983.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 132,
+          "observedFirstContentfulPaintMs": 132,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 646.5,
+            "largest-contentful-paint": 1191.1,
+            "total-blocking-time": 8746.3,
+            "speed-index": 26072.7,
+            "interactive": 62454.4
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 105,
+          "observedFirstContentfulPaintMs": 105,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 657.9,
+            "largest-contentful-paint": 1050.9,
+            "total-blocking-time": 8016.5,
+            "speed-index": 23957.3,
+            "interactive": 62021.2
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 137,
+          "observedFirstContentfulPaintMs": 120,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 71 | a11y 87 | perf 58 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 2 fixed, 192 unchanged",
+          "2 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "08",
+      "start": "2026-10-09T21:56:23Z",
+      "end": "2026-10-09T21:58:07Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.25,
+        "perf": 56.78
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 54,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 809.2,
+            "largest-contentful-paint": 1564.4,
+            "total-blocking-time": 19499.5,
+            "speed-index": 28386.6,
+            "interactive": 73324.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 346,
+          "observedFirstContentfulPaintMs": 346,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 657.7,
+            "largest-contentful-paint": 981.4,
+            "total-blocking-time": 7522,
+            "speed-index": 25335.5,
+            "interactive": 61360.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 99,
+          "observedFirstContentfulPaintMs": 99,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 657.1,
+            "largest-contentful-paint": 1100.2,
+            "total-blocking-time": 8705.0,
+            "speed-index": 24237.7,
+            "interactive": 62529.5
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 129,
+          "observedFirstContentfulPaintMs": 113,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "moderate largest-contentful-paint /files 2aa1bfc24dda"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 70 | a11y 87 | perf 57 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 1 fixed, 193 unchanged",
+          "1 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "09",
+      "start": "2026-10-09T21:58:07Z",
+      "end": "2026-10-09T21:59:44Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.22,
+        "perf": 56.72
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 644.9,
+            "largest-contentful-paint": 1050.7,
+            "total-blocking-time": 11639.0,
+            "speed-index": 24961.9,
+            "interactive": 66301.5
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 87,
+          "observedFirstContentfulPaintMs": 77,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 638.0,
+            "largest-contentful-paint": 1077.0,
+            "total-blocking-time": 7717.0,
+            "speed-index": 25209.9,
+            "interactive": 62029.9
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 78,
+          "observedFirstContentfulPaintMs": 78,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 54,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 662.8,
+            "largest-contentful-paint": 1599.1,
+            "total-blocking-time": 12395.0,
+            "speed-index": 26018.6,
+            "interactive": 65305.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 253,
+          "observedFirstContentfulPaintMs": 167,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d",
+        "moderate largest-contentful-paint /settings/general 5f339aeaf605"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 70 | a11y 87 | perf 57 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 1 fixed, 193 unchanged",
+          "1 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "10",
+      "start": "2026-10-09T21:59:44Z",
+      "end": "2026-10-09T22:01:31Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 67.14,
+        "perf": 49.53
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 56,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 769.4,
+            "largest-contentful-paint": 1325.2,
+            "total-blocking-time": 16883.0,
+            "speed-index": 28032.7,
+            "interactive": 70807.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 223,
+          "observedFirstContentfulPaintMs": 223,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 35,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 662.0,
+            "largest-contentful-paint": 7860.0,
+            "total-blocking-time": 18805.0,
+            "speed-index": 30423.0,
+            "interactive": 72627.9
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 168,
+          "observedFirstContentfulPaintMs": 132,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 57,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 719.9,
+            "largest-contentful-paint": 1139.8,
+            "total-blocking-time": 8533.0,
+            "speed-index": 23671.5,
+            "interactive": 62456.7
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 150,
+          "observedFirstContentfulPaintMs": 150,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info forced-reflow-insight /photos aab3a5fdd4b0",
+        "info forced-reflow-insight /settings/general df7fd690a43f",
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general d3411becd731",
+        "moderate largest-contentful-paint /files 2aa1bfc24dda",
+        "serious largest-contentful-paint /photos 717c65c3b0d2"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 1,
+        "output": [
+          "quark: overall 67 | a11y 87 | perf 50 | responsiveness n/a | memory n/a | best-practices 62",
+          "4 new, 2 fixed, 192 unchanged",
+          "FAIL new serious perf finding on /photos: largest-contentful-paint: Largest Contentful Paint",
+          "FAIL perf score dropped from 57.5 to 49.5, more than the allowed 5.0 points",
+          "FAIL overall score dropped from 70.5 to 67.1, more than the allowed 2.0 points",
+          "2 fixed; run flighthouse baseline --update to accept them",
+          "gate failed"
+        ]
+      }
+    },
+    {
+      "run": "11",
+      "start": "2026-10-09T22:01:31Z",
+      "end": "2026-10-09T22:03:20Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.74,
+        "perf": 57.92
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 674.1,
+            "largest-contentful-paint": 1014.2,
+            "total-blocking-time": 13145.0,
+            "speed-index": 25665.8,
+            "interactive": 67588.5
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 155,
+          "observedFirstContentfulPaintMs": 155,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 673.2,
+            "largest-contentful-paint": 1115.3,
+            "total-blocking-time": 9560.5,
+            "speed-index": 26443.6,
+            "interactive": 63473.5
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 133,
+          "observedFirstContentfulPaintMs": 133,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 635.0,
+            "largest-contentful-paint": 1149.0,
+            "total-blocking-time": 10331,
+            "speed-index": 25665.0,
+            "interactive": 63800.3
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 106,
+          "observedFirstContentfulPaintMs": 106,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files 67b1fc331b3c",
+        "info image-delivery-insight /settings/general 21200597216d"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 71 | a11y 87 | perf 58 | responsiveness n/a | memory n/a | best-practices 62",
+          "1 new, 3 fixed, 191 unchanged",
+          "3 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "12",
+      "start": "2026-10-09T22:03:20Z",
+      "end": "2026-10-09T22:05:01Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 67.59,
+        "perf": 50.57
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 35,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 756.0,
+            "largest-contentful-paint": 8035.3,
+            "total-blocking-time": 13390.5,
+            "speed-index": 26410.1,
+            "interactive": 67863.6
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 132,
+          "observedFirstContentfulPaintMs": 132,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 661.2,
+            "largest-contentful-paint": 1083.5,
+            "total-blocking-time": 8203,
+            "speed-index": 25310.7,
+            "interactive": 62118.7
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 86,
+          "observedFirstContentfulPaintMs": 86,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 644.3,
+            "largest-contentful-paint": 911.7,
+            "total-blocking-time": 7192.0,
+            "speed-index": 24350.0,
+            "interactive": 61566.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 75,
+          "observedFirstContentfulPaintMs": 75,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general d3411becd731",
+        "serious largest-contentful-paint /files 2aa1bfc24dda"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 1,
+        "output": [
+          "quark: overall 68 | a11y 87 | perf 51 | responsiveness n/a | memory n/a | best-practices 62",
+          "1 new, 2 fixed, 192 unchanged",
+          "FAIL perf score dropped from 57.5 to 50.6, more than the allowed 5.0 points",
+          "FAIL overall score dropped from 70.5 to 67.6, more than the allowed 2.0 points",
+          "2 fixed; run flighthouse baseline --update to accept them",
+          "gate failed"
+        ]
+      }
+    },
+    {
+      "run": "13",
+      "start": "2026-10-09T22:05:01Z",
+      "end": "2026-10-09T22:06:30Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 70.92,
+        "perf": 58.33
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 638.7,
+            "largest-contentful-paint": 954.4,
+            "total-blocking-time": 11725,
+            "speed-index": 24869.4,
+            "interactive": 66660.7
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 91,
+          "observedFirstContentfulPaintMs": 91,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 637.2,
+            "largest-contentful-paint": 950.3,
+            "total-blocking-time": 7362.5,
+            "speed-index": 25244.4,
+            "interactive": 61500.5
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 73,
+          "observedFirstContentfulPaintMs": 73,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 643.4,
+            "largest-contentful-paint": 1121.7,
+            "total-blocking-time": 7286.8,
+            "speed-index": 23896.5,
+            "interactive": 61394.9
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 77,
+          "observedFirstContentfulPaintMs": 77,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 71 | a11y 87 | perf 58 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 2 fixed, 192 unchanged",
+          "2 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "14",
+      "start": "2026-10-09T22:06:30Z",
+      "end": "2026-10-09T22:08:00Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 71.02,
+        "perf": 58.58
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 651.6,
+            "largest-contentful-paint": 927.2,
+            "total-blocking-time": 11900.0,
+            "speed-index": 24918.0,
+            "interactive": 66686.2
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 64,
+          "observedFirstContentfulPaintMs": 64,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 58,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 627.2,
+            "largest-contentful-paint": 1086.3,
+            "total-blocking-time": 7484.0,
+            "speed-index": 25506.3,
+            "interactive": 61558.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 59,
+          "observedFirstContentfulPaintMs": 59,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 646.8,
+            "largest-contentful-paint": 923.5,
+            "total-blocking-time": 6762.0,
+            "speed-index": 23703.2,
+            "interactive": 61065.9
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 60,
+          "observedFirstContentfulPaintMs": 60,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 71 | a11y 87 | perf 59 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 2 fixed, 192 unchanged",
+          "2 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    },
+    {
+      "run": "15",
+      "start": "2026-10-09T22:08:00Z",
+      "end": "2026-10-09T22:09:26Z",
+      "collectExit": 0,
+      "combinedScores": {
+        "a11y": 86.62,
+        "best-practices": 61.54,
+        "overall": 71.17,
+        "perf": 58.92
+      },
+      "lighthouse": {
+        "/files": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 91,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 638.5,
+            "largest-contentful-paint": 895.1,
+            "total-blocking-time": 10977,
+            "speed-index": 24867.0,
+            "interactive": 65961.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 81,
+          "observedFirstContentfulPaintMs": 81,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/photos": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 638.0,
+            "largest-contentful-paint": 891.0,
+            "total-blocking-time": 7037.0,
+            "speed-index": 25200.6,
+            "interactive": 61165.5
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 88,
+          "observedFirstContentfulPaintMs": 88,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        },
+        "/settings/general": {
+          "scores": {
+            "performance": 59,
+            "accessibility": 94,
+            "best-practices": 62
+          },
+          "metricsMs": {
+            "first-contentful-paint": 631.5,
+            "largest-contentful-paint": 888.1,
+            "total-blocking-time": 6271,
+            "speed-index": 23649.3,
+            "interactive": 60607.8
+          },
+          "cumulativeLayoutShift": 0,
+          "observedLargestContentfulPaintMs": 79,
+          "observedFirstContentfulPaintMs": 79,
+          "runtimeError": null,
+          "finalDisplayedUrlIsRoute": true
+        }
+      },
+      "unstableFindingsPresent": [
+        "info image-delivery-insight /files eb6667c11506",
+        "info image-delivery-insight /settings/general 21200597216d"
+      ],
+      "ciAgainstRun01DefaultGate": {
+        "exit": 0,
+        "output": [
+          "quark: overall 71 | a11y 87 | perf 59 | responsiveness n/a | memory n/a | best-practices 62",
+          "0 new, 2 fixed, 192 unchanged",
+          "2 fixed; run flighthouse baseline --update to accept them",
+          "gate passed"
+        ]
+      }
+    }
+  ],
+  "gateReplay": {
+    "method": "Raw outputs recorded above, composed per route and gated with the real `flighthouse ci` (default gate). A median-of-N set picks, per route, the run whose Lighthouse performance score is the median of N recorded runs; this simulates a runner change that does not exist yet. `scoreOnlyGateFailed` recomputes the verdict from the reported scores alone, ignoring new findings; it simulates the proposed rule in ADR 0027 and is not flighthouse behavior.",
+    "singleRunEveryOrderedPair": {
+      "description": "each run as baseline, each other run as candidate",
+      "comparisons": 210,
+      "realGateFailed": 109,
+      "realGateFailureReasons": {
+        "score drop": 10,
+        "score drop + new largest-contentful-paint finding": 37,
+        "new largest-contentful-paint finding": 62
+      },
+      "newFindingRulesInFailures": [
+        "largest-contentful-paint"
+      ],
+      "maxDropPoints": {
+        "overall": 10.26,
+        "perf": 23.93,
+        "a11y": 0.0,
+        "best-practices": 0.0
+      },
+      "comparisonsWithASlowModeRouteInEitherSide": 100,
+      "maxDropPointsWithoutSlowMode": {
+        "overall": 1.16,
+        "perf": 2.72
+      },
+      "scoreOnlyGateFailed": {
+        "overall 2, perf 5": 47,
+        "overall 3, perf 8": 35
+      }
+    },
+    "medianOf3": {
+      "description": "baseline median of runs 01-03; candidates every 3-run set from runs 04-15",
+      "comparisons": 220,
+      "realGateFailed": 36,
+      "realGateFailureReasons": {
+        "new largest-contentful-paint finding": 17,
+        "score drop + new largest-contentful-paint finding": 11,
+        "score drop": 8
+      },
+      "newFindingRulesInFailures": [
+        "largest-contentful-paint"
+      ],
+      "maxDropPoints": {
+        "overall": 6.44,
+        "perf": 15.02,
+        "a11y": 0.0,
+        "best-practices": 0.0
+      },
+      "comparisonsWithASlowModeRouteInEitherSide": 19,
+      "maxDropPointsWithoutSlowMode": {
+        "overall": 0.94,
+        "perf": 2.2
+      },
+      "scoreOnlyGateFailed": {
+        "overall 2, perf 5": 19,
+        "overall 3, perf 8": 17
+      }
+    },
+    "medianOf5Baseline01To05": {
+      "description": "baseline median of runs 01-05; candidates every 5-run set from the other 10 runs",
+      "comparisons": 252,
+      "realGateFailed": 0,
+      "realGateFailureReasons": {},
+      "newFindingRulesInFailures": [],
+      "maxDropPoints": {
+        "overall": -0.02,
+        "perf": -0.05,
+        "a11y": 0.0,
+        "best-practices": 0.0
+      },
+      "comparisonsWithASlowModeRouteInEitherSide": 0,
+      "maxDropPointsWithoutSlowMode": {
+        "overall": -0.02,
+        "perf": -0.05
+      },
+      "scoreOnlyGateFailed": {
+        "overall 2, perf 5": 0,
+        "overall 3, perf 8": 0
+      }
+    },
+    "medianOf5Baseline06To10": {
+      "description": "baseline median of runs 06-10; candidates every 5-run set from the other 10 runs",
+      "comparisons": 252,
+      "realGateFailed": 84,
+      "realGateFailureReasons": {
+        "new largest-contentful-paint finding": 63,
+        "score drop + new largest-contentful-paint finding": 3,
+        "score drop": 18
+      },
+      "newFindingRulesInFailures": [
+        "largest-contentful-paint"
+      ],
+      "maxDropPoints": {
+        "overall": 3.21,
+        "perf": 7.48,
+        "a11y": 0.0,
+        "best-practices": 0.0
+      },
+      "comparisonsWithASlowModeRouteInEitherSide": 21,
+      "maxDropPointsWithoutSlowMode": {
+        "overall": 0.04,
+        "perf": 0.08
+      },
+      "scoreOnlyGateFailed": {
+        "overall 2, perf 5": 21,
+        "overall 3, perf 8": 16
+      }
+    },
+    "medianOf5Baseline11To15": {
+      "description": "baseline median of runs 11-15; candidates every 5-run set from the other 10 runs",
+      "comparisons": 252,
+      "realGateFailed": 246,
+      "realGateFailureReasons": {
+        "new largest-contentful-paint finding": 246
+      },
+      "newFindingRulesInFailures": [
+        "largest-contentful-paint"
+      ],
+      "maxDropPoints": {
+        "overall": 1.28,
+        "perf": 2.98,
+        "a11y": 0.0,
+        "best-practices": 0.0
+      },
+      "comparisonsWithASlowModeRouteInEitherSide": 0,
+      "maxDropPointsWithoutSlowMode": {
+        "overall": 1.28,
+        "perf": 2.98
+      },
+      "scoreOnlyGateFailed": {
+        "overall 2, perf 5": 0,
+        "overall 3, perf 8": 0
+      }
+    }
+  },
+  "desktopPresetVariant": {
+    "change": "lighthouse.command [npx, --yes, lighthouse@13.5.0, --preset=desktop]; everything else identical (see quark-variance.collect.yaml)",
+    "lighthouseThrottling": {
+      "method": "simulate",
+      "rttMs": 40,
+      "throughputKbps": 10240,
+      "cpuSlowdownMultiplier": 1
+    },
+    "confounder": "These 12 runs came after the default runs, while machine load was lower, so the comparison is not controlled.",
+    "loadAverage1m": {
+      "min": 2.23,
+      "max": 7.54,
+      "samples": 32
+    },
+    "summary": {
+      "collectSucceeded": "12/12",
+      "combinedScoreSpreadPoints": {
+        "overall": {
+          "min": 70.77,
+          "max": 71.99,
+          "range": 1.22,
+          "median": 71.94,
+          "stdev": 0.4
+        },
+        "a11y": {
+          "min": 86.62,
+          "max": 86.62,
+          "range": 0.0,
+          "median": 86.62,
+          "stdev": 0.0
+        },
+        "perf": {
+          "min": 57.98,
+          "max": 60.83,
+          "range": 2.85,
+          "median": 60.73,
+          "stdev": 0.93
+        },
+        "best-practices": {
+          "min": 61.54,
+          "max": 61.54,
+          "range": 0.0,
+          "median": 61.54,
+          "stdev": 0.0
+        }
+      },
+      "perRouteLighthouseScoreSpread": {
+        "/files": {
+          "performance": {
+            "min": 56,
+            "max": 60,
+            "range": 4,
+            "median": 60.0,
+            "stdev": 1.56
+          },
+          "accessibility": {
+            "min": 91,
+            "max": 91,
+            "range": 0,
+            "median": 91.0,
+            "stdev": 0.0
+          },
+          "best-practices": {
+            "min": 62,
+            "max": 62,
+            "range": 0,
+            "median": 62.0,
+            "stdev": 0.0
+          }
+        },
+        "/photos": {
+          "performance": {
+            "min": 56,
+            "max": 61,
+            "range": 5,
+            "median": 61.0,
+            "stdev": 1.71
+          },
+          "accessibility": {
+            "min": 94,
+            "max": 94,
+            "range": 0,
+            "median": 94.0,
+            "stdev": 0.0
+          },
+          "best-practices": {
+            "min": 62,
+            "max": 62,
+            "range": 0,
+            "median": 62.0,
+            "stdev": 0.0
+          }
+        },
+        "/settings/general": {
+          "performance": {
+            "min": 61,
+            "max": 61,
+            "range": 0,
+            "median": 61.0,
+            "stdev": 0.0
+          },
+          "accessibility": {
+            "min": 94,
+            "max": 94,
+            "range": 0,
+            "median": 94.0,
+            "stdev": 0.0
+          },
+          "best-practices": {
+            "min": 62,
+            "max": 62,
+            "range": 0,
+            "median": 62.0,
+            "stdev": 0.0
+          }
+        }
+      },
+      "axeRawResultsIdenticalAcrossRuns": true,
+      "axeRawResultsIdenticalToDefaultRuns": true,
+      "unstableLighthouseFindings": [
+        "image-delivery-insight /files 67b1fc331b3c (info): present in 3/12",
+        "image-delivery-insight /files eb6667c11506 (info): present in 9/12",
+        "image-delivery-insight /photos 045220f30f2c (info): present in 9/12",
+        "image-delivery-insight /photos 5d04e0a0ddf7 (info): present in 3/12",
+        "image-delivery-insight /settings/general 21200597216d (info): present in 8/12",
+        "image-delivery-insight /settings/general d3411becd731 (info): present in 4/12",
+        "largest-contentful-paint /files 2aa1bfc24dda (moderate): present in 2/12",
+        "largest-contentful-paint /photos 717c65c3b0d2 (moderate): present in 2/12"
+      ],
+      "ciVerdictsAgainstRun01": {
+        "passed": 9,
+        "failed": 3
+      },
+      "largestContentfulPaint": "36 route runs: 32 at 239-272 ms, 4 at 1373-1430 ms (above the 1200 ms p10, so a moderate finding). Observed LCP for those 4 was 66-101 ms."
+    },
+    "gateReplaySingleRunEveryOrderedPair": {
+      "description": "each variant run as baseline, each other variant run as candidate",
+      "comparisons": 132,
+      "realGateFailed": 31,
+      "realGateFailureReasons": {
+        "new largest-contentful-paint finding": 31
+      },
+      "newFindingRulesInFailures": [
+        "largest-contentful-paint"
+      ],
+      "maxDropPoints": {
+        "overall": 1.22,
+        "perf": 2.85,
+        "a11y": 0.0,
+        "best-practices": 0.0
+      },
+      "scoreOnlyGateFailed": {
+        "overall 2, perf 5": 0,
+        "overall 3, perf 8": 0
+      }
+    },
+    "runs": [
+      {
+        "run": "01",
+        "start": "2026-10-09T22:20:20Z",
+        "end": "2026-10-09T22:21:45Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.9,
+          "perf": 60.63
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 239.5,
+            "observedLargestContentfulPaintMs": 57,
+            "totalBlockingTimeMs": 1453,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 262.7,
+            "observedLargestContentfulPaintMs": 52,
+            "totalBlockingTimeMs": 1362.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 262.0,
+            "observedLargestContentfulPaintMs": 77,
+            "totalBlockingTimeMs": 1131.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "0 new, 0 fixed, 193 unchanged",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "02",
+        "start": "2026-10-09T22:21:50Z",
+        "end": "2026-10-09T22:23:15Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.99,
+          "perf": 60.83
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 240.3,
+            "observedLargestContentfulPaintMs": 49,
+            "totalBlockingTimeMs": 1509.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 240.6,
+            "observedLargestContentfulPaintMs": 49,
+            "totalBlockingTimeMs": 1168.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 272.3,
+            "observedLargestContentfulPaintMs": 58,
+            "totalBlockingTimeMs": 1148.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "2 new, 2 fixed, 191 unchanged",
+            "2 fixed; run flighthouse baseline --update to accept them",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "03",
+        "start": "2026-10-09T22:23:15Z",
+        "end": "2026-10-09T22:24:39Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.94,
+          "perf": 60.73
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 244.2,
+            "observedLargestContentfulPaintMs": 62,
+            "totalBlockingTimeMs": 1615.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 245.4,
+            "observedLargestContentfulPaintMs": 96,
+            "totalBlockingTimeMs": 1274.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 260.8,
+            "observedLargestContentfulPaintMs": 53,
+            "totalBlockingTimeMs": 1120.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "1 new, 1 fixed, 192 unchanged",
+            "1 fixed; run flighthouse baseline --update to accept them",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "04",
+        "start": "2026-10-09T22:24:39Z",
+        "end": "2026-10-09T22:26:07Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.24,
+          "perf": 59.08
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 56,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 1430.2,
+            "observedLargestContentfulPaintMs": 101,
+            "totalBlockingTimeMs": 1516.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 339.9,
+            "observedLargestContentfulPaintMs": 225,
+            "totalBlockingTimeMs": 2258,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 240.7,
+            "observedLargestContentfulPaintMs": 79,
+            "totalBlockingTimeMs": 1135.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 1,
+          "output": [
+            "quark: overall 71 | a11y 87 | perf 59 | responsiveness n/a | memory n/a | best-practices 62",
+            "3 new, 2 fixed, 191 unchanged",
+            "FAIL new moderate perf finding on /files: largest-contentful-paint: Largest Contentful Paint",
+            "2 fixed; run flighthouse baseline --update to accept them",
+            "gate failed"
+          ]
+        }
+      },
+      {
+        "run": "05",
+        "start": "2026-10-09T22:26:07Z",
+        "end": "2026-10-09T22:27:32Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.99,
+          "perf": 60.83
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 252.9,
+            "observedLargestContentfulPaintMs": 68,
+            "totalBlockingTimeMs": 1584.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 243.6,
+            "observedLargestContentfulPaintMs": 66,
+            "totalBlockingTimeMs": 1209.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 240.0,
+            "observedLargestContentfulPaintMs": 81,
+            "totalBlockingTimeMs": 1142.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "0 new, 0 fixed, 193 unchanged",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "06",
+        "start": "2026-10-09T22:27:32Z",
+        "end": "2026-10-09T22:28:56Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.94,
+          "perf": 60.73
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 242.0,
+            "observedLargestContentfulPaintMs": 72,
+            "totalBlockingTimeMs": 1543,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 240.6,
+            "observedLargestContentfulPaintMs": 80,
+            "totalBlockingTimeMs": 1216.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 262.1,
+            "observedLargestContentfulPaintMs": 50,
+            "totalBlockingTimeMs": 1164.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "1 new, 1 fixed, 192 unchanged",
+            "1 fixed; run flighthouse baseline --update to accept them",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "07",
+        "start": "2026-10-09T22:28:56Z",
+        "end": "2026-10-09T22:30:22Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.94,
+          "perf": 60.73
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 246.6,
+            "observedLargestContentfulPaintMs": 88,
+            "totalBlockingTimeMs": 1464.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 251.9,
+            "observedLargestContentfulPaintMs": 83,
+            "totalBlockingTimeMs": 1227.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 252.9,
+            "observedLargestContentfulPaintMs": 73,
+            "totalBlockingTimeMs": 1196.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "1 new, 1 fixed, 192 unchanged",
+            "1 fixed; run flighthouse baseline --update to accept them",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "08",
+        "start": "2026-10-09T22:30:22Z",
+        "end": "2026-10-09T22:31:45Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 70.77,
+          "perf": 57.98
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 56,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 1402.1,
+            "observedLargestContentfulPaintMs": 90,
+            "totalBlockingTimeMs": 1519.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 57,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 1373.4,
+            "observedLargestContentfulPaintMs": 87,
+            "totalBlockingTimeMs": 1275.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 261.2,
+            "observedLargestContentfulPaintMs": 55,
+            "totalBlockingTimeMs": 1173.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 1,
+          "output": [
+            "quark: overall 71 | a11y 87 | perf 58 | responsiveness n/a | memory n/a | best-practices 62",
+            "3 new, 1 fixed, 192 unchanged",
+            "FAIL new moderate perf finding on /photos: largest-contentful-paint: Largest Contentful Paint",
+            "FAIL new moderate perf finding on /files: largest-contentful-paint: Largest Contentful Paint",
+            "1 fixed; run flighthouse baseline --update to accept them",
+            "gate failed"
+          ]
+        }
+      },
+      {
+        "run": "09",
+        "start": "2026-10-09T22:31:45Z",
+        "end": "2026-10-09T22:33:09Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.94,
+          "perf": 60.73
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 243.5,
+            "observedLargestContentfulPaintMs": 49,
+            "totalBlockingTimeMs": 1511.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 260.9,
+            "observedLargestContentfulPaintMs": 78,
+            "totalBlockingTimeMs": 1302.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 264.2,
+            "observedLargestContentfulPaintMs": 91,
+            "totalBlockingTimeMs": 1201.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "0 new, 0 fixed, 193 unchanged",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "10",
+        "start": "2026-10-09T22:33:09Z",
+        "end": "2026-10-09T22:34:33Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.29,
+          "perf": 59.22
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 260.9,
+            "observedLargestContentfulPaintMs": 78,
+            "totalBlockingTimeMs": 1481,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 56,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 1429.9,
+            "observedLargestContentfulPaintMs": 66,
+            "totalBlockingTimeMs": 1371.6,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 238.6,
+            "observedLargestContentfulPaintMs": 72,
+            "totalBlockingTimeMs": 1208.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 1,
+          "output": [
+            "quark: overall 71 | a11y 87 | perf 59 | responsiveness n/a | memory n/a | best-practices 62",
+            "1 new, 0 fixed, 193 unchanged",
+            "FAIL new moderate perf finding on /photos: largest-contentful-paint: Largest Contentful Paint",
+            "gate failed"
+          ]
+        }
+      },
+      {
+        "run": "11",
+        "start": "2026-10-09T22:34:33Z",
+        "end": "2026-10-09T22:35:57Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.94,
+          "perf": 60.73
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 241.0,
+            "observedLargestContentfulPaintMs": 61,
+            "totalBlockingTimeMs": 1517.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 259.2,
+            "observedLargestContentfulPaintMs": 78,
+            "totalBlockingTimeMs": 1342.5,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 241.5,
+            "observedLargestContentfulPaintMs": 50,
+            "totalBlockingTimeMs": 1162.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 61 | responsiveness n/a | memory n/a | best-practices 62",
+            "0 new, 0 fixed, 193 unchanged",
+            "gate passed"
+          ]
+        }
+      },
+      {
+        "run": "12",
+        "start": "2026-10-09T22:35:57Z",
+        "end": "2026-10-09T22:37:22Z",
+        "collectExit": 0,
+        "combinedScores": {
+          "a11y": 86.62,
+          "best-practices": 61.54,
+          "overall": 71.82,
+          "perf": 60.43
+        },
+        "lighthouse": {
+          "/files": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 91,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 240.4,
+            "observedLargestContentfulPaintMs": 84,
+            "totalBlockingTimeMs": 1632,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/photos": {
+            "scores": {
+              "performance": 60,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 264.6,
+            "observedLargestContentfulPaintMs": 70,
+            "totalBlockingTimeMs": 1442,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          },
+          "/settings/general": {
+            "scores": {
+              "performance": 61,
+              "accessibility": 94,
+              "best-practices": 62
+            },
+            "largestContentfulPaintMs": 255.1,
+            "observedLargestContentfulPaintMs": 65,
+            "totalBlockingTimeMs": 1307.0,
+            "runtimeError": null,
+            "finalDisplayedUrlIsRoute": true
+          }
+        },
+        "ciAgainstRun01DefaultGate": {
+          "exit": 0,
+          "output": [
+            "quark: overall 72 | a11y 87 | perf 60 | responsiveness n/a | memory n/a | best-practices 62",
+            "2 new, 2 fixed, 191 unchanged",
+            "2 fixed; run flighthouse baseline --update to accept them",
+            "gate passed"
+          ]
+        }
+      }
+    ]
+  }
+}
