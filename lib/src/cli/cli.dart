@@ -160,7 +160,7 @@ Future<Result<List<RawArtifact>, Failure>> _readSource(
 
 Future<Assembled> _assemble(_Context context) async {
   final read = <Result<List<RawArtifact>, Failure>>[
-    for (final source in context.config.sources.keys)
+    for (final source in context.config.auditSources)
       await _readSource(context, source),
   ];
   final (artifacts, readFailures) = partition(read);
@@ -245,7 +245,7 @@ abstract base class _FlighthouseCommand extends Command<int> {
     }
     return switch (await _load(globalResults!, environment, version)) {
       Err(:final error) => _reportFailures([error], environment),
-      Ok(value: final context) when context.config.sources.isEmpty =>
+      Ok(value: final context) when context.config.auditSources.isEmpty =>
         _reportFailures([
           const ConfigFailure(
             keyPath: 'sources',
