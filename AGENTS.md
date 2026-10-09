@@ -60,6 +60,7 @@ to be repeatable, add a target. `make help` lists everything.
 | `make fix`        | `dart fix --apply`, `dart format`                                    |
 | `make test`       | every unit, fixture, and end-to-end test                             |
 | `make test/cli`   | run the CLI's `ci` command against recorded fixtures                 |
+| `make run/release`| tag the pubspec version on a clean, current `main` and push the tag  |
 
 GNU make is required. On macOS use `gmake`.
 

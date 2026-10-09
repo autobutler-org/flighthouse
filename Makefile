@@ -10,6 +10,8 @@ unexport GIT_WORK_TREE
 unexport GIT_PREFIX
 
 FIXTURES := test/fixtures
+VERSION := $(shell sed -n 's/^version: //p' pubspec.yaml)
+RELEASE_TAG := flighthouse-v$(VERSION)
 
 .PHONY: help
 help: ## List targets
@@ -60,6 +62,21 @@ test: ## Run every unit, fixture, and end-to-end test
 .PHONY: run/cli
 run/cli: ## Run the CLI (CLI_ARGS supplies the command and options)
 	dart run bin/flighthouse.dart $(CLI_ARGS)
+
+.PHONY: run/release
+run/release: ## Tag the pubspec version on main and push the tag, which publishes it
+	git fetch --quiet --tags origin main
+	if [ "$$(git rev-parse HEAD)" != "$$(git rev-parse origin/main)" ] || [ -n "$$(git status --porcelain)" ]; then
+		echo "Release from a clean, current main: git checkout main && git pull" >&2
+		exit 1
+	fi
+	if git rev-parse --quiet --verify "refs/tags/$(RELEASE_TAG)" >/dev/null; then
+		echo "Tag $(RELEASE_TAG) already exists. Bump the version in pubspec.yaml and CHANGELOG.md in a PR first" >&2
+		exit 1
+	fi
+	git tag "$(RELEASE_TAG)"
+	git push origin "$(RELEASE_TAG)"
+	echo "Pushed $(RELEASE_TAG); the Publish workflow takes it from here"
 
 .PHONY: test/cli
 test/cli: test/quark ## Run the CLI's collect and ci commands against recorded fixtures
