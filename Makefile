@@ -87,3 +87,15 @@ test/cli: test/quark ## Run the CLI's collect and ci commands against recorded f
 test/quark: ## Run the CI gate against real quark page audits
 	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/48a76ae/flighthouse.yaml collect
 	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/48a76ae/flighthouse.yaml ci
+
+.PHONY: run/chrome-acquire
+run/chrome-acquire: ## Download the pinned Chrome and print its version
+	dart run tool/chrome_smoke.dart --acquire-only
+
+.PHONY: run/chrome-smoke
+run/chrome-smoke: ## Launch pinned Chrome, inject axe, and write the result
+	dart run tool/chrome_smoke.dart
+
+.PHONY: run/web-fixture
+run/web-fixture: ## Collect the Flutter web fixture and exercise the CI gate
+	integration/web_fixture/tool/run_fixture.sh

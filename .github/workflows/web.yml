@@ -1,0 +1,102 @@
+name: Web
+on:
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+permissions:
+  contents: read
+jobs:
+  chrome-smoke:
+    name: Chrome smoke (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            chrome_no_sandbox: "true"
+          - os: macos-latest
+            chrome_no_sandbox: "false"
+    env:
+      FLIGHTHOUSE_CI_CHROME_NO_SANDBOX: ${{ matrix.chrome_no_sandbox }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+      - name: Install the libraries Chrome needs
+        if: matrix.os == 'ubuntu-latest'
+        run: integration/web_fixture/tool/chrome_libraries.sh
+      - name: Resolve dependencies
+        run: dart pub get
+      - name: Download Chrome, launch it, and inject axe
+        run: |
+          echo "FLIGHTHOUSE_CI_CHROME_NO_SANDBOX=${FLIGHTHOUSE_CI_CHROME_NO_SANDBOX}"
+          make run/chrome-smoke
+      - name: Keep the axe result
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: chrome-smoke-${{ matrix.os }}
+          path: build/chrome-smoke/axe.json
+          if-no-files-found: warn
+  web:
+    name: Flutter web fixture
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      FLIGHTHOUSE_CI_CHROME_NO_SANDBOX: "true"
+      FLIGHTHOUSE_USERNAME: fixture-user
+      FLIGHTHOUSE_PASSWORD: fixture-password
+      FIXTURE_API_PORT: "8090"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install Lighthouse
+        run: npm install --global lighthouse@13.5.0
+      - name: Install the libraries Chrome needs
+        run: integration/web_fixture/tool/chrome_libraries.sh
+      - name: Print tool versions
+        run: |
+          flutter --version
+          dart --version
+          node --version
+          npm --version
+          lighthouse --version
+          echo "FLIGHTHOUSE_CI_CHROME_NO_SANDBOX=${FLIGHTHOUSE_CI_CHROME_NO_SANDBOX}"
+      - name: Resolve dependencies
+        run: |
+          dart pub get
+          flutter pub get --directory integration/web_fixture
+      - name: Acquire pinned Chrome before route collection
+        run: make run/chrome-acquire
+      - name: Collect the fixture and exercise the gate
+        run: make run/web-fixture
+      - name: Keep the raw results and auth log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: web-fixture
+          if-no-files-found: warn
+          path: |
+            build/web-fixture/raw-collected
+            build/web-fixture/auth-backend.log
+            build/web-fixture/report.json
