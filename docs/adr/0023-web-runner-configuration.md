@@ -170,4 +170,5 @@ behavior before those platforms are declared supported.
 - The final app readiness selector and quark host/terms bootstrap recipe must be demonstrated by #22.
 - Ubuntu's default Chrome launch failed with `No usable sandbox!`; an explicit isolated `--no-sandbox` probe passed.
   Select the supported production/CI launch policy before #27. No host security configuration was changed in the
-  native probes, and their green result does not establish default-policy Ubuntu support.
+  native probes, and their green result does not establish default-policy Ubuntu support. Resolved by
+  [ADR 0026](0026-linux-chrome-launch.md).

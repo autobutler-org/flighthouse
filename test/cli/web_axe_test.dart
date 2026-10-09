@@ -64,6 +64,7 @@ void main() {
 
       expect(run.code, exitPassed);
       expect(run.err, isEmpty);
+      expect(run.out, contains('browser Chrome/152.0.0'));
       expect(run.out, contains('collected 2 lighthouse files'));
       expect(run.out, contains('collected 2 axe files'));
       expect(run.out, isNot(contains(_secret)));

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flighthouse/src/io/browser.dart';
 import 'package:flighthouse/src/result/failure.dart';
 import 'package:flighthouse/src/result/result.dart';
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 const _timeout = Duration(seconds: 1);
@@ -118,6 +119,44 @@ void main() {
     final failure = (result as Err<BrowserSession, IoFailure>).error;
     expect(describe(failure), contains('no version was reported'));
     expect(launches, 0);
+  });
+
+  test('the CI sandbox switch is off unless it is exactly true', () {
+    expect(chromeSandboxDisabled(const <String, String>{}), isFalse);
+    expect(
+      chromeSandboxDisabled(const {chromeNoSandboxSwitch: 'true'}),
+      isTrue,
+    );
+    for (final value in ['', '1', 'TRUE', 'True', 'false', ' true']) {
+      expect(
+        chromeSandboxDisabled({chromeNoSandboxSwitch: value}),
+        isFalse,
+        reason: value,
+      );
+    }
+    expect(
+      chromeSandboxDisabled(const {'CHROME_FORCE_NO_SANDBOX': 'true'}),
+      isFalse,
+    );
+  });
+
+  test('the Chrome cache directory follows the home directory', () {
+    expect(
+      chromeCacheDirectory(home: '/home/fixture', fallback: '/tmp'),
+      p.join('/home/fixture', '.cache', 'flighthouse', 'chrome'),
+    );
+    expect(
+      chromeCacheDirectory(
+        home: ' ',
+        userProfile: '/Users/fixture',
+        fallback: '/tmp',
+      ),
+      p.join('/Users/fixture', '.cache', 'flighthouse', 'chrome'),
+    );
+    expect(
+      chromeCacheDirectory(fallback: '/tmp'),
+      p.join('/tmp', '.cache', 'flighthouse', 'chrome'),
+    );
   });
 
   test('launch explains a host without a usable Chrome sandbox', () async {

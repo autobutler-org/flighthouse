@@ -332,6 +332,7 @@ final class _CollectCommand extends _FlighthouseCommand {
         launch: launchBrowser,
         closeTimeout: browserCloseTimeout,
         collect: (browser, origin, routes) async {
+          environment.out.writeln('browser ${browser.info.browserVersion}');
           final lighthouse = await runLighthouseRoutes(
             lighthouse: web.lighthouse,
             viewport: web.viewport,
@@ -550,13 +551,11 @@ Future<ProcessResult> _runExternalProcess(
   String? workingDirectory,
 }) => Process.run(executable, arguments, workingDirectory: workingDirectory);
 
-String _chromeCachePath() {
-  final home =
-      Platform.environment['HOME'] ??
-      Platform.environment['USERPROFILE'] ??
-      Directory.systemTemp.path;
-  return p.join(home, '.cache', 'flighthouse', 'chrome');
-}
+String _chromeCachePath() => chromeCacheDirectory(
+  home: Platform.environment['HOME'],
+  userProfile: Platform.environment['USERPROFILE'],
+  fallback: Directory.systemTemp.path,
+);
 
 typedef _WebAudits = ({List<String> lighthouse, List<String> axe});
 

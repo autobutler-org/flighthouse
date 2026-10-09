@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flighthouse/src/io/browser.dart';
 import 'package:flighthouse/src/result/failure.dart';
 import 'package:flighthouse/src/result/result.dart';
@@ -8,14 +10,25 @@ Future<Result<BrowserSession, IoFailure>> launchPuppeteerBrowser({
   required BrowserViewport viewport,
   required Duration acquireTimeout,
   required Duration launchTimeout,
-}) => launchBrowser(
-  cachePath: cachePath,
-  viewport: viewport,
-  acquireTimeout: acquireTimeout,
-  launchTimeout: launchTimeout,
-  acquire: _acquirePuppeteerBrowser,
-  launch: _launchPuppeteerBrowser,
-);
+  Map<String, String>? environment,
+}) {
+  final sandboxDisabled = chromeSandboxDisabled(
+    environment ?? Platform.environment,
+  );
+  return launchBrowser(
+    cachePath: cachePath,
+    viewport: viewport,
+    acquireTimeout: acquireTimeout,
+    launchTimeout: launchTimeout,
+    acquire: _acquirePuppeteerBrowser,
+    launch: (installation, viewport, timeout) => _launchPuppeteerBrowser(
+      installation,
+      viewport,
+      timeout,
+      sandboxDisabled: sandboxDisabled,
+    ),
+  );
+}
 
 Future<BrowserInstallation> _acquirePuppeteerBrowser(String cachePath) async {
   final downloaded = await puppeteer.downloadChrome(cachePath: cachePath);
@@ -29,13 +42,14 @@ Future<BrowserInstallation> _acquirePuppeteerBrowser(String cachePath) async {
 Future<BrowserBindings> _launchPuppeteerBrowser(
   BrowserInstallation installation,
   BrowserViewport viewport,
-  Duration timeout,
-) async {
+  Duration timeout, {
+  required bool sandboxDisabled,
+}) async {
   puppeteer.Browser? browser;
   try {
     browser = await puppeteer.puppeteer.launch(
       executablePath: installation.executablePath,
-      noSandboxFlag: false,
+      noSandboxFlag: sandboxDisabled,
       timeout: timeout,
       defaultViewport: puppeteer.DeviceViewport(
         width: viewport.width,
@@ -77,7 +91,7 @@ Future<BrowserBindings> _launchPuppeteerBrowser(
         await handle?.dispose();
       },
       click: page.click,
-      focus: page.focus,
+      focus: page.click,
       waitForFocus: (selector, focusTimeout) async {
         await page.waitForFunction(
           'selector => document.activeElement === '
