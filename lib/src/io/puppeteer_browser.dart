@@ -91,7 +91,7 @@ Future<BrowserBindings> _launchPuppeteerBrowser(
         await handle?.dispose();
       },
       click: page.click,
-      focus: page.focus,
+      focus: page.click,
       waitForFocus: (selector, focusTimeout) async {
         await page.waitForFunction(
           'selector => document.activeElement === '

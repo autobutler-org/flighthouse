@@ -29,8 +29,21 @@ const _page = '''
 <html>
 <head><title>chrome smoke</title></head>
 <body>
-<main><button id="unlabeled"></button></main>
+<main>
+<button id="unlabeled"></button>
+<label>Name <input id="typed" type="text"></label>
+</main>
 <script>
+  const typed = document.getElementById('typed');
+  let attached = false;
+  typed.addEventListener('pointerdown', () => {
+    attached = true;
+  });
+  typed.addEventListener('input', () => {
+    if (attached) return;
+    attached = true;
+    typed.value = '';
+  });
   window.dispatchEvent(new Event('flutter-first-frame'));
 </script>
 </body>
@@ -112,6 +125,17 @@ Future<void> _audit(BrowserSession browser, Uri origin) async {
     exitCode = 1;
     return;
   }
+  final typed = await browser.type(
+    '#typed',
+    'chrome smoke',
+    timeout: const Duration(seconds: 30),
+  );
+  if (typed case Err(:final error)) {
+    stderr.writeln(error);
+    exitCode = 1;
+    return;
+  }
+  stdout.writeln('typed into an input that attaches on tap');
   final acquired = await acquireAxeScript(
     config: const WebAxeConfig(version: '4.11.1', scriptPath: null),
     configBaseDir: Directory.current.path,
