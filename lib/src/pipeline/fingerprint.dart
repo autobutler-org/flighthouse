@@ -8,7 +8,7 @@ import '../model/enums.dart';
 ///
 /// Changing how fingerprints or their inputs are normalized bumps this, and
 /// `flighthouse baseline --update` migrates a baseline to the new scheme.
-const String fingerprintVersion = 'v1';
+const String fingerprintVersion = 'v2';
 
 String escapeField(String field) =>
     field.replaceAll(r'\', r'\\').replaceAll('|', r'\|');

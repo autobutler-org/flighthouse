@@ -112,7 +112,7 @@ void main() {
 
     test('refuses a baseline with another fingerprint scheme', () {
       final stale = Baseline(
-        fingerprintVersion: 'v0',
+        fingerprintVersion: 'v1',
         scores: Scores(categories: const {}, overall: null),
         findings: const [],
       );
@@ -123,8 +123,8 @@ void main() {
       ).fold((_) => fail('expected a failure'), (failure) => failure);
       expect(
         describe(failure),
-        'baseline ci/baseline.json: it uses fingerprint scheme v0, this run '
-        'uses v1. Run: flighthouse baseline --update',
+        'baseline ci/baseline.json: it uses fingerprint scheme v1, this run '
+        'uses v2. Run: flighthouse baseline --update',
       );
     });
   });

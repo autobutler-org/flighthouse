@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "fingerprintVersion": "v1",
+  "fingerprintVersion": "v2",
   "scores": {
     "overall": 0.777848946633477,
     "categories": {
@@ -13,124 +13,7 @@
   },
   "findings": [
     {
-      "fingerprint": "096bb33024d568d0a6ca258f6e8b7a3d96c1d458ab1692fa9fd78b336de7e89d",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "moderate",
-      "rule": "landmark-one-main",
-      "route": "/",
-      "target": "html"
-    },
-    {
-      "fingerprint": "1499dbef826eae58e0a9499b4e6963568e1506b253fb316c681d32e69e1c5edd",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "unused-javascript",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "19316b58dde9a3f9a316285faaee423c6a322d139c05a9977f0b80df1a23513f",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/image-alt",
-      "route": "Settings",
-      "target": "3ebe6ab22c8d429c"
-    },
-    {
-      "fingerprint": "1c3e86e3dfa925180bbd6d6da535dcff2a90b5f1f12cfb96e51fd40a29191501",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "interactive",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "1c9d3376db9778c39112bccce8bbdb67d89df480e05271a0e326d4b92edcbcd4",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "critical",
-      "rule": "image-alt",
-      "route": "/",
-      "target": "body > img"
-    },
-    {
-      "fingerprint": "1d82786b50a9e33f2d159514c43c6b37a99d03336ec853d9ecd4d49440c3ed88",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "moderate",
-      "rule": "deprecations",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "35879780adf1b3bb216bdbf5b4332f7371d30bbf1e1f4d0d2f8f72c73afa0480",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "html-has-lang",
-      "route": "/",
-      "target": "html"
-    },
-    {
-      "fingerprint": "3cf812d07798d5a91c589ed60c173364923573cd8b163aaaaabc8b0f4671f84f",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "image-delivery-insight",
-      "route": "/login",
-      "target": "div#quark-splash > img"
-    },
-    {
-      "fingerprint": "58845e0b0ea37169a5f21595ec142bcf10cd4150ecbb18f4caec87cee849de8c",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "critical",
-      "rule": "button-name",
-      "route": "/",
-      "target": "body > button"
-    },
-    {
-      "fingerprint": "5da5d25210fde638a70db8429371a6853ae4b704eb8f9c1270e1706ab009bcd7",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "network-dependency-tree-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "60b33ecd71a80e2877aac2f5abfed79026f719289ed302a9c2b6cd3fbc4dd0c4",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/interactive-name",
-      "route": "Settings",
-      "target": "57308ae3ce70200c"
-    },
-    {
-      "fingerprint": "60b797f9f0ab0d1854de7001aa31562cd5fe937287089b57bf32898c3ce06c6a",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "unminified-javascript",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "74b12059999af11d4c95797ea646738a27b2e69137527766c3994fa31c005804",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "minor",
-      "rule": "errors-in-console",
-      "route": "/",
-      "target": null
-    },
-    {
-      "fingerprint": "76cd4e25b56c0d252fefdb8aa6f88b897c3c28bbdb9f54404354915fb46cfef8",
+      "fingerprint": "06f68c00d302b20d36ba125fbbbce8ac383b9d932e3e44fa38291999d2829a1b",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -139,61 +22,7 @@
       "target": null
     },
     {
-      "fingerprint": "7dc6f1f85917ea579de8aa70cf6818342f3fffdb7f9eb867adc54575d21a8eb0",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "serious",
-      "rule": "speed-index",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "84586b71eec88710b9f8a80371dc1006d3ca5fb71e84f690f28b5694e5d4a633",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "color-contrast",
-      "route": "/",
-      "target": "body > div"
-    },
-    {
-      "fingerprint": "8a27d15eaee1c7700b305961dbec6d7dd2d1f50aad8790294e1e66feb59589b3",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "forced-reflow-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "a1ae7f0de890c550e19bdc6f613cfd633b55f4a11bef9d9b5d773178f073caba",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "moderate",
-      "rule": "attest/heading-structure",
-      "route": "SignIn",
-      "target": "1d8cd040b461f6a7"
-    },
-    {
-      "fingerprint": "a1c2b8b1962a24d426759db916edcb39779cc224858c3ad81cc290ee72b3fec2",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "info",
-      "rule": "valid-source-maps",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "a630c5706d9ebfb00bcfb150637b0873731461343a15ca643f13cfd2786a3591",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "document-latency-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "a63db07b5902144c1b4008747afe5a8705166ce12af76cfe144fd755b8216dae",
+      "fingerprint": "085d49b579a417b343f9089d22ab1d0a41e7c975e4c34192e7e6c622bba10a04",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -202,7 +31,25 @@
       "target": null
     },
     {
-      "fingerprint": "aa3f1422acba9383aeafa05da67599366158f859493b4a40152ff91b98bd5982",
+      "fingerprint": "0f9cdc4b6fdc529306253ac0ac6adffeba8bf755f686a3d7796e9dbf6860dd86",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "image-delivery-insight",
+      "route": "/login",
+      "target": "div#quark-splash > img"
+    },
+    {
+      "fingerprint": "10cf1f65348f4fdad68b5768d3887c64caeed06348bddec4b5166b048e4e91e0",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/interactive-name",
+      "route": "Settings",
+      "target": "57308ae3ce70200c"
+    },
+    {
+      "fingerprint": "18deada89fcf1565ec501039367187839809c9ccac25c68149cd049ae37b7954",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -211,34 +58,7 @@
       "target": "body > img"
     },
     {
-      "fingerprint": "aa87d02a7ce4f2fe4d49b34c1ca73f44d9c15a5a954ef709d097faa268a7bb9d",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "serious",
-      "rule": "total-blocking-time",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "b400abfa7d7d9d33afe221839a6fadbd4edc4f6b9060e06796e93a6ef52e7db0",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "Settings",
-      "target": "6285b1bfee38b1e3"
-    },
-    {
-      "fingerprint": "b5aec874b44ec03caee4fd5aacd7789bf9e4924a3a1b8413fdbb6a938195c6b3",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "lcp-discovery-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "bb1dea4045825f7740dfed45517900feb65b3c857f82199ba8486097552257c3",
+      "fingerprint": "21df4c462a97ec3883b4a3fce6ee2669b383dc6ae8da66f121ade3b596371262",
       "source": "lighthouse",
       "category": "best-practices",
       "severity": "minor",
@@ -247,25 +67,7 @@
       "target": null
     },
     {
-      "fingerprint": "c812b0bb61341e8a78c94203468edf293ec47df9ed110f91f739b34dbbd0a9ee",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "SignIn",
-      "target": "-67d6298c587ef6b"
-    },
-    {
-      "fingerprint": "cd8a2495171eef429c9d993ccdb8dffd2f6356037a567be444c354921577f657",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "viewport-insight",
-      "route": "/",
-      "target": null
-    },
-    {
-      "fingerprint": "cfcd76ec30acb7dd27c0bb64f12f4be78a1fce5da3da06958bf1df3c36390d53",
+      "fingerprint": "264199077703ebb4d7b35d84821e030cbf4d507ee1f93ed16722f06db752fa47",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
@@ -274,43 +76,34 @@
       "target": "15c8e38b788ecb74"
     },
     {
-      "fingerprint": "d87549581923b04f0c6bd1d9c01e6b1fc797d94853f5f040a9bf46e9127879e8",
+      "fingerprint": "2c3f1a59df083e1faa00fa277dd830909e5666ecde5cc4cff08e3daac114d255",
       "source": "lighthouse",
       "category": "perf",
-      "severity": "info",
-      "rule": "total-byte-weight",
+      "severity": "serious",
+      "rule": "speed-index",
       "route": "/login",
       "target": null
     },
     {
-      "fingerprint": "e282f8ed3fdc58a797c8be851aa1451b1ae1fc5a1f9806fad130424eb5917f91",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "link-name",
-      "route": "/",
-      "target": "body > a"
-    },
-    {
-      "fingerprint": "e48f554836d94c8a55b9205bd813825dcc40ee6722cd74712e20702544fa404c",
-      "source": "lighthouse",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "document-title",
-      "route": "/",
-      "target": "html"
-    },
-    {
-      "fingerprint": "e864bc332813bf8786b5559a003d4be240a09c0736fd2fea30ffe43a511125ff",
+      "fingerprint": "3afa63a8dcfe67a7b57234c4d0689a12a4eb75c46a8a69aa1f1b2a4094ef828a",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
-      "rule": "bootup-time",
+      "rule": "forced-reflow-insight",
       "route": "/login",
       "target": null
     },
     {
-      "fingerprint": "ebbfe815a96f66537481cf1e8641852fd2a8802dcc31c460604633d8596f5d12",
+      "fingerprint": "4871972e14e2b8c5a17c88cf30ffbe249a7b2c0f71c4d91f89261abcf1da9e82",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "critical",
+      "rule": "image-alt",
+      "route": "/",
+      "target": "body > img"
+    },
+    {
+      "fingerprint": "5e23286b045ee720fa5bb28387ce49350c38de36bf1fb8edb46103026534b65e",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -319,13 +112,220 @@
       "target": null
     },
     {
-      "fingerprint": "fd637f8707fb3c3d13ba135fa6d9df8f8d7771da69a5528a9b84b6dcb35c71ce",
+      "fingerprint": "61878547acb5076d762eb06621f80035513141eb914d94d7441e37c70a8501e1",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/image-alt",
+      "route": "Settings",
+      "target": "3ebe6ab22c8d429c"
+    },
+    {
+      "fingerprint": "6200164f598261ee6b37421169df2dd6d91824164471d2c55f985aa0e1a6b204",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "color-contrast",
+      "route": "/",
+      "target": "body > div"
+    },
+    {
+      "fingerprint": "642f2c84ccf456865801bd70d26a906b27fdbfbea53adbe3eb1d25b5d412b610",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "total-blocking-time",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "6dae93c5dcb810e0ee985cfc34aadb33b3c73fb77f7712f3dba96bbaf6a1d023",
       "source": "lighthouse",
       "category": "a11y",
       "severity": "critical",
       "rule": "label",
       "route": "/",
       "target": "body > input"
+    },
+    {
+      "fingerprint": "725fd2a7ead732f71dab3cf0348bfd8b87186a2032791cfeb95635b3f51950f5",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "document-latency-insight",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "72b7420d199854a08623923ffc2f8654711449c037b65360fe108d9e14b616d5",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "html-has-lang",
+      "route": "/",
+      "target": "html"
+    },
+    {
+      "fingerprint": "802c14b558fc2a9c9a09f4e94dea0d5762611840b8d2d5284a40e63f3dd783bb",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "critical",
+      "rule": "button-name",
+      "route": "/",
+      "target": "body > button"
+    },
+    {
+      "fingerprint": "88d5a1fdafe12c0c54651de7473e682047fb21213e941aa9d73e35edaf3ff77e",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "network-dependency-tree-insight",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "8c79b46a84a74af05ace4f7886d2d3ae82e5179f49a86e85bc106cb7a036b21e",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "info",
+      "rule": "valid-source-maps",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "920b371e57c25225eb4d26be0b145ca1881535a13432b29bd7c31d28b8bd73a4",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "Settings",
+      "target": "6285b1bfee38b1e3"
+    },
+    {
+      "fingerprint": "94e375c95486899a5e3bfc46e0d6be313b82f999e182ad19e085fca9bc5ab7bc",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "bootup-time",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "95adad81db7be6e2bf21bff59fbacd62ab0919c2af8091cddc3e392af7742be0",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "total-byte-weight",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "9771150d0c717992f2048f2890c9dce1bc646ec16d39f9dc58b9ce60c9532a03",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "interactive",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "9fd5e00339adc892a92797cfc21b5cb29fc6cdece2819bdc2aa33d220586f501",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "lcp-discovery-insight",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "ab96b591933e69443d3b2f52f5eac93b532a00eecf98bda3e038de7487ea9d20",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unused-javascript",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "ad6a7f7583713002b670bde8ebb6bc3b35803ed18bf7cb676549470ff8b5d586",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "document-title",
+      "route": "/",
+      "target": "html"
+    },
+    {
+      "fingerprint": "ba1a3b7819c723970c28dae5b5205d700ccb3a4342b86e2f6e0a95f8074192f1",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "viewport-insight",
+      "route": "/",
+      "target": null
+    },
+    {
+      "fingerprint": "bb65c26ed4eabf714eabfc978b039f109bf9405607bda6c13db83a414b731832",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "moderate",
+      "rule": "attest/heading-structure",
+      "route": "SignIn",
+      "target": "1d8cd040b461f6a7"
+    },
+    {
+      "fingerprint": "d262954d604e13149bed88cf936d75f63f0c470e7bfec2a2d805e9a77ce97e73",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unminified-javascript",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "de6ac68e385b375897f94d6b1b60fffa8f5d66d51f2ca9e976264fe9c542f966",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "SignIn",
+      "target": "-67d6298c587ef6b"
+    },
+    {
+      "fingerprint": "e621410ad1413b66fdf76623a028da49966c5663e5108e9e8acb432f27c5b600",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "moderate",
+      "rule": "deprecations",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "ed1d1266e5b7c502efcb19ce87add24b7e803af342691b012d543617486d59c5",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "minor",
+      "rule": "errors-in-console",
+      "route": "/",
+      "target": null
+    },
+    {
+      "fingerprint": "f43fcd331b63a6e46843cc79b5b05835a9c51c80213294e9afb01473bc52ebda",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "moderate",
+      "rule": "landmark-one-main",
+      "route": "/",
+      "target": "html"
+    },
+    {
+      "fingerprint": "fe816a30b7d45771bea3ba6a98774b79863ea11c6a670e47273eef8cfcfc1630",
+      "source": "lighthouse",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "link-name",
+      "route": "/",
+      "target": "body > a"
     }
   ]
 }

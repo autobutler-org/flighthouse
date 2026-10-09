@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "fingerprintVersion": "v1",
+  "fingerprintVersion": "v2",
   "scores": {
     "overall": 0.814980691843368,
     "categories": {
@@ -13,25 +13,16 @@
   },
   "findings": [
     {
-      "fingerprint": "03b785aca1826e739ec403f3fcd4da1d17f8948e6f7f7c3c50387f2f2d3a4a18",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "lcp-discovery-insight",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "0722c30d9d5d47a7ad44c2682c05230bdc073014847f7d837c6c93333653ad4b",
-      "source": "lighthouse",
-      "category": "perf",
+      "fingerprint": "0077d2f16e7577bb301d8cad0f2e459444269090848c8c35d67322e4032d333b",
+      "source": "attest",
+      "category": "a11y",
       "severity": "serious",
-      "rule": "total-blocking-time",
-      "route": "/setup",
-      "target": null
+      "rule": "attest/contrast",
+      "route": "/setup/narrow",
+      "target": "-66c4a3194490bec1"
     },
     {
-      "fingerprint": "08549feeb105089f9e2265e7d9f5b110375491a7979c2419a5bc47965acb9e4c",
+      "fingerprint": "02031a18ee9d6c6a21e08aa6e756f3bbbb02b5fa50211d3d6d3ab1e46fcb57e2",
       "source": "attest",
       "category": "a11y",
       "severity": "moderate",
@@ -40,25 +31,70 @@
       "target": "-418884c651a75704"
     },
     {
-      "fingerprint": "09291e4c0c13b31e32e00facbea8004ce3041ae9ab06467e3664f4b1616c919c",
+      "fingerprint": "06f68c00d302b20d36ba125fbbbce8ac383b9d932e3e44fa38291999d2829a1b",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
-      "rule": "network-dependency-tree-insight",
-      "route": "/setup",
+      "rule": "cache-insight",
+      "route": "/login",
       "target": null
     },
     {
-      "fingerprint": "0b2ec3757124838154e8a2516df785131eb80a76c1504d67e39da4ce31eb8d55",
+      "fingerprint": "085d49b579a417b343f9089d22ab1d0a41e7c975e4c34192e7e6c622bba10a04",
       "source": "lighthouse",
       "category": "perf",
-      "severity": "serious",
-      "rule": "total-blocking-time",
+      "severity": "info",
+      "rule": "mainthread-work-breakdown",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "088e737a0215bbddf965431250cbb5e141c218e617b8305d8575590e5fbaaae0",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "interactive",
       "route": "/terms",
       "target": null
     },
     {
-      "fingerprint": "0e0d327134527806c4387d8fdcf549e4ebedc3cf3a0a8166e2dc4e66e2b5c09f",
+      "fingerprint": "0c184332f9e185abe0486270b54e56c2ccaae71b413af78cf802a0ca9106e39b",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unused-javascript",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "0d030a9fae181e2d81e4aed6dcc21e1a861c859554b288f9a53cdffff4c3c6ed",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "bootup-time",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "1096492726f1e9f15b9af5862e6dfc8ac71142df68a7c667cd4d16c4a691a38c",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/login/narrow",
+      "target": "-59773b4cf5fdd9d1"
+    },
+    {
+      "fingerprint": "159e061955d6ee43e6ada1f093b654020fea3dbbfd6400f97cafcde7f67f774a",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "moderate",
+      "rule": "attest/heading-structure",
+      "route": "/login/wide",
+      "target": "3d3c436b565f5f19"
+    },
+    {
+      "fingerprint": "22c7990a6d7665bbb1b967b6295d14fbe6031d4c958936eb867539ede661acff",
       "source": "lighthouse",
       "category": "perf",
       "severity": "moderate",
@@ -67,7 +103,25 @@
       "target": null
     },
     {
-      "fingerprint": "102203450a8fba0c3ab75a0e4da7f53aa5b3d9832b18e744af840203a98b42f5",
+      "fingerprint": "27435c61966940a8b5939ee6504e033e91d934744ac466eb9eb1f3e1da657de9",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "network-dependency-tree-insight",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "2aedd5865f77d528a74fb0a203f090a6fb43b47b9384a45698e4ab7bee6a8330",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "mainthread-work-breakdown",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "2aefc5370c35382d8fb7ce7fa3c504ebee60ccaf3ccc50ce27eee7aee83d8910",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
@@ -76,187 +130,7 @@
       "target": "3d8a3b1055a3e1c9"
     },
     {
-      "fingerprint": "11611443ce491d892de999eb8b3e025fc64ea617bb4da6b80dc1874b3fec19a1",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "bootup-time",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "1499dbef826eae58e0a9499b4e6963568e1506b253fb316c681d32e69e1c5edd",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "unused-javascript",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "19f1effba2ba195bbae27d4dd85fad77fdab1de8ea68e03f40cac417d797ee12",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "moderate",
-      "rule": "deprecations",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "1c3e86e3dfa925180bbd6d6da535dcff2a90b5f1f12cfb96e51fd40a29191501",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "interactive",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "1d82786b50a9e33f2d159514c43c6b37a99d03336ec853d9ecd4d49440c3ed88",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "moderate",
-      "rule": "deprecations",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "1e085a287c708c43d71cdbc620243995e563bb2bb600fc605e05fa35fc043961",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "mainthread-work-breakdown",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "2250d39962903e73d8e33c0ba486d3eac34e0dad38fb6eedde63c3a8afe2b2e7",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "document-latency-insight",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "2368e01253405e6fd4ed6600fea032027756d0dc715d473bceb9e70ce48b075a",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "cache-insight",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "2553f12c5ab26337a53d757220b6d619b6cb98c0ee538999f86e3532c263624f",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "cache-insight",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "32d885eff090e680e7d8e6be459c3f12371d433b4d788f36bc9c77e979bc5088",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/recover/wide",
-      "target": "5baf04aae4e60685"
-    },
-    {
-      "fingerprint": "33608868487bf6c4d1c776cdb52c9d0161916f1e66cc6e8e5ab4727380ef5cb0",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/login/wide",
-      "target": "-72d55a3876a5e552"
-    },
-    {
-      "fingerprint": "3dbcfb4e99366b90580359e4b968c4c91d59948508a701449415c2e4007ec089",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "info",
-      "rule": "valid-source-maps",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "3f0f2a4cffe2f83882773a7be4e84c221616963d8cf1b361eb276c9ca81e4321",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "interactive",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "421e2216e09f78434544cb794434069ac4384f50b1ea7b4f1b031cdb2b0f1333",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "serious",
-      "rule": "total-blocking-time",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "4221f6aac4be910b7ed04cf75d0474ffa80cf09f471f14979b67ffc8b72ec70d",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "mainthread-work-breakdown",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "51b11315279fb8c7805d3957b1ecd78806af4faa8d3c07a89916e5d9ead56336",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/focus-trap",
-      "route": "/recover/narrow",
-      "target": "-5354d0627ed051d8"
-    },
-    {
-      "fingerprint": "5a378dd6eb9f6b71987eb9ad135794eb95bb10e221724de63387fc7699c15ec0",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/setup/wide",
-      "target": "-72d55a3876a5e552"
-    },
-    {
-      "fingerprint": "5b71671b20c0c58f752c679c88fc4de57a1feb7e0a687c6fc9c99b9ceb64d00c",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "moderate",
-      "rule": "deprecations",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "5cee38ab3852252ec26f9f2ce0e99ab2d27701166ba2614f8cde1990888925d3",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "max-potential-fid",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "5da5d25210fde638a70db8429371a6853ae4b704eb8f9c1270e1706ab009bcd7",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "network-dependency-tree-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "65276bbdca2f8dae1e55df303ed1d4aaf737c7236b35ad4f4a33b49e9f574649",
+      "fingerprint": "2c7bf3f3859bc9e3ad8ef11eb305857572f1a3f158489b6655ba7056d97909b7",
       "source": "attest",
       "category": "a11y",
       "severity": "moderate",
@@ -265,115 +139,7 @@
       "target": "3d3c436b565f5f19"
     },
     {
-      "fingerprint": "6ebbee3425aa2a6234acaf82288bc2a736476ad134437afc851d8f074147b25b",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "cache-insight",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "6fb81b349a675074425a5734fff62e12cf5288dbed16bc76e5697afa8985e2bc",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "lcp-discovery-insight",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "719c92ef5da76e75b19cbe7ed93d208a4fa1565ce096945e4573651ee7ed0c23",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "max-potential-fid",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "742645510506e77efcb9a18d6fc3f5f1f19ea1636574df0aea6865308fe8e87e",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "document-latency-insight",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "752397c72981d1896ad8aa8f88f6715c4e0359440052f9374430b843ecb6e362",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "unused-javascript",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "76cd4e25b56c0d252fefdb8aa6f88b897c3c28bbdb9f54404354915fb46cfef8",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "cache-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "7bed724b936824af06f79d883004b69c732c0616659688f514dc24b9c4b739f6",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/login/wide",
-      "target": "-59773b4cf5fdd9d1"
-    },
-    {
-      "fingerprint": "7d9d950a5bedb862e504a391da96b55ab0abaa2e4ae5c0457d58278d312f1ff5",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/recover/narrow",
-      "target": "-59773b4cf5fdd9d1"
-    },
-    {
-      "fingerprint": "81410bb43235a021fc6368093be42bdcee5f22a561da3ca62ac04e5d69368344",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "info",
-      "rule": "valid-source-maps",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "8798a33b18cd16e60ac113b6832b5a58b81d9b015875487e24b1beebfb765bc0",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/recover/narrow",
-      "target": "-36b2d45fae5cbdbe"
-    },
-    {
-      "fingerprint": "8f40e4227cc9649599818e092515cf86d81316b87c3bbee1d93f903ecb465e92",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "lcp-discovery-insight",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "8fa3a7bc72e77ed8d1f9b82da35826c3c0e477bb0e69e7ef67c69fb754a0978c",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/setup/wide",
-      "target": "-59773b4cf5fdd9d1"
-    },
-    {
-      "fingerprint": "98d7791029ef97cab0c3937b8966dbdd5fe43d481bea9a6ea5831d6caa078789",
+      "fingerprint": "32cafc7c000793d339b7078a46dc76272cdda12fdf79c67ad0ad9aaa5000f838",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -382,25 +148,124 @@
       "target": null
     },
     {
-      "fingerprint": "9995c8389e4e7e0bdca03a42aae34553f26b6ad7f5b695a87ec51a25e7702508",
+      "fingerprint": "33729bd42f5dcf1068b3f4e56c9a54232d406f3fe1917bdf95c4ab7e554b0398",
       "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "document-latency-insight",
-      "route": "/recover",
+      "category": "best-practices",
+      "severity": "moderate",
+      "rule": "deprecations",
+      "route": "/terms",
       "target": null
     },
     {
-      "fingerprint": "9bb93b5ed7ae6ae06f09dce80bb679ab4b5eac3a48adbce8d06d2dc4b7fb7d11",
+      "fingerprint": "384cdc0c6ee554ee5230ae752de63e0277a7ad0587d57e944c9421946e8d239c",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "max-potential-fid",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "3dd3c6b32050af7fc170ec750fa28395246ea1bf8665ad57b2c8bfcd27040440",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
       "rule": "attest/contrast",
-      "route": "/setup/wide",
-      "target": "-66c4a3194490bec1"
+      "route": "/login/narrow",
+      "target": "-72d55a3876a5e552"
     },
     {
-      "fingerprint": "9bba1baaaea63e97fc752cd97d53e18961b4c51948bd142ecef6c4d63aa31568",
+      "fingerprint": "3e86461602515d2d04a7c4cd2b9418926b821037ac2be31f953d1b20bc25f296",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "total-blocking-time",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "446a449b06e04380df5b2bb3bff1d3773eca4232209cc05a09ca57e5b8e37649",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unused-javascript",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "4d262fdd7c7884b1147e10a8c1b83f896f983313c9f457f8266d0333a2d4ef55",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "max-potential-fid",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "4dd176d1b7687f0a73fcfe61d778bd40de8826107618af45a354be937f39e6e0",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/login/wide",
+      "target": "-72d55a3876a5e552"
+    },
+    {
+      "fingerprint": "4fe6ec46fd2f5a235fc5171a5fb7960a517f844976b42824fb9e420a4173cdee",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "lcp-discovery-insight",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "51b957758466383f8b9c356b48319fcbc77bb4d1ffd840219b6f1997425e28af",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "info",
+      "rule": "valid-source-maps",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "575d3dbcf3025de2faed7826cb06f8f7fd2dae8e232d38a772afdc6d3921d9ce",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "total-blocking-time",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "5e23286b045ee720fa5bb28387ce49350c38de36bf1fb8edb46103026534b65e",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "max-potential-fid",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "61a5640de80f13b3a48cf691e2b695897a7363f0bb02da5bebb522145fe1eddc",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "cache-insight",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "642f2c84ccf456865801bd70d26a906b27fdbfbea53adbe3eb1d25b5d412b610",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "total-blocking-time",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "64c5404453504fa0995517e3c4b5afa2b9b078632d84789ee8ba5e6a9fdcd532",
       "source": "lighthouse",
       "category": "perf",
       "severity": "moderate",
@@ -409,70 +274,7 @@
       "target": null
     },
     {
-      "fingerprint": "a1c2b8b1962a24d426759db916edcb39779cc224858c3ad81cc290ee72b3fec2",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "info",
-      "rule": "valid-source-maps",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "a417eb2ef7d74270d47fc4d2ab53fe5f8e62425decadc269724bfc3bc7cd503b",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/setup/narrow",
-      "target": "-66c4a3194490bec1"
-    },
-    {
-      "fingerprint": "a630c5706d9ebfb00bcfb150637b0873731461343a15ca643f13cfd2786a3591",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "document-latency-insight",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "a63db07b5902144c1b4008747afe5a8705166ce12af76cfe144fd755b8216dae",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "mainthread-work-breakdown",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "a9c060dc0a1081c38b893f6eeab288cd51077088bf23859e49baf6ec84885f8d",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/focus-trap",
-      "route": "/setup/narrow",
-      "target": "35460778cb837a9c"
-    },
-    {
-      "fingerprint": "aa87d02a7ce4f2fe4d49b34c1ca73f44d9c15a5a954ef709d097faa268a7bb9d",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "serious",
-      "rule": "total-blocking-time",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "af61516564c12c6af91596f5e92de5338f2cd75fb16171c8cb5d2ad3ca78625e",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "unused-javascript",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "b0ec049a1b95f0ee42a4ef60284df31541ef474ce403c85ac423a6e417e85673",
+      "fingerprint": "6da1bce2798eb6b3ee35987c9fcbf480bc73c12cb6fa33384be980a6aa2e3e21",
       "source": "attest",
       "category": "a11y",
       "severity": "moderate",
@@ -481,34 +283,142 @@
       "target": "-418884c651a75704"
     },
     {
-      "fingerprint": "b20f051a5c1aeaffa0a3272a16a1f0ee8b76989953d96111c18f22c568a4ab71",
+      "fingerprint": "725fd2a7ead732f71dab3cf0348bfd8b87186a2032791cfeb95635b3f51950f5",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "document-latency-insight",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "72c2da930e3f36b0f2c65f3c1de34396ea257300569376d24d66f811aec4d875",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
       "rule": "attest/contrast",
-      "route": "/setup/narrow",
-      "target": "-59773b4cf5fdd9d1"
+      "route": "/setup/wide",
+      "target": "-72d55a3876a5e552"
     },
     {
-      "fingerprint": "b266f5131010c6bb26e07e1900ea272e3a8b2cf3206a85fcc1f9b9b98d3892f7",
+      "fingerprint": "7304539a506b38608b2a4da6f12cc4e5e5f197ef74597af54125edef5618afaa",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
-      "rule": "interactive",
+      "rule": "mainthread-work-breakdown",
       "route": "/recover",
       "target": null
     },
     {
-      "fingerprint": "b59474f70d943488086e9009e4ca29496bbd15ce6bd291e304033de336380255",
+      "fingerprint": "76e1f25dc41712bd5cee024cdcde065e99a29ed5523dbf965bf87ac7b1b8bf06",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "info",
+      "rule": "valid-source-maps",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "874f0fc5b578f08f1d0953b209ec622aab19359bd83933af24f92023387614d3",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "lcp-discovery-insight",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "87c61d81ce427508dddb8b1b617d669304af09a090bc23caf888776407f33237",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "network-dependency-tree-insight",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "88d5a1fdafe12c0c54651de7473e682047fb21213e941aa9d73e35edaf3ff77e",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "network-dependency-tree-insight",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "88e5020b99416110cc29b47f337a5a5121e6fc66f6dd90799acff3fe3831495e",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "lcp-discovery-insight",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "8b40b415f313d1a32d68f86658d7b92d8efa0370d5833447a862db8c574d45b9",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "interactive",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "8c79b46a84a74af05ace4f7886d2d3ae82e5179f49a86e85bc106cb7a036b21e",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "info",
+      "rule": "valid-source-maps",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "8e3aca27403fcbc272d1850d3e4f948c198785684d37812f6024a72a99c6d9ee",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
       "rule": "attest/contrast",
-      "route": "/login/narrow",
+      "route": "/login/wide",
       "target": "-59773b4cf5fdd9d1"
     },
     {
-      "fingerprint": "b5aec874b44ec03caee4fd5aacd7789bf9e4924a3a1b8413fdbb6a938195c6b3",
+      "fingerprint": "94ac3f07c542705ce5cea559145e3460ae337a7f7ce01b1f9fcbc7444b6441a7",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "max-potential-fid",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "94e375c95486899a5e3bfc46e0d6be313b82f999e182ad19e085fca9bc5ab7bc",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "bootup-time",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "9771150d0c717992f2048f2890c9dce1bc646ec16d39f9dc58b9ce60c9532a03",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "interactive",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "97f594a7bc28de93d539c94817f4aa7b6f4a0b9820ab0f0b699f087c88feb33a",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "moderate",
+      "rule": "deprecations",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "9fd5e00339adc892a92797cfc21b5cb29fc6cdece2819bdc2aa33d220586f501",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -517,52 +427,70 @@
       "target": null
     },
     {
-      "fingerprint": "bba4d9cbd9d0a67caa68c9c4a35220ade8fbfb7f965ef1590385c455ef65bcea",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "max-potential-fid",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "c7495e6ac3f0a98652e0c58d540904080167759c01c8906ed110e259409cac73",
+      "fingerprint": "a156e51b29fa9f1209bd2944d8d33a6409b4e43857c28c03765a6ed816f8b2b1",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
       "rule": "unused-javascript",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "c7b19df437b3ee4e9b9b0b2c4c05c1a9927a1f6e6e813f65b8141de1b4099551",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "network-dependency-tree-insight",
-      "route": "/terms",
-      "target": null
-    },
-    {
-      "fingerprint": "cb98b1f42ad68989051bcfc23793aba19074715f19e7e8a0ca83adefd6dcaa7e",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "info",
-      "rule": "valid-source-maps",
       "route": "/recover",
       "target": null
     },
     {
-      "fingerprint": "d2536027d0abea1e34f5aee1cfecabfc244b31a06fc8268bad2d89600db8716a",
+      "fingerprint": "a1e1cc1ce1ea1c2df927531e62d44b2f730fdb7294510291073d663d74c4b05e",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/setup/wide",
+      "target": "-59773b4cf5fdd9d1"
+    },
+    {
+      "fingerprint": "a53d06de6daedd2edf8bf88efe51e58e52ecb1164f956f0dfed724903ab947af",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
       "rule": "attest/contrast",
       "route": "/recover/wide",
-      "target": "-59773b4cf5fdd9d1"
+      "target": "5baf04aae4e60685"
     },
     {
-      "fingerprint": "d7b440b7c2e8e8ce20673706302c6f17180e7bd05b7df1a1998e06df1afb0d6e",
+      "fingerprint": "a8614e512ec93bc89daff705b1348122a2e042d332307e9ab6f3cd1cc28128e6",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/setup/wide",
+      "target": "-66c4a3194490bec1"
+    },
+    {
+      "fingerprint": "a8db2679e2deaaa8073e76ba783e7e8c1c2449d5d95b8ab8f425b5216ee66a3a",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/recover/narrow",
+      "target": "-36b2d45fae5cbdbe"
+    },
+    {
+      "fingerprint": "ab96b591933e69443d3b2f52f5eac93b532a00eecf98bda3e038de7487ea9d20",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "unused-javascript",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "bafe371c10cce0054c2887c4a0a57f21491482df9cce6155ed7f2919062ed8f4",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "cache-insight",
+      "route": "/terms",
+      "target": null
+    },
+    {
+      "fingerprint": "c470768cecf7a26d13e4f8ed8ba5de8ffb14500598415f274624e668ff80560f",
       "source": "attest",
       "category": "a11y",
       "severity": "serious",
@@ -571,70 +499,7 @@
       "target": "-72d55a3876a5e552"
     },
     {
-      "fingerprint": "d9a908ea1955ba733fa6e5a87ac6aa8b1bbca6f8df721792c947b04a3b088936",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "network-dependency-tree-insight",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "de36e7883c3d0f086c30be925a73138e032727ef650248d407b645ce76d27eea",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "moderate",
-      "rule": "attest/heading-structure",
-      "route": "/login/wide",
-      "target": "3d3c436b565f5f19"
-    },
-    {
-      "fingerprint": "e3110887fbd4d20ae3e0dec5d0bd8e5a188b02db6634b2a802b890c74e534071",
-      "source": "attest",
-      "category": "a11y",
-      "severity": "serious",
-      "rule": "attest/contrast",
-      "route": "/login/narrow",
-      "target": "-72d55a3876a5e552"
-    },
-    {
-      "fingerprint": "e474af80c5f1c042fd6c981e18e58cc8b958b8cd5d2734c321273b6f90b15890",
-      "source": "lighthouse",
-      "category": "best-practices",
-      "severity": "moderate",
-      "rule": "deprecations",
-      "route": "/setup",
-      "target": null
-    },
-    {
-      "fingerprint": "e4e8c9c5f94fb65702be2490e8e6afd7ffed338c051a98f120661cf5d427846e",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "bootup-time",
-      "route": "/recover",
-      "target": null
-    },
-    {
-      "fingerprint": "e864bc332813bf8786b5559a003d4be240a09c0736fd2fea30ffe43a511125ff",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "bootup-time",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "ebbfe815a96f66537481cf1e8641852fd2a8802dcc31c460604633d8596f5d12",
-      "source": "lighthouse",
-      "category": "perf",
-      "severity": "info",
-      "rule": "max-potential-fid",
-      "route": "/login",
-      "target": null
-    },
-    {
-      "fingerprint": "ec6f7d102463b3e5b547a2df977e72111ac722dda10cbc6372657f2d6a2a8fd8",
+      "fingerprint": "c82efea7f150f875a2ad94c67d1b812fc3c929b5640cc4965746e44d47fd789c",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
@@ -643,13 +508,148 @@
       "target": null
     },
     {
-      "fingerprint": "f49700b74a89e9c6a057ea4527ffa49211f5176ea4dbefd59d93f2d43017511b",
+      "fingerprint": "c8b9d9dfff4cf0e4e5d595e726f191cb93c1d3d5f059c6ac45a0a4d05903654d",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "serious",
+      "rule": "total-blocking-time",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "ce42a3af7fcb3896226482839a9d0e76b8b42ba5c57e38e0a9e9b0300ed92a99",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "bootup-time",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "d267da67267e4727bef8f9301f96fb860b85c0c539badc5bd0f8c12dffb6dbdc",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "document-latency-insight",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "d3393dd28fbf17695873b5539fcccfaeb81b77d0f7cbf921b49bfddb8b875444",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/setup/narrow",
+      "target": "-59773b4cf5fdd9d1"
+    },
+    {
+      "fingerprint": "daf9e6ceb6bf2bfe684c3376c65a163a0d7d9cae7dfccb7ff815b1b086e6ae45",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "document-latency-insight",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "dcc7f61b9a179360dd68918869c0583e97c79d126a11a3486090eaabff180b78",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/focus-trap",
+      "route": "/recover/narrow",
+      "target": "-5354d0627ed051d8"
+    },
+    {
+      "fingerprint": "e621410ad1413b66fdf76623a028da49966c5663e5108e9e8acb432f27c5b600",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "moderate",
+      "rule": "deprecations",
+      "route": "/login",
+      "target": null
+    },
+    {
+      "fingerprint": "e668a86b2f30a4426b3cf696e2c1b2fe43d3fccc2179d2839729f51d59aa8eed",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "moderate",
+      "rule": "deprecations",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "eae501015ea5b07b1b481954368b7e3cec354b9a85675be577e73e9853cff376",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/recover/narrow",
+      "target": "-59773b4cf5fdd9d1"
+    },
+    {
+      "fingerprint": "ecf7fd57da7df368dbe4956f28a3173c8dab0e44ddfa86fbdf5b541e2df3d85d",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "network-dependency-tree-insight",
+      "route": "/setup",
+      "target": null
+    },
+    {
+      "fingerprint": "eed1c4667bccf79ce86a9265d870b0198e57242f3113fe61fb7cb5774d4d8478",
       "source": "lighthouse",
       "category": "perf",
       "severity": "info",
       "rule": "interactive",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "ef7177fb2b56cae4e74504918638ddb1e9f24e9a49319d0a60903e23c9596f7c",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "cache-insight",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "f6b7ed96371612f57f1355f4f01b132cb0cfa5df78c06adea70a8401040c4439",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/contrast",
+      "route": "/recover/wide",
+      "target": "-59773b4cf5fdd9d1"
+    },
+    {
+      "fingerprint": "f739fb4115d2832327eb00cc10832f2a3c09cabd8e92c7109bd63fd90a571f58",
+      "source": "lighthouse",
+      "category": "best-practices",
+      "severity": "info",
+      "rule": "valid-source-maps",
+      "route": "/recover",
+      "target": null
+    },
+    {
+      "fingerprint": "fa430760eb4f26ec0fe949025218162a8bb1021c3b248f53cc07861eb82d386c",
+      "source": "lighthouse",
+      "category": "perf",
+      "severity": "info",
+      "rule": "document-latency-insight",
       "route": "/terms",
       "target": null
+    },
+    {
+      "fingerprint": "fcfb0c9081db3c293794b2c8574090cdd2e95d85b962da05bfa95d25dc3723d0",
+      "source": "attest",
+      "category": "a11y",
+      "severity": "serious",
+      "rule": "attest/focus-trap",
+      "route": "/setup/narrow",
+      "target": "35460778cb837a9c"
     }
   ]
 }
