@@ -191,6 +191,42 @@ void main() {
     expect(failure.reason, 'timed out after 1 ms');
   });
 
+  test('a renderer crash in an auth step says the renderer crashed', () async {
+    final fake = FakeBrowser(crashSelector: '#submit');
+    final result = await authenticateWeb(
+      browser: fake.session,
+      origin: _origin,
+      config: _auth,
+      protectedRoute: '/files',
+      readiness: const WebReadinessConfig(
+        timeout: Duration(minutes: 1),
+        selector: null,
+      ),
+      environment: _environment,
+    ).timeout(_timeout);
+    final failure = (result as Err<Uri, IoFailure>).error;
+    expect(failure.operation, 'run web authentication step 3 (click)');
+    expect(failure.path, '#submit');
+    expect(failure.reason, chromeRendererCrashedReason);
+  });
+
+  test('a renderer crash while checking semantics names the route', () async {
+    final fake = FakeBrowser(crashOnSemantics: true);
+    final result = await openReadyWebRoute(
+      browser: fake.session,
+      origin: _origin,
+      route: '/login',
+      readiness: const WebReadinessConfig(
+        timeout: Duration(minutes: 1),
+        selector: null,
+      ),
+    ).timeout(_timeout);
+    final failure = (result as Err<Uri, IoFailure>).error;
+    expect(failure.operation, 'verify Flutter semantics');
+    expect(failure.path, '/login');
+    expect(failure.reason, chromeRendererCrashedReason);
+  });
+
   test('rejected credentials fail on the protected-route redirect', () async {
     final fake = FakeBrowser(acceptCredentials: false);
     final result = await authenticateWeb(
@@ -233,6 +269,8 @@ final class FakeBrowser {
     this.failSelector,
     this.pendingSelector,
     this.acceptCredentials = true,
+    this.crashSelector,
+    this.crashOnSemantics = false,
   }) {
     session = BrowserSession(
       BrowserBindings(
@@ -251,6 +289,7 @@ final class FakeBrowser {
         close: () async {
           closes++;
         },
+        rendererCrashed: () => _crash.future,
       ),
     );
   }
@@ -260,6 +299,9 @@ final class FakeBrowser {
   final String? failSelector;
   final String? pendingSelector;
   final bool acceptCredentials;
+  final String? crashSelector;
+  final bool crashOnSemantics;
+  final Completer<void> _crash = Completer<void>();
   late final BrowserSession session;
   final List<String> events = [];
   final List<String> typedSelectors = [];
@@ -295,6 +337,7 @@ final class FakeBrowser {
 
   Future<void> _click(String selector) async {
     events.add('click $selector');
+    if (selector == crashSelector) await _crashRenderer();
     if (selector == failSelector) throw Exception('selector not found');
     if (selector == '#submit') authenticated = acceptCredentials;
   }
@@ -312,7 +355,13 @@ final class FakeBrowser {
 
   Future<Object?> _evaluate(String script, List<Object?> arguments) async {
     events.add('semantics');
+    if (crashOnSemantics) return _crashRenderer();
     return semanticsNodes;
+  }
+
+  Future<Never> _crashRenderer() {
+    _crash.complete();
+    return Completer<Never>().future;
   }
 }
 

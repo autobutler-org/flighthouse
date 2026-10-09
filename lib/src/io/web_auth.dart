@@ -158,7 +158,7 @@ String _stepKind(WebAuthStep step) => switch (step) {
 };
 
 String _stepFailureReason(WebAuthStep step, IoFailure failure) {
-  if (failure.reason.startsWith('timed out after')) return failure.reason;
+  if (_actionable(failure)) return failure.reason;
   return switch (step) {
     WebTypeAuthStep()
         when failure.reason == 'input did not retain the typed value' =>
@@ -170,7 +170,11 @@ String _stepFailureReason(WebAuthStep step, IoFailure failure) {
 }
 
 String _safeBrowserReason(IoFailure failure, String fallback) =>
-    failure.reason.startsWith('timed out after') ? failure.reason : fallback;
+    _actionable(failure) ? failure.reason : fallback;
+
+bool _actionable(IoFailure failure) =>
+    failure.reason.startsWith('timed out after') ||
+    failure.reason == chromeRendererCrashedReason;
 
 bool _sameLocation(Uri requested, Uri actual) =>
     requested.scheme == actual.scheme &&
