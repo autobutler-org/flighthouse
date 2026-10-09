@@ -166,6 +166,14 @@ final class BrowserSession {
     },
   );
 
+  Future<Result<Uri, IoFailure>> location({required Duration timeout}) =>
+      _attempt(
+        operation: 'read browser location',
+        target: 'browser page',
+        timeout: timeout,
+        action: () async => Uri.parse(_bindings.currentUrl()),
+      );
+
   Future<Result<void, IoFailure>> close({required Duration timeout}) =>
       _attempt(
         operation: 'close browser',
