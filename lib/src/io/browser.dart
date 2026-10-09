@@ -7,6 +7,12 @@ import 'package:path/path.dart' as p;
 
 import 'required_tools.dart';
 
+const chromeRendererCrashedReason =
+    "Chrome's renderer crashed while flighthouse drove the page. Check free "
+    'memory and system load on this machine, and whether its sandbox policy '
+    "lets Chrome's renderer run (docs/adr/0026-linux-chrome-launch.md), then "
+    'run again';
+
 const chromeNoSandboxSwitch = 'FLIGHTHOUSE_CI_CHROME_NO_SANDBOX';
 
 bool chromeSandboxDisabled(Map<String, String> environment) =>
@@ -82,6 +88,7 @@ final class BrowserBindings {
     required this.readInput,
     required this.evaluate,
     required this.close,
+    this.rendererCrashed = _rendererNeverCrashes,
   });
 
   final BrowserInfo info;
@@ -99,7 +106,10 @@ final class BrowserBindings {
   final Future<Object?> Function(String script, List<Object?> arguments)
   evaluate;
   final Future<void> Function() close;
+  final Future<void> Function() rendererCrashed;
 }
+
+Future<void> _rendererNeverCrashes() => Completer<void>().future;
 
 final class BrowserSession {
   const BrowserSession(this._bindings);
@@ -200,7 +210,34 @@ final class BrowserSession {
         target: info.installation.executablePath,
         timeout: timeout,
         action: _bindings.close,
+        crashes: false,
       );
+
+  Future<Result<T, IoFailure>> _attempt<T>({
+    required String operation,
+    required String target,
+    required Duration timeout,
+    required Future<T> Function() action,
+    bool crashes = true,
+  }) async {
+    IoFailure failure(String reason) =>
+        IoFailure(operation: operation, path: target, reason: reason);
+    try {
+      return await Future.any([
+        action().timeout(timeout).then(Ok<T, IoFailure>.new),
+        if (crashes)
+          _bindings.rendererCrashed().then(
+            (_) => Err<T, IoFailure>(failure(chromeRendererCrashedReason)),
+          ),
+      ]);
+    } on TimeoutException catch (_) {
+      return Err(failure('timed out after ${_durationText(timeout)}'));
+    } on JsonUnsupportedObjectError catch (error) {
+      return Err(failure(error.toString()));
+    } on Exception catch (error) {
+      return Err(failure(error.toString()));
+    }
+  }
 }
 
 Future<Result<BrowserSession, IoFailure>> launchBrowser({
@@ -294,33 +331,6 @@ Future<Result<T, IoFailure>> useBrowser<T>({
         (_, Err(:final error)) => Err(error),
         (Ok(:final value), Ok()) => Ok(value),
       };
-  }
-}
-
-Future<Result<T, IoFailure>> _attempt<T>({
-  required String operation,
-  required String target,
-  required Duration timeout,
-  required Future<T> Function() action,
-}) async {
-  try {
-    return Ok(await action().timeout(timeout));
-  } on TimeoutException catch (_) {
-    return Err(
-      IoFailure(
-        operation: operation,
-        path: target,
-        reason: 'timed out after ${_durationText(timeout)}',
-      ),
-    );
-  } on JsonUnsupportedObjectError catch (error) {
-    return Err(
-      IoFailure(operation: operation, path: target, reason: error.toString()),
-    );
-  } on Exception catch (error) {
-    return Err(
-      IoFailure(operation: operation, path: target, reason: error.toString()),
-    );
   }
 }
 

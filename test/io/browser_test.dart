@@ -419,6 +419,53 @@ void main() {
     expect(closes, 1);
   });
 
+  test(
+    'a renderer crash fails a pending action instead of timing out',
+    () async {
+      final crash = Completer<void>();
+      var closes = 0;
+      final browser = BrowserSession(
+        _bindings(
+          navigate: (_, _) => Completer<void>().future,
+          evaluate: (_, _) => Completer<Object?>().future,
+          crash: crash.future,
+          close: () async {
+            closes++;
+          },
+        ),
+      );
+      final opened = browser.open(
+        Uri.parse('http://127.0.0.1:8080/files'),
+        timeout: const Duration(minutes: 1),
+      );
+      crash.complete();
+
+      final failure =
+          (await opened.timeout(_timeout) as Err<Uri, IoFailure>).error;
+      expect(failure.operation, 'open browser page');
+      expect(failure.path, 'http://127.0.0.1:8080/files');
+      expect(failure.reason, chromeRendererCrashedReason);
+      expect(describe(failure), contains("Chrome's renderer crashed"));
+      expect(
+        describe(failure),
+        contains('docs/adr/0026-linux-chrome-launch.md'),
+      );
+
+      final evaluated = await browser
+          .evaluateJson('() => 1', timeout: const Duration(minutes: 1))
+          .timeout(_timeout);
+      expect(
+        (evaluated as Err<Object?, IoFailure>).error.reason,
+        chromeRendererCrashedReason,
+      );
+      expect(
+        await browser.close(timeout: _timeout),
+        isA<Ok<void, IoFailure>>(),
+      );
+      expect(closes, 1);
+    },
+  );
+
   test('an operation timeout is a typed failure', () async {
     final pending = Completer<void>();
     final browser = BrowserSession(_bindings(click: (_) => pending.future));
@@ -449,6 +496,7 @@ BrowserBindings _bindings({
   Future<String?> Function(String selector)? readInput,
   Future<Object?> Function(String script, List<Object?> arguments)? evaluate,
   Future<void> Function()? close,
+  Future<void>? crash,
 }) {
   Future<void> run(String operation) async {
     if (failAt == operation) throw Exception('$operation failed');
@@ -473,5 +521,6 @@ BrowserBindings _bindings({
           return <String, Object?>{'ok': true};
         },
     close: close ?? () => run('close'),
+    rendererCrashed: () => crash ?? Completer<void>().future,
   );
 }

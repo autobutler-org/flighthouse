@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flighthouse/src/io/browser.dart';
@@ -59,6 +60,10 @@ Future<BrowserBindings> _launchPuppeteerBrowser(
     );
     final pages = await browser.pages;
     final page = pages.isEmpty ? await browser.newPage() : pages.first;
+    final crashed = Completer<void>();
+    final crashes = page.onPageCrashed.listen((_) {
+      if (!crashed.isCompleted) crashed.complete();
+    });
     await page.evaluateOnNewDocument(_firstFrameListener);
     final endpoint = Uri.parse(browser.wsEndpoint);
     final info = BrowserInfo(
@@ -109,7 +114,11 @@ Future<BrowserBindings> _launchPuppeteerBrowser(
           page.evaluate<String?>(_readInput, args: [selector]),
       evaluate: (script, arguments) =>
           page.evaluate<Object?>(script, args: arguments),
-      close: () => _closeBrowser(browser!),
+      close: () async {
+        await crashes.cancel();
+        await _closeBrowser(browser!);
+      },
+      rendererCrashed: () => crashed.future,
     );
   } on Exception catch (_) {
     await _disposeFailedLaunch(browser);

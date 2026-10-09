@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -300,6 +301,31 @@ void main() {
     expect(browser.closes, 0);
   });
 
+  test('a renderer crash during axe names the route and the crash', () async {
+    _writeLocalScript(root);
+    final crash = Completer<void>();
+    final browser = _Browser(
+      crash: crash.future,
+      onEvaluate: (script, _) {
+        if (!script.contains('axe.run')) return Future.value(2);
+        crash.complete();
+        return Completer<Object?>().future;
+      },
+    );
+
+    final result = await _run(
+      root,
+      browser,
+      routes: const ['/files'],
+    ).timeout(const Duration(seconds: 1));
+
+    final failure = (result as Err<List<String>, Failure>).error;
+    expect(
+      describe(failure),
+      'could not run axe-core /files: $chromeRendererCrashedReason',
+    );
+  });
+
   test('axe waits for semantics and the readiness selector', () async {
     _writeLocalScript(root);
     final skipped = _Browser(
@@ -469,12 +495,13 @@ String _axeDocument(String pageUrl) => jsonEncode({
 });
 
 final class _Browser {
-  _Browser({this.relocate, this.onEvaluate, this.selectorError});
+  _Browser({this.relocate, this.onEvaluate, this.selectorError, this.crash});
 
   final Uri Function(Uri target)? relocate;
   final Future<Object?> Function(String script, List<Object?> arguments)?
   onEvaluate;
   final String? selectorError;
+  final Future<void>? crash;
   final List<String> scripts = [];
   final List<List<Object?>> arguments = [];
   final List<String> axeResults = [];
@@ -526,6 +553,7 @@ final class _Browser {
       close: () async {
         closes++;
       },
+      rendererCrashed: () => crash ?? Completer<void>().future,
     ),
   );
 }
