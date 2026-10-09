@@ -63,8 +63,8 @@ test: ## Run every unit, fixture, and end-to-end test
 run/cli: ## Run the CLI (CLI_ARGS supplies the command and options)
 	dart run bin/flighthouse.dart $(CLI_ARGS)
 
-.PHONY: run/release
-run/release: ## Tag the pubspec version on main and push the tag, which publishes it
+.PHONY: release
+release: ## Tag the pubspec version on main and push the tag, which publishes it
 	git fetch --quiet --tags origin main
 	if [ "$$(git rev-parse HEAD)" != "$$(git rev-parse origin/main)" ] || [ -n "$$(git status --porcelain)" ]; then
 		echo "Release from a clean, current main: git checkout main && git pull" >&2
