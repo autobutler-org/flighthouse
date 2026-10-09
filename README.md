@@ -21,10 +21,11 @@ baseline, and writes `report.json` and a self-contained `report.html`. In CI it 
 score drops past a threshold you set.
 
 For Flutter web apps, a `web:` config makes `collect` build the app with semantics enabled, serve it,
-authenticate if configured, and run Lighthouse, writing `<reportDir>/raw/lighthouse/`. That part needs Node,
-Lighthouse, and Chrome. Everything else needs only a Dart SDK. `report`, `ci`, and `baseline` read existing
-files and do not launch Chrome, Node, Lighthouse, or Flutter. See [`example/`](example/README.md) and
-[ADR 0023](docs/adr/0023-web-runner-configuration.md) for `web:`.
+authenticate if configured, and run Lighthouse and axe, writing `<reportDir>/raw/lighthouse/` and
+`<reportDir>/raw/axe/`. That part needs Flutter, Node, and Lighthouse, and downloads Chrome and axe-core. Everything else needs only a Dart SDK. `report`, `ci`, and `baseline` read existing
+files and do not launch Chrome, Node, Lighthouse, or Flutter. Start with the
+[Flutter web quickstart](docs/quickstart-web.md); [ADR 0023](docs/adr/0023-web-runner-configuration.md) specifies
+`web:`.
 
 ## Install
 
@@ -32,10 +33,13 @@ files and do not launch Chrome, Node, Lighthouse, or Flutter. See [`example/`](e
 dart pub global activate flighthouse
 ```
 
+The web runner is not in a pub.dev release yet. To use it, install from the repository as the
+[quickstart](docs/quickstart-web.md#prerequisites) shows.
+
 ## Usage
 
 ```sh
-flighthouse collect             # copy imported raw outputs into <reportDir>/raw and run Lighthouse when web is configured
+flighthouse collect             # copy imported raw outputs into <reportDir>/raw and run Lighthouse and axe when web is configured
 flighthouse report              # write report.json and report.html
 flighthouse ci                  # report, then gate against the baseline
 flighthouse baseline --update   # accept the current findings and scores as the baseline
