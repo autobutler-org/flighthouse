@@ -74,22 +74,26 @@ Future<Result<_Accepted, Failure>> _collectRoute({
   switch (started) {
     case Err(:final error):
       return Err(error);
-    case Ok(:final value) when value.exitCode != 0:
-      return Err(
-        ProcessFailure(
-          command: _commandText(lighthouse.command.first, arguments),
-          exitCode: value.exitCode,
-          stderr: '${value.stderr}',
-        ),
-      );
     case Ok(:final value):
       final stdout = '${value.stdout}';
-      switch (_validate(route: route, requested: requested, stdout: stdout)) {
-        case Err(:final error):
-          return Err(error);
-        case Ok():
-          return Ok((name: _artifactName(route), contents: stdout));
-      }
+      return switch ((_decode(route, stdout), value.exitCode)) {
+        (Ok(value: {'runtimeError': final Object error?}), _) => Err(
+          _runtimeFailure(route, error),
+        ),
+        (_, final exitCode) when exitCode != 0 => Err(
+          ProcessFailure(
+            command: _commandText(lighthouse.command.first, arguments),
+            exitCode: exitCode,
+            stderr: '${value.stderr}',
+          ),
+        ),
+        (Err(:final error), _) => Err(error),
+        (Ok(value: final json), _) => _validate(
+          route: route,
+          requested: requested,
+          json: json,
+        ).map((_) => (name: _artifactName(route), contents: stdout)),
+      };
   }
 }
 
@@ -134,38 +138,37 @@ String _commandText(String executable, List<String> arguments) =>
 String _artifactName(String route) =>
     '${sha256.convert(utf8.encode(route))}.json';
 
-Result<void, Failure> _validate({
-  required String route,
-  required Uri requested,
-  required String stdout,
-}) {
-  final Object? json;
+Result<Object?, Failure> _decode(String route, String stdout) {
   try {
-    json = jsonDecode(stdout);
+    return Ok(jsonDecode(stdout));
   } on FormatException catch (error) {
     return Err(_rejected(route, 'not valid JSON: ${error.message}'));
   }
-  if (json is Map<String, Object?> && json['runtimeError'] != null) {
-    return Err(
-      _rejected(
-        route,
-        'Lighthouse reported a runtime error: '
-        '${_runtimeErrorText(json['runtimeError'])}',
-      ),
-    );
-  }
-  switch (_checkStructure(json)) {
-    case Err(:final error):
-      return Err(_rejected(route, describe(error)));
-    case Ok(:final value):
-      return _matchingRoute(route, requested, value);
-  }
 }
+
+Result<void, Failure> _validate({
+  required String route,
+  required Uri requested,
+  required Object? json,
+}) => switch (_checkStructure(json)) {
+  Err(:final error) => Err(_rejected(route, describe(error))),
+  Ok(:final value) => _matchingRoute(route, requested, value),
+};
 
 AdapterFailure _rejected(String route, String problem) =>
     AdapterFailure(tool: 'lighthouse', artifactPath: route, problem: problem);
 
-String _runtimeErrorText(Object? error) => switch (error) {
+AdapterFailure _runtimeFailure(String route, Object error) =>
+    _rejected(route, switch (error) {
+      {'code': 'TARGET_CRASHED'} =>
+        "Chrome's renderer crashed while Lighthouse loaded the page "
+            '(TARGET_CRASHED). Check free memory and system load on this '
+            "machine, and whether its sandbox policy lets Chrome's renderer "
+            'run (docs/adr/0026-linux-chrome-launch.md), then run again',
+      _ => 'Lighthouse reported a runtime error: ${_runtimeErrorText(error)}',
+    });
+
+String _runtimeErrorText(Object error) => switch (error) {
   final Map<String, Object?> details =>
     '${_label(details['code'], 'UNKNOWN')}: ${_label(details['message'], '')}',
   _ => describeJson(error),
