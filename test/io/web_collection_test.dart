@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flighthouse/src/config/config.dart';
 import 'package:flighthouse/src/io/browser.dart';
+import 'package:flighthouse/src/io/lighthouse_runner.dart';
 import 'package:flighthouse/src/io/web_collection.dart';
 import 'package:flighthouse/src/result/failure.dart';
 import 'package:flighthouse/src/result/result.dart';
@@ -109,6 +110,78 @@ void main() {
     expect(result, isA<Err<void, Failure>>());
     expect((result as Err<void, Failure>).error, isA<ProcessFailure>());
     expect(launches, 0);
+  });
+
+  test('closes the browser and server when a lighthouse route fails', () async {
+    final fake = CollectionBrowser();
+    late Uri origin;
+    final lighthouseArguments = <List<String>>[];
+    Future<ProcessResult> run(
+      String executable,
+      List<String> arguments, {
+      String? workingDirectory,
+    }) async {
+      if (executable == 'flutter') {
+        File(p.join(workingDirectory!, 'build/web/index.html'))
+          ..parent.createSync(recursive: true)
+          ..writeAsStringSync('app');
+        return ProcessResult(1, 0, '', '');
+      }
+      lighthouseArguments.add(arguments);
+      return ProcessResult(1, 1, '', 'audit failed');
+    }
+
+    final result = await runWebCollection<List<String>>(
+      configBaseDir: baseDir.path,
+      config: _config,
+      environment: const {
+        'USERNAME': 's3cret-user',
+        'PASSWORD': 's3cret-value',
+      },
+      runProcess: run,
+      launch: (_) async => Ok(fake.session),
+      collect: (browser, serverOrigin, routes) {
+        origin = serverOrigin;
+        return runLighthouseRoutes(
+          lighthouse: _config.lighthouse,
+          viewport: _config.viewport,
+          browser: browser,
+          origin: serverOrigin,
+          routes: routes,
+          outputDir: p.join(baseDir.path, 'raw', 'lighthouse'),
+          run: run,
+        );
+      },
+      closeTimeout: _timeout,
+    );
+
+    final failure = (result as Err<List<String>, Failure>).error;
+    expect(failure, isA<ProcessFailure>());
+    expect(describe(failure), isNot(contains('s3cret-user')));
+    expect(describe(failure), isNot(contains('s3cret-value')));
+    expect(fake.values['#username'], 's3cret-user');
+    expect(fake.values['#password'], 's3cret-value');
+    expect(fake.authenticated, isTrue);
+    expect(lighthouseArguments, hasLength(1));
+    expect(
+      lighthouseArguments.single.join('\n'),
+      isNot(contains('s3cret-value')),
+    );
+    expect(lighthouseArguments.single, contains('--port=40123'));
+    expect(lighthouseArguments.single, contains('--disable-storage-reset'));
+    expect(
+      lighthouseArguments.single,
+      contains(origin.resolve('/files').toString()),
+    );
+    expect(
+      Directory(p.join(baseDir.path, 'raw', 'lighthouse')).existsSync(),
+      isFalse,
+    );
+    expect(fake.closes, 1);
+    await expectLater(
+      Socket.connect(origin.host, origin.port),
+      throwsA(isA<SocketException>()),
+    );
   });
 }
 

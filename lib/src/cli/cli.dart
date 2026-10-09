@@ -12,8 +12,13 @@ import '../model/baseline.dart';
 import '../model/baseline_json.dart';
 import '../model/enums.dart';
 import '../model/report.dart';
+import '../io/browser.dart';
 import '../io/files.dart';
 import '../io/git.dart';
+import '../io/lighthouse_runner.dart';
+import '../io/puppeteer_browser.dart';
+import '../io/web_build.dart';
+import '../io/web_collection.dart';
 import '../pipeline/assemble.dart';
 import '../pipeline/baseline_update.dart';
 import '../pipeline/diff.dart';
@@ -35,6 +40,10 @@ const int exitUsageError = 2;
 
 /// The process exit code for an unusable input or a missing tool.
 const int exitInputError = 3;
+
+const _browserCloseTimeout = Duration(seconds: 30);
+const _browserAcquireTimeout = Duration(minutes: 5);
+const _browserLaunchTimeout = Duration(seconds: 60);
 
 /// The effects the CLI needs beyond the filesystem, injectable for tests.
 typedef CliEnvironment = ({
@@ -257,15 +266,31 @@ abstract base class _FlighthouseCommand extends Command<int> {
   }
 }
 
+String _collected(String source, int count) =>
+    'collected $count $source ${count == 1 ? 'file' : 'files'}';
+
 final class _CollectCommand extends _FlighthouseCommand {
-  _CollectCommand(super.environment, super.version);
+  _CollectCommand(
+    super.environment,
+    super.version, {
+    required this.runProcess,
+    required this.launchBrowser,
+    required this.platformEnvironment,
+    required this.browserCloseTimeout,
+  });
+
+  final ProcessRun runProcess;
+  final WebBrowserLauncher launchBrowser;
+  final Map<String, String> platformEnvironment;
+  final Duration browserCloseTimeout;
 
   @override
   String get name => 'collect';
 
   @override
   String get description =>
-      'Copy each configured source\'s raw outputs into <reportDir>/raw.';
+      'Copy imported raw outputs into <reportDir>/raw and run Lighthouse '
+      'when web is configured.';
 
   @override
   Future<int> runWith(_Context context) async {
@@ -278,9 +303,33 @@ final class _CollectCommand extends _FlighthouseCommand {
       );
       switch (copied) {
         case Ok(value: final paths):
+          environment.out.writeln(_collected(source.id, paths.length));
+        case Err(:final error):
+          failures.add(error);
+      }
+    }
+    if (context.config.web case final web?) {
+      final collected = await runWebCollection<List<String>>(
+        configBaseDir: context.baseDir,
+        config: web,
+        environment: platformEnvironment,
+        runProcess: runProcess,
+        launch: launchBrowser,
+        closeTimeout: browserCloseTimeout,
+        collect: (browser, origin, routes) => runLighthouseRoutes(
+          lighthouse: web.lighthouse,
+          viewport: web.viewport,
+          browser: browser,
+          origin: origin,
+          routes: routes,
+          outputDir: _rawDir(context, Source.lighthouse),
+          run: runProcess,
+        ),
+      );
+      switch (collected) {
+        case Ok(value: final paths):
           environment.out.writeln(
-            'collected ${paths.length} ${source.id} '
-            '${paths.length == 1 ? 'file' : 'files'}',
+            _collected(Source.lighthouse.id, paths.length),
           );
         case Err(:final error):
           failures.add(error);
@@ -454,12 +503,41 @@ final class _BaselineCommand extends _FlighthouseCommand {
 ///
 /// Exit codes: 0 passed, 1 the CI gate failed, 2 a usage or configuration
 /// error, 3 an unusable input or missing tool.
+Future<ProcessResult> _runExternalProcess(
+  String executable,
+  List<String> arguments, {
+  String? workingDirectory,
+}) => Process.run(executable, arguments, workingDirectory: workingDirectory);
+
+String _chromeCachePath() {
+  final home =
+      Platform.environment['HOME'] ??
+      Platform.environment['USERPROFILE'] ??
+      Directory.systemTemp.path;
+  return p.join(home, '.cache', 'flighthouse', 'chrome');
+}
+
+Future<Result<BrowserSession, IoFailure>> _launchCollectedBrowser(
+  BrowserViewport viewport,
+) => launchPuppeteerBrowser(
+  cachePath: _chromeCachePath(),
+  viewport: viewport,
+  acquireTimeout: _browserAcquireTimeout,
+  launchTimeout: _browserLaunchTimeout,
+);
+
 Future<int> runCli(
   List<String> arguments, {
   CliEnvironment? environment,
   required String version,
+  ProcessRun? runProcess,
+  WebBrowserLauncher? launchBrowser,
+  Map<String, String>? platformEnvironment,
 }) async {
   final effects = environment ?? defaultEnvironment();
+  final process = runProcess ?? _runExternalProcess;
+  final launch = launchBrowser ?? _launchCollectedBrowser;
+  final variables = platformEnvironment ?? Platform.environment;
   if (arguments.length == 1 && arguments.single == '--version') {
     effects.out.writeln('flighthouse $version');
     return exitPassed;
@@ -485,7 +563,16 @@ Future<int> runCli(
           negatable: false,
           help: 'Print the flighthouse version.',
         )
-        ..addCommand(_CollectCommand(effects, version))
+        ..addCommand(
+          _CollectCommand(
+            effects,
+            version,
+            runProcess: process,
+            launchBrowser: launch,
+            platformEnvironment: variables,
+            browserCloseTimeout: _browserCloseTimeout,
+          ),
+        )
         ..addCommand(_ReportCommand(effects, version))
         ..addCommand(_CiCommand(effects, version))
         ..addCommand(_BaselineCommand(effects, version));
