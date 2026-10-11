@@ -456,12 +456,42 @@ void main() {
       );
     });
 
-    test('web type auth requires an environment name', () {
+    test('web type auth requires a host value or an environment name', () {
       expectFailure(
         'app: quark\nweb:\n  routes: [/files]\n  auth:\n    url: /login\n    steps:\n      - type: type\n        selector: input\n',
-        'web.auth.steps[0].valueFromEnv',
-        problem: 'is required',
+        'web.auth.steps[0]',
+        problem: 'expected valueFromHost, valueFromEnv, or both',
       );
+    });
+
+    test('web type auth rejects an unknown host value', () {
+      expectFailure(
+        'app: quark\nweb:\n  routes: [/files]\n  auth:\n    url: /login\n    steps:\n      - type: type\n        selector: input\n        valueFromHost: token\n',
+        'web.auth.steps[0].valueFromHost',
+        problem: 'expected one of url, username, password',
+      );
+    });
+
+    test('web type auth reads a host value, alone or with a fallback', () {
+      WebTypeAuthStep step(String keys) =>
+          parsed(
+                'app: quark\nweb:\n  routes: [/files]\n  auth:\n    url: /login\n    steps:\n      - type: type\n        selector: input\n$keys',
+              ).web!.auth!.steps.single
+              as WebTypeAuthStep;
+
+      final hostOnly = step('        valueFromHost: url\n');
+      expect(hostOnly.valueFromHost, HostValue.url);
+      expect(hostOnly.valueFromEnv, isNull);
+
+      final both = step(
+        '        valueFromHost: password\n        valueFromEnv: SECRET\n',
+      );
+      expect(both.valueFromHost, HostValue.password);
+      expect(both.valueFromEnv, 'SECRET');
+
+      final envOnly = step('        valueFromEnv: SECRET\n');
+      expect(envOnly.valueFromHost, isNull);
+      expect(envOnly.valueFromEnv, 'SECRET');
     });
 
     test('web auth requires at least one step', () {

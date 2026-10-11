@@ -1,6 +1,7 @@
 import 'package:path/path.dart' as p;
 
 import '../config/config.dart';
+import '../config/hosts.dart';
 import '../result/failure.dart';
 import '../result/result.dart';
 import 'browser.dart';
@@ -22,6 +23,7 @@ Future<Result<T, Failure>> runWebCollection<T>({
   required String configBaseDir,
   required WebConfig config,
   required Map<String, String> environment,
+  required HostSelection hosts,
   required ProcessRun runProcess,
   required WebBrowserLauncher launch,
   required WebRouteCollector<T> collect,
@@ -52,6 +54,7 @@ Future<Result<T, Failure>> runWebCollection<T>({
             server: value,
             config: config,
             environment: environment,
+            hosts: hosts,
             launch: launch,
             collect: collect,
             closeTimeout: closeTimeout,
@@ -66,6 +69,7 @@ Future<Result<T, Failure>> _runWithBrowser<T>({
   required StaticWebServer server,
   required WebConfig config,
   required Map<String, String> environment,
+  required HostSelection hosts,
   required WebBrowserLauncher launch,
   required WebRouteCollector<T> collect,
   required Duration closeTimeout,
@@ -86,6 +90,7 @@ Future<Result<T, Failure>> _runWithBrowser<T>({
         origin: server.origin,
         config: config,
         environment: environment,
+        hosts: hosts,
         collect: collect,
       );
       final closed = await value.close(timeout: closeTimeout);
@@ -98,6 +103,7 @@ Future<Result<T, Failure>> _prepareAndCollect<T>({
   required Uri origin,
   required WebConfig config,
   required Map<String, String> environment,
+  required HostSelection hosts,
   required WebRouteCollector<T> collect,
 }) async {
   final firstRoute = config.routes.first;
@@ -115,6 +121,7 @@ Future<Result<T, Failure>> _prepareAndCollect<T>({
       protectedRoute: firstRoute,
       readiness: config.readiness,
       environment: environment,
+      hosts: hosts,
     ),
   };
   return switch (prepared) {

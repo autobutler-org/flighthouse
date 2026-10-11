@@ -35,6 +35,9 @@ Future<Result<String, IoFailure>> writeText(
 
 Future<bool> fileExists(String path) => File(path).exists();
 
+Future<Result<String?, IoFailure>> readTextIfExists(String path) async =>
+    await fileExists(path) ? await readText(path) : const Ok(null);
+
 Future<Result<List<String>, IoFailure>> listJsonFiles(String directory) async {
   try {
     final entries = await Directory(directory).list().toList();

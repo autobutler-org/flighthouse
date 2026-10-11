@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flighthouse/src/config/config.dart';
+import 'package:flighthouse/src/config/hosts.dart';
 import 'package:flighthouse/src/io/browser.dart';
 import 'package:flighthouse/src/io/web_auth.dart';
 import 'package:flighthouse/src/result/failure.dart';
@@ -30,7 +31,128 @@ const _environment = {
   'FLIGHTHOUSE_PASSWORD': 'correct horse battery staple',
 };
 
+const HostSelection _noHost = (
+  host: null,
+  unselectedReason: 'pass --host; defined hosts: https://app.example.com',
+);
+const HostSelection _selected = (
+  host: (
+    url: 'https://app.example.com',
+    username: 'host-user',
+    password: 'host-pass-7f3a',
+  ),
+  unselectedReason: '',
+);
+final _hostAuth = WebAuthConfig(
+  url: '/login',
+  steps: [
+    const WebTypeAuthStep(selector: '#host', valueFromHost: HostValue.url),
+    const WebTypeAuthStep(
+      selector: '#username',
+      valueFromHost: HostValue.username,
+      valueFromEnv: 'FLIGHTHOUSE_USERNAME',
+    ),
+    const WebTypeAuthStep(
+      selector: '#password',
+      valueFromHost: HostValue.password,
+      valueFromEnv: 'FLIGHTHOUSE_PASSWORD',
+    ),
+    const WebTypeAuthStep(selector: '#tenant', valueFromEnv: 'TENANT'),
+    const WebClickAuthStep(selector: '#submit'),
+  ],
+);
+
 void main() {
+  test(
+    'a selected host fills valueFromHost steps ahead of the environment',
+    () async {
+      final fake = FakeBrowser();
+      final result = await authenticateWeb(
+        browser: fake.session,
+        origin: _origin,
+        config: _hostAuth,
+        protectedRoute: '/files',
+        readiness: _readiness,
+        hosts: _selected,
+        environment: const {..._environment, 'TENANT': 'acme'},
+      );
+      expect(result, isA<Ok<Uri, IoFailure>>());
+      expect(fake.values, {
+        '#host': 'https://app.example.com',
+        '#username': 'host-user',
+        '#password': 'host-pass-7f3a',
+        '#tenant': 'acme',
+      });
+    },
+  );
+
+  test('a selected host needs no environment for its steps', () async {
+    final fake = FakeBrowser();
+    final result = await authenticateWeb(
+      browser: fake.session,
+      origin: _origin,
+      config: _hostAuth,
+      protectedRoute: '/files',
+      readiness: _readiness,
+      hosts: _selected,
+      environment: const {'TENANT': 'acme'},
+    );
+    expect(result, isA<Ok<Uri, IoFailure>>());
+  });
+
+  test('with no host selected a step falls back to valueFromEnv', () async {
+    final fake = FakeBrowser();
+    final result = await authenticateWeb(
+      browser: fake.session,
+      origin: _origin,
+      config: WebAuthConfig(url: '/login', steps: _hostAuth.steps.sublist(1)),
+      protectedRoute: '/files',
+      readiness: _readiness,
+      hosts: _noHost,
+      environment: const {..._environment, 'TENANT': 'acme'},
+    );
+    expect(result, isA<Ok<Uri, IoFailure>>());
+    expect(fake.values['#username'], 'owner@example.test');
+    expect(fake.values['#password'], 'correct horse battery staple');
+  });
+
+  test('a host-only step with no host selected says to pass --host', () async {
+    final fake = FakeBrowser();
+    final result = await authenticateWeb(
+      browser: fake.session,
+      origin: _origin,
+      config: _hostAuth,
+      protectedRoute: '/files',
+      readiness: _readiness,
+      hosts: _noHost,
+      environment: const {..._environment, 'TENANT': 'acme'},
+    );
+    final failure = (result as Err<Uri, IoFailure>).error;
+    expect(failure.operation, 'read web authentication credential');
+    expect(failure.path, 'web.auth.steps[0].valueFromHost (url)');
+    expect(failure.reason, contains('no host is selected'));
+    expect(failure.reason, contains('--host'));
+    expect(failure.reason, contains('https://app.example.com'));
+    expect(fake.events, isEmpty);
+  });
+
+  test('host credentials stay out of a step failure', () async {
+    final fake = FakeBrowser(failSelector: '#password');
+    final result = await authenticateWeb(
+      browser: fake.session,
+      origin: _origin,
+      config: _hostAuth,
+      protectedRoute: '/files',
+      readiness: _readiness,
+      hosts: _selected,
+      environment: const {'TENANT': 'acme'},
+    );
+    final failure = (result as Err<Uri, IoFailure>).error;
+    expect(failure.operation, 'run web authentication step 3 (type)');
+    expect('$failure', isNot(contains('host-pass-7f3a')));
+    expect('$failure', isNot(contains('host-user')));
+  });
+
   test(
     'authenticates once, then opens the protected route in that session',
     () async {
@@ -41,6 +163,7 @@ void main() {
         config: _auth,
         protectedRoute: '/files?sort=name#top',
         readiness: _readiness,
+        hosts: _noHost,
         environment: _environment,
       );
 
@@ -127,6 +250,7 @@ void main() {
       config: _auth,
       protectedRoute: '/files',
       readiness: _readiness,
+      hosts: _noHost,
       environment: const {'FLIGHTHOUSE_USERNAME': 'owner@example.test'},
     );
     final failure = (result as Err<Uri, IoFailure>).error;
@@ -146,6 +270,7 @@ void main() {
       config: _auth,
       protectedRoute: '/files',
       readiness: _readiness,
+      hosts: _noHost,
       environment: const {
         'FLIGHTHOUSE_USERNAME': 'owner@example.test',
         'FLIGHTHOUSE_PASSWORD': '',
@@ -163,6 +288,7 @@ void main() {
       config: _auth,
       protectedRoute: '/files',
       readiness: _readiness,
+      hosts: _noHost,
       environment: _environment,
     );
     final failure = (result as Err<Uri, IoFailure>).error;
@@ -183,6 +309,7 @@ void main() {
         timeout: Duration(milliseconds: 1),
         selector: null,
       ),
+      hosts: _noHost,
       environment: _environment,
     );
     final failure = (result as Err<Uri, IoFailure>).error;
@@ -202,6 +329,7 @@ void main() {
         timeout: Duration(minutes: 1),
         selector: null,
       ),
+      hosts: _noHost,
       environment: _environment,
     ).timeout(_timeout);
     final failure = (result as Err<Uri, IoFailure>).error;
@@ -235,6 +363,7 @@ void main() {
       config: _auth,
       protectedRoute: '/files',
       readiness: _readiness,
+      hosts: _noHost,
       environment: _environment,
     );
     final failure = (result as Err<Uri, IoFailure>).error;
@@ -253,6 +382,7 @@ void main() {
         config: _auth,
         protectedRoute: '/files',
         readiness: _readiness,
+        hosts: _noHost,
         environment: _environment,
       ),
       closeTimeout: _timeout,
@@ -305,7 +435,7 @@ final class FakeBrowser {
   late final BrowserSession session;
   final List<String> events = [];
   final List<String> typedSelectors = [];
-  final Map<String, String> _values = {};
+  final Map<String, String> values = {};
   Uri _url = _origin;
   bool authenticated = false;
   int closes = 0;
@@ -345,12 +475,12 @@ final class FakeBrowser {
   Future<void> _replaceInput(String selector, String value) async {
     events.add('type $selector');
     typedSelectors.add(selector);
-    _values[selector] = value;
+    values[selector] = value;
   }
 
   Future<String?> _readInput(String selector) async {
     events.add('read $selector');
-    return _values[selector];
+    return values[selector];
   }
 
   Future<Object?> _evaluate(String script, List<Object?> arguments) async {

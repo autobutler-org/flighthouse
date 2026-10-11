@@ -20,6 +20,7 @@ const _defaultBuildCommand = [
 
 String _sourceId(Source source) => source.id;
 String _categoryId(Category category) => category.id;
+String _hostValueId(HostValue value) => value.id;
 
 Parsed<SourceConfig> _readSource(YamlNode node, String keyPath) =>
     readMapping(node, keyPath, const ['dir'], required: const ['dir']).flatMap(
@@ -431,7 +432,7 @@ Parsed<WebAuthStep> _readWebAuthStep(YamlNode node, String keyPath) =>
     readMapping(
       node,
       keyPath,
-      const ['type', 'selector', 'valueFromEnv'],
+      const ['type', 'selector', 'valueFromEnv', 'valueFromHost'],
       required: const ['type'],
     ).flatMap(
       (
@@ -442,28 +443,47 @@ Parsed<WebAuthStep> _readWebAuthStep(YamlNode node, String keyPath) =>
             readMapping(
               node,
               keyPath,
-              const ['type', 'selector', 'valueFromEnv'],
-              required: const ['type', 'selector', 'valueFromEnv'],
+              const ['type', 'selector', 'valueFromEnv', 'valueFromHost'],
+              required: const ['type', 'selector'],
             ).flatMap(
               (fields) => switch ((
                 requiredField(fields, 'selector', keyPath, readNonEmptyString),
-                requiredField(
+                optionalField<String?>(
                   fields,
                   'valueFromEnv',
                   keyPath,
                   readNonEmptyString,
+                  null,
+                ),
+                optionalField<HostValue?>(
+                  fields,
+                  'valueFromHost',
+                  keyPath,
+                  enumReader<HostValue>(HostValue.values, _hostValueId),
+                  null,
                 ),
               )) {
-                (Ok(value: final selector), Ok(value: final valueFromEnv)) =>
+                (Ok(), Ok(value: null), Ok(value: null)) => invalid(
+                  node,
+                  keyPath,
+                  'expected valueFromHost, valueFromEnv, or both',
+                ),
+                (
+                  Ok(value: final selector),
+                  Ok(value: final valueFromEnv),
+                  Ok(value: final valueFromHost),
+                ) =>
                   Ok(
                     WebTypeAuthStep(
                       selector: selector,
                       valueFromEnv: valueFromEnv,
+                      valueFromHost: valueFromHost,
                     ),
                   ),
-                (final selector, final valueFromEnv) => Err(
-                  firstConfigError([selector, valueFromEnv]),
-                ),
+                (final selector, final valueFromEnv, final valueFromHost) =>
+                  Err(
+                    firstConfigError([selector, valueFromEnv, valueFromHost]),
+                  ),
               },
             ),
           'click' || 'wait' =>

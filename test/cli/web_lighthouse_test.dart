@@ -316,6 +316,7 @@ final class Workspace {
     required ProcessRun runProcess,
     required WebBrowserLauncher launchBrowser,
     Map<String, String>? platformEnvironment,
+    HostsFileRead? readHostsFile,
   }) async {
     final out = StringBuffer();
     final err = StringBuffer();
@@ -334,6 +335,7 @@ final class Workspace {
       downloadAxe: (url) async =>
           throw SocketException('downloaded axe-core from $url'),
       axeCacheDir: path('.cache/axe'),
+      readHostsFile: readHostsFile,
     );
     return (code: code, out: '$out', err: '$err');
   }

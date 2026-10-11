@@ -71,13 +71,38 @@ sealed class WebAuthStep {
   final String selector;
 }
 
-/// An authentication action that types an environment-sourced value.
-final class WebTypeAuthStep extends WebAuthStep {
-  /// A typing action that reads [valueFromEnv] only when it runs.
-  const WebTypeAuthStep({required super.selector, required this.valueFromEnv});
+/// Which value of the selected host entry a typing action uses.
+enum HostValue {
+  /// The host URL, which is the entry's key in the hosts file.
+  url('url'),
 
-  /// The name of the environment variable holding the value.
-  final String valueFromEnv;
+  /// The entry's username.
+  username('username'),
+
+  /// The entry's password.
+  password('password');
+
+  const HostValue(this.id);
+
+  /// The stable identifier used in configuration.
+  final String id;
+}
+
+/// An authentication action that types a value read only when it runs.
+final class WebTypeAuthStep extends WebAuthStep {
+  /// A typing action that takes [valueFromHost] when a host is selected and
+  /// reads [valueFromEnv] otherwise. At least one must be set.
+  const WebTypeAuthStep({
+    required super.selector,
+    this.valueFromEnv,
+    this.valueFromHost,
+  }) : assert(valueFromEnv != null || valueFromHost != null);
+
+  /// The name of the environment variable holding the value, if any.
+  final String? valueFromEnv;
+
+  /// The value of the selected host entry to type, if any.
+  final HostValue? valueFromHost;
 }
 
 /// An authentication action that clicks an element.

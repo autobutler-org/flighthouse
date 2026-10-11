@@ -1,4 +1,5 @@
 import '../config/config.dart';
+import '../config/hosts.dart';
 import '../result/failure.dart';
 import '../result/result.dart';
 import 'browser.dart';
@@ -76,8 +77,9 @@ Future<Result<Uri, IoFailure>> authenticateWeb({
   required String protectedRoute,
   required WebReadinessConfig readiness,
   required Map<String, String> environment,
+  required HostSelection hosts,
 }) async {
-  final credentials = _credentials(config.steps, environment);
+  final credentials = _credentials(config.steps, environment, hosts);
   if (credentials case Err(:final error)) return Err(error);
 
   final opened = await openReadyWebRoute(
@@ -122,22 +124,35 @@ Future<Result<Uri, IoFailure>> authenticateWeb({
 Result<Map<int, String>, IoFailure> _credentials(
   List<WebAuthStep> steps,
   Map<String, String> environment,
+  HostSelection hosts,
 ) {
   final values = <int, String>{};
   for (var index = 0; index < steps.length; index++) {
     final step = steps[index];
-    if (step case WebTypeAuthStep(:final valueFromEnv)) {
-      final value = environment[valueFromEnv];
-      if (value == null || value.isEmpty) {
+    if (step is! WebTypeAuthStep) continue;
+    switch ((hosts.host, step.valueFromHost, step.valueFromEnv)) {
+      case (final host?, final valueFromHost?, _):
+        values[index] = hostValueOf(host, valueFromHost);
+      case (_, _, final valueFromEnv?):
+        final value = environment[valueFromEnv];
+        if (value == null || value.isEmpty) {
+          return Err(
+            IoFailure(
+              operation: 'read web authentication credential',
+              path: 'web.auth.steps[$index].valueFromEnv ($valueFromEnv)',
+              reason: 'environment variable is missing or empty',
+            ),
+          );
+        }
+        values[index] = value;
+      case (_, final valueFromHost, null):
         return Err(
           IoFailure(
             operation: 'read web authentication credential',
-            path: 'web.auth.steps[$index].valueFromEnv ($valueFromEnv)',
-            reason: 'environment variable is missing or empty',
+            path: 'web.auth.steps[$index].valueFromHost (${valueFromHost?.id})',
+            reason: 'no host is selected; ${hosts.unselectedReason}',
           ),
         );
-      }
-      values[index] = value;
     }
   }
   return Ok(Map.unmodifiable(values));
