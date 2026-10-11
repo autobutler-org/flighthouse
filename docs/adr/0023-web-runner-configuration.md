@@ -1,6 +1,6 @@
 # 0023. Web runner configuration
 
-- Status: Accepted
+- Status: Accepted; Lighthouse throttling added by ADR 0027
 - Date: 2026-10-08
 
 ## Context
