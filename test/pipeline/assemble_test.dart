@@ -16,9 +16,10 @@ RawArtifact lighthouse(String name) => (
 
 Assembled assemble(
   List<RawArtifact> artifacts, {
-  Map<Source, Adapter> adapters = defaultAdapters,
+  Map<Source, Adapter>? adapters,
+  Config? withConfig,
 }) => assembleReport(
-  config: config,
+  config: withConfig ?? config,
   artifacts: artifacts,
   timestamp: DateTime.utc(2026, 10, 6),
   commit: null,
@@ -41,6 +42,22 @@ void main() {
     expect(assembled.report.metadata.toolVersions, {
       Source.lighthouse: '13.5.0',
     });
+  });
+
+  test('the configured Lighthouse score lines reach the adapter', () {
+    final lenient = parseConfig(
+      'app: quark\nscoring:\n'
+      '  lighthouse: {passingScore: 0, seriousScore: 0}\n',
+    ).fold((config) => config, (failure) => fail('$failure'));
+    final assembled = assemble([
+      lighthouse('quark-login.json'),
+    ], withConfig: lenient);
+    expect(assembled.failures, isEmpty);
+    expect(assembled.report.findings, isEmpty);
+    expect(
+      assemble([lighthouse('quark-login.json')]).report.findings,
+      isNotEmpty,
+    );
   });
 
   test('a bad artifact is reported and the good ones still count', () {

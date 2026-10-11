@@ -92,6 +92,37 @@ void main() {
     expect(Directory(output.path).listSync().whereType<File>(), hasLength(2));
   });
 
+  test('passes the configured throttling to Lighthouse', () async {
+    final recorder = Recorder((arguments) async {
+      final url = arguments.firstWhere(
+        (argument) => argument.startsWith('http://'),
+      );
+      return ProcessResult(1, 0, lighthouseReport(url), '');
+    });
+
+    final result = await _run(
+      output.path,
+      recorder.call,
+      routes: [_routes.first],
+      throttling: (
+        rttMs: 150,
+        throughputKbps: 1638.4,
+        cpuSlowdownMultiplier: 4,
+      ),
+    );
+
+    expect(result, isA<Ok<List<String>, Failure>>());
+    expect(
+      recorder.calls.single.arguments,
+      _expectedArguments(
+        _routes.first,
+        rttMs: '150',
+        throughputKbps: '1638.4',
+        cpuSlowdownMultiplier: '4',
+      ),
+    );
+  });
+
   test('rejects a runtime error without writing a file', () async {
     final recorder = Recorder((arguments) async {
       final url = arguments.firstWhere(
@@ -343,8 +374,12 @@ Future<Result<List<String>, Failure>> _run(
   String outputDir,
   ProcessRun run, {
   List<String> routes = _routes,
+  LighthouseThrottling throttling = defaultLighthouseThrottling,
 }) => runLighthouseRoutes(
-  lighthouse: WebLighthouseConfig(command: const ['npx', 'lighthouse']),
+  lighthouse: WebLighthouseConfig(
+    command: const ['npx', 'lighthouse'],
+    throttling: throttling,
+  ),
   viewport: _viewport,
   browser: _browser,
   origin: _origin,
@@ -353,7 +388,12 @@ Future<Result<List<String>, Failure>> _run(
   run: run,
 );
 
-List<String> _expectedArguments(String route) => [
+List<String> _expectedArguments(
+  String route, {
+  String rttMs = '40',
+  String throughputKbps = '10240',
+  String cpuSlowdownMultiplier = '1',
+}) => [
   'lighthouse',
   _origin.resolve(route).toString(),
   '--hostname=127.0.0.1',
@@ -365,9 +405,9 @@ List<String> _expectedArguments(String route) => [
   '--screenEmulation.width=1440',
   '--screenEmulation.height=900',
   '--screenEmulation.deviceScaleFactor=2.5',
-  '--throttling.rttMs=40',
-  '--throttling.throughputKbps=10240',
-  '--throttling.cpuSlowdownMultiplier=1',
+  '--throttling.rttMs=$rttMs',
+  '--throttling.throughputKbps=$throughputKbps',
+  '--throttling.cpuSlowdownMultiplier=$cpuSlowdownMultiplier',
   '--throttling.requestLatencyMs=0',
   '--throttling.downloadThroughputKbps=0',
   '--throttling.uploadThroughputKbps=0',

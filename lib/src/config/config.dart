@@ -105,14 +105,34 @@ final class WebAuthConfig {
   final List<WebAuthStep> steps;
 }
 
+/// The simulated network and CPU throttling passed to Lighthouse.
+typedef LighthouseThrottling = ({
+  double rttMs,
+  double throughputKbps,
+  double cpuSlowdownMultiplier,
+});
+
+/// The throttling Lighthouse's desktop preset uses.
+const LighthouseThrottling defaultLighthouseThrottling = (
+  rttMs: 40,
+  throughputKbps: 10240,
+  cpuSlowdownMultiplier: 1,
+);
+
 /// How Lighthouse is invoked for web collection.
 final class WebLighthouseConfig {
-  /// A Lighthouse executable followed by its fixed arguments.
-  WebLighthouseConfig({required List<String> command})
-    : command = List.unmodifiable(command);
+  /// A Lighthouse executable followed by its fixed arguments, and the
+  /// [throttling] it simulates.
+  WebLighthouseConfig({
+    required List<String> command,
+    this.throttling = defaultLighthouseThrottling,
+  }) : command = List.unmodifiable(command);
 
   /// The executable followed by its fixed arguments.
   final List<String> command;
+
+  /// The simulated network and CPU throttling.
+  final LighthouseThrottling throttling;
 }
 
 /// Which axe-core script web collection uses.
@@ -191,12 +211,40 @@ const Map<Category, double> defaultCategoryMaxDrop = {
   Category.bestPractices: 2,
 };
 
+/// The Lighthouse audit scores that decide what is a finding.
+///
+/// An audit scoring below [passingScore] is a finding, and a measured audit
+/// scoring below [seriousScore] is serious rather than moderate.
+typedef LighthouseScoreLines = ({double passingScore, double seriousScore});
+
+/// Lighthouse's own passing and failing score bands.
+const LighthouseScoreLines defaultLighthouseScoreLines = (
+  passingScore: 0.9,
+  seriousScore: 0.5,
+);
+
+/// How a new finding that carries a metric is gated.
+enum MetricFindingsGate {
+  /// Only its category score drop can fail the gate.
+  score('score'),
+
+  /// It fails the gate like any other new finding.
+  newFinding('new');
+
+  const MetricFindingsGate(this.id);
+
+  /// The identifier used in config.
+  final String id;
+}
+
 /// How category and metric scores are computed.
 final class ScoringConfig {
-  /// Scoring with the given [weights] and per-metric [metrics] control points.
+  /// Scoring with the given [weights], per-metric [metrics] control points,
+  /// and [lighthouse] score lines.
   ScoringConfig({
     required Map<Category, double> weights,
     required Map<String, ControlPoints> metrics,
+    this.lighthouse = defaultLighthouseScoreLines,
   }) : weights = Map.unmodifiable({
          for (final category in Category.values)
            category: weights[category] ?? 0,
@@ -208,6 +256,9 @@ final class ScoringConfig {
 
   /// Control points for each metric that is scored, by metric name.
   final Map<String, ControlPoints> metrics;
+
+  /// The score lines the Lighthouse adapter applies to audits.
+  final LighthouseScoreLines lighthouse;
 }
 
 /// When `flighthouse ci` fails.
@@ -217,6 +268,7 @@ final class GateConfig {
     required this.minSeverity,
     required this.overallMaxDrop,
     required Map<Category, double> categoryMaxDrop,
+    this.metricFindings = MetricFindingsGate.score,
   }) : categoryMaxDrop = Map.unmodifiable({
          for (final category in Category.values)
            category:
@@ -231,6 +283,9 @@ final class GateConfig {
 
   /// The largest score drop per category, in points, that still passes.
   final Map<Category, double> categoryMaxDrop;
+
+  /// Whether a new finding that carries a metric fails by itself.
+  final MetricFindingsGate metricFindings;
 }
 
 /// The parsed contents of `flighthouse.yaml`.

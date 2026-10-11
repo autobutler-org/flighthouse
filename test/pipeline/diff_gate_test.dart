@@ -61,10 +61,12 @@ GateConfig gateWith({
   Severity minSeverity = Severity.minor,
   double overallMaxDrop = 2,
   Map<Category, double> categoryMaxDrop = defaultCategoryMaxDrop,
+  MetricFindingsGate metricFindings = MetricFindingsGate.score,
 }) => GateConfig(
   minSeverity: minSeverity,
   overallMaxDrop: overallMaxDrop,
   categoryMaxDrop: categoryMaxDrop,
+  metricFindings: metricFindings,
 );
 
 List<GateViolation> gateOf(
@@ -200,6 +202,41 @@ void main() {
           reason: severity.id,
         );
       }
+    });
+
+    test('a gate without metricFindings gates metric findings by score', () {
+      expect(
+        GateConfig(
+          minSeverity: Severity.minor,
+          overallMaxDrop: 2,
+          categoryMaxDrop: defaultCategoryMaxDrop,
+        ).metricFindings,
+        MetricFindingsGate.score,
+      );
+    });
+
+    test('metricFindings new fails a new metric finding by severity', () {
+      final slow = metricFindingWith('slow', Severity.moderate);
+      final gate = gateWith(metricFindings: MetricFindingsGate.newFinding);
+      expect(
+        gateOf(reportWith(), reportWith(findings: [slow]), gate: gate).single,
+        isA<NewFindingViolation>().having(
+          (violation) => violation.finding,
+          'finding',
+          slow,
+        ),
+      );
+      expect(
+        gateOf(
+          reportWith(),
+          reportWith(findings: [slow]),
+          gate: gateWith(
+            minSeverity: Severity.serious,
+            metricFindings: MetricFindingsGate.newFinding,
+          ),
+        ),
+        isEmpty,
+      );
     });
 
     test('a new metric finding fails through its category score drop', () {

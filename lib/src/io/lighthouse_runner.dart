@@ -69,6 +69,7 @@ Future<Result<_Accepted, Failure>> _collectRoute({
     url: requested,
     port: browser.info.debuggingPort,
     viewport: viewport,
+    throttling: lighthouse.throttling,
   );
   final started = await _start(lighthouse.command.first, arguments, run);
   switch (started) {
@@ -114,6 +115,7 @@ List<String> _arguments({
   required Uri url,
   required int port,
   required WebViewportConfig viewport,
+  required LighthouseThrottling throttling,
 }) => [
   ...command.skip(1),
   url.toString(),
@@ -126,13 +128,10 @@ List<String> _arguments({
   '--screenEmulation.width=${viewport.width}',
   '--screenEmulation.height=${viewport.height}',
   '--screenEmulation.deviceScaleFactor=${_scale(viewport.deviceScaleFactor)}',
-  ..._desktopThrottling,
-];
-
-const _desktopThrottling = <String>[
-  '--throttling.rttMs=40',
-  '--throttling.throughputKbps=10240',
-  '--throttling.cpuSlowdownMultiplier=1',
+  '--throttling.rttMs=${_scale(throttling.rttMs)}',
+  '--throttling.throughputKbps=${_scale(throttling.throughputKbps)}',
+  '--throttling.cpuSlowdownMultiplier='
+      '${_scale(throttling.cpuSlowdownMultiplier)}',
   '--throttling.requestLatencyMs=0',
   '--throttling.downloadThroughputKbps=0',
   '--throttling.uploadThroughputKbps=0',

@@ -11,10 +11,10 @@ sealed class GateViolation {
   const GateViolation();
 }
 
-/// A new finding at or above the gate's minimum severity that carries no
-/// metric.
+/// A new finding at or above the gate's minimum severity that the gate
+/// counts as new.
 final class NewFindingViolation extends GateViolation {
-  /// [finding] is new, severe enough, and not gated by a score.
+  /// [finding] is new, severe enough, and not left to a score drop.
   const NewFindingViolation(this.finding);
 
   /// The new finding.
@@ -84,13 +84,19 @@ final class OverallNoLongerMeasured extends GateViolation {
 bool _isSevereEnough(Severity severity, Severity minimum) =>
     severity.index <= minimum.index;
 
+bool _gatesAsNew(Finding finding, MetricFindingsGate mode) => switch (mode) {
+  MetricFindingsGate.score => finding.metric == null,
+  MetricFindingsGate.newFinding => true,
+};
+
 bool _droppedTooFar(double baseline, double current, double maxDrop) =>
     (baseline - current) * 100 > maxDrop + _pointTolerance;
 
 /// Every reason [diff] fails [gate], in a stable order; empty means it passes.
 ///
-/// New findings at or above `minSeverity` fail, except a finding that carries
-/// a metric: its category score drop gates it, so a measured value that
+/// New findings at or above `minSeverity` fail. Under
+/// [MetricFindingsGate.score] a finding that carries a metric is the
+/// exception: its category score drop gates it, so a measured value that
 /// crosses a scoring boundary between runs does not fail by itself. A score
 /// that drops by more than its allowed points fails. A category or overall score the baseline
 /// had but this run lacks fails. Fixed findings and newly measured categories
@@ -100,7 +106,7 @@ List<GateViolation> evaluateGate(
   GateConfig gate,
 ) => List.unmodifiable(<GateViolation>[
   for (final finding in diff.newFindings)
-    if (finding.metric == null &&
+    if (_gatesAsNew(finding, gate.metricFindings) &&
         _isSevereEnough(finding.severity, gate.minSeverity))
       NewFindingViolation(finding),
   for (final MapEntry(key: category, value: change)
