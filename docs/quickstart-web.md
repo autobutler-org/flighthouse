@@ -143,15 +143,78 @@ gate:
 `flt-semantics-identifier`, which make the most stable selectors.
 
 A `type` step reads its value from the environment variable named in `valueFromEnv`, and only while `collect` runs.
-Credentials never go in the config. Set them before collecting:
+Credentials never go in `flighthouse.yaml`. Set them before collecting, or keep them in a
+[hosts file](#credentials-per-backend-host):
 
 ```sh
 export FLIGHTHOUSE_USERNAME=…
 export FLIGHTHOUSE_PASSWORD=…
 ```
 
-`collect` checks every `valueFromEnv` before it touches the page. It does not start a backend or create an account;
-both must already exist. The first route is opened after sign-in, and it must not redirect.
+`collect` checks every value before it touches the page. It does not start a backend or create an account; both
+must already exist. The first route is opened after sign-in, and it must not redirect.
+
+### Credentials per backend host
+
+An app that signs into a backend needs that backend's URL, a username, and a password. To keep them together, and to
+switch backends without re-exporting variables, list each backend in `.flighthouse/hosts.yaml` beside
+`flighthouse.yaml`:
+
+```yaml
+hosts:
+  https://app.example.com:
+    username: flighthouse
+    password: flighthouse
+```
+
+The file holds plain-text credentials, so it must stay out of git. The `.flighthouse/` ignore rule above covers it.
+Each entry takes exactly `username` and `password`, both non-empty strings. Quote a value YAML would read as a number.
+
+A `type` step takes a value from the selected entry with `valueFromHost`, which is `url` (the entry's key),
+`username`, or `password`. A step may set `valueFromHost`, `valueFromEnv`, or both:
+
+```yaml
+- type: type
+  selector: 'input[aria-label="Server"]'
+  valueFromHost: url
+- type: type
+  selector: 'input[aria-label="Username"]'
+  valueFromHost: username
+  valueFromEnv: FLIGHTHOUSE_USERNAME
+- type: type
+  selector: 'input[aria-label="Password"]'
+  valueFromHost: password
+  valueFromEnv: FLIGHTHOUSE_PASSWORD
+```
+
+Select an entry with `--host`. When the file has exactly one entry, it is selected without the option:
+
+```sh
+flighthouse collect --host https://app.example.com
+```
+
+- With a host selected, `valueFromHost` wins, even when `valueFromEnv` is also set.
+- With no host selected, a step reads `valueFromEnv`. A step that has only `valueFromHost` fails and says to pass
+  `--host`.
+- The file is read only when `--host` is passed or a step sets `valueFromHost`. A config that uses only
+  `valueFromEnv` works as before.
+
+In CI there is no committed hosts file. Either give each step a `valueFromEnv` fallback and export the variables from
+the CI secret store, or write the file from secrets before `collect`:
+
+```sh
+mkdir -p .flighthouse
+cat > .flighthouse/hosts.yaml <<EOF
+hosts:
+  $APP_HOST:
+    username: "$APP_USERNAME"
+    password: "$APP_PASSWORD"
+EOF
+flighthouse collect
+```
+
+A username or password from the file is only typed into the page. It never appears in a report, a raw output, an
+error message, or a log line.
 
 ## Run
 
@@ -356,7 +419,25 @@ Lighthouse loaded the page but could not audit it. The code and message after th
 
 #### `could not read web authentication credential web.auth.steps[…].valueFromEnv (…): environment variable is missing or empty`
 
-Export the named variable before `collect`.
+Export the named variable before `collect`, or give the step a `valueFromHost` and select a host.
+
+#### `could not read web authentication credential web.auth.steps[…].valueFromHost (…): no host is selected; …`
+
+The step has no `valueFromEnv` fallback and no host entry was selected. The end of the message says what to do: pass
+`--host` with one of the listed hosts, create `.flighthouse/hosts.yaml`, or add an entry to it.
+
+#### `could not select host …: no entry in …/.flighthouse/hosts.yaml; defined hosts: …`
+
+`--host` must match an entry's key exactly, including the scheme and any port.
+
+#### `could not read …/.flighthouse/hosts.yaml: not found; --host needs an entry under hosts in this file`
+
+Create the file beside `flighthouse.yaml`. See [Credentials per backend host](#credentials-per-backend-host).
+
+#### `config: …/.flighthouse/hosts.yaml: hosts.… (line …, column …): …`
+
+The hosts file is not in the expected shape. The message names the key, such as
+`hosts.https://app.example.com.password`, and never a value from the file.
 
 #### `could not run web authentication step … (…) …: …`
 

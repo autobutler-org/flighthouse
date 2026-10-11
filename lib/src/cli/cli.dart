@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 
 import '../adapters/adapter.dart';
 import '../config/config.dart';
+import '../config/hosts.dart';
 import '../config/parse_config.dart';
 import '../model/baseline.dart';
 import '../model/baseline_json.dart';
@@ -269,6 +270,41 @@ abstract base class _FlighthouseCommand extends Command<int> {
   }
 }
 
+const _noHostNeeded = (host: null, unselectedReason: '');
+
+Future<Result<HostSelection, Failure>> _selectHost({
+  required Config config,
+  required String? requested,
+  required String hostsPath,
+  required HostsFileRead readHostsFile,
+}) async {
+  if (requested == null && !needsHosts(config)) return const Ok(_noHostNeeded);
+  return switch (await readHostsFile(hostsPath)) {
+    Err(:final error) => Err(error),
+    Ok(value: null) => selectHost(
+      hosts: null,
+      requested: requested,
+      hostsPath: hostsPath,
+    ),
+    Ok(value: final text?) =>
+      parseHosts(text)
+          .mapErr<Failure>(
+            (failure) => ConfigFailure(
+              keyPath: '$hostsPath: ${failure.keyPath}',
+              problem: failure.problem,
+              location: failure.location,
+            ),
+          )
+          .flatMap(
+            (hosts) => selectHost(
+              hosts: hosts,
+              requested: requested,
+              hostsPath: hostsPath,
+            ),
+          ),
+  };
+}
+
 String _collected(String source, int count) =>
     'collected $count $source ${count == 1 ? 'file' : 'files'}';
 
@@ -282,7 +318,17 @@ final class _CollectCommand extends _FlighthouseCommand {
     required this.browserCloseTimeout,
     required this.downloadAxe,
     required this.axeCacheDir,
-  });
+    required this.readHostsFile,
+  }) {
+    argParser.addOption(
+      'host',
+      valueHelp: 'url',
+      help:
+          'The entry of .flighthouse/hosts.yaml, beside the configuration '
+          'file, whose url, username, and password fill sign-in steps that '
+          'set valueFromHost. Optional when the file has exactly one entry.',
+    );
+  }
 
   final ProcessRun runProcess;
   final WebBrowserLauncher launchBrowser;
@@ -290,6 +336,7 @@ final class _CollectCommand extends _FlighthouseCommand {
   final Duration browserCloseTimeout;
   final AxeScriptDownload downloadAxe;
   final String axeCacheDir;
+  final HostsFileRead readHostsFile;
 
   @override
   String get name => 'collect';
@@ -302,6 +349,16 @@ final class _CollectCommand extends _FlighthouseCommand {
   @override
   Future<int> runWith(_Context context) async {
     final failures = <Failure>[];
+    final selected = await _selectHost(
+      config: context.config,
+      requested: argResults!.option('host'),
+      hostsPath: _resolve(context, p.join('.flighthouse', 'hosts.yaml')),
+      readHostsFile: readHostsFile,
+    );
+    if (selected case Err(:final error)) {
+      return _reportFailures([error], environment);
+    }
+    final hosts = (selected as Ok<HostSelection, Failure>).value;
     for (final MapEntry(key: source, value: sourceConfig)
         in context.config.sources.entries) {
       final copied = await replaceJsonFiles(
@@ -328,6 +385,7 @@ final class _CollectCommand extends _FlighthouseCommand {
         configBaseDir: context.baseDir,
         config: web,
         environment: platformEnvironment,
+        hosts: hosts,
         runProcess: runProcess,
         launch: launchBrowser,
         closeTimeout: browserCloseTimeout,
@@ -557,6 +615,10 @@ String _chromeCachePath() => chromeCacheDirectory(
   fallback: Directory.systemTemp.path,
 );
 
+typedef HostsFileRead = Future<Result<String?, IoFailure>> Function(
+  String path,
+);
+
 typedef _WebAudits = ({List<String> lighthouse, List<String> axe});
 
 Future<Result<BrowserSession, IoFailure>> _launchCollectedBrowser(
@@ -577,6 +639,7 @@ Future<int> runCli(
   Map<String, String>? platformEnvironment,
   AxeScriptDownload? downloadAxe,
   String? axeCacheDir,
+  HostsFileRead? readHostsFile,
 }) async {
   final effects = environment ?? defaultEnvironment();
   final process = runProcess ?? _runExternalProcess;
@@ -619,6 +682,7 @@ Future<int> runCli(
             browserCloseTimeout: _browserCloseTimeout,
             downloadAxe: download,
             axeCacheDir: axeCache,
+            readHostsFile: readHostsFile ?? readTextIfExists,
           ),
         )
         ..addCommand(_ReportCommand(effects, version))

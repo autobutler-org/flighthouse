@@ -28,6 +28,7 @@ void main() {
     final result = await runWebCollection<String>(
       configBaseDir: baseDir.path,
       config: _config,
+      hosts: (host: null, unselectedReason: ''),
       environment: const {'USERNAME': 'owner', 'PASSWORD': 'password'},
       runProcess: _successfulBuild,
       launch: (viewport) async {
@@ -67,6 +68,7 @@ void main() {
     final result = await runWebCollection<void>(
       configBaseDir: baseDir.path,
       config: _config,
+      hosts: (host: null, unselectedReason: ''),
       environment: const {'USERNAME': 'owner', 'PASSWORD': 'password'},
       runProcess: _successfulBuild,
       launch: (_) async => Ok(fake.session),
@@ -97,6 +99,7 @@ void main() {
     final result = await runWebCollection<void>(
       configBaseDir: baseDir.path,
       config: _config,
+      hosts: (host: null, unselectedReason: ''),
       environment: const {},
       runProcess: (_, _, {workingDirectory}) async =>
           ProcessResult(1, 1, '', 'build failed'),
@@ -134,6 +137,7 @@ void main() {
     final result = await runWebCollection<List<String>>(
       configBaseDir: baseDir.path,
       config: _config,
+      hosts: (host: null, unselectedReason: ''),
       environment: const {
         'USERNAME': 's3cret-user',
         'PASSWORD': 's3cret-value',
