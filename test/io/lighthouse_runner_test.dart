@@ -245,7 +245,7 @@ void main() {
     expect(describe(failure), contains('exited with code 1'));
     expect(describe(failure), contains('audit failed'));
     expect(describe(failure), contains('--disable-storage-reset'));
-    expect(describe(failure), isNot(contains('more')));
+    expect(describe(failure), endsWith('audit failed\n  more'));
     expect(File(p.join(output.path, 'stale.json')).readAsStringSync(), 'keep');
     expect(Directory(output.path).listSync().whereType<File>(), hasLength(1));
   });

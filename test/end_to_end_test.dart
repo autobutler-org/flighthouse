@@ -51,8 +51,8 @@ void main() {
       expect(ci.code, exitPassed);
       expect(
         ci.out,
-        'quark: overall 78 | a11y 73 | perf 80 | responsiveness n/a | '
-        'memory n/a | best-practices 87\n'
+        'quark: overall 77.8 | a11y 72.7 | perf 80 | responsiveness n/a | '
+        'memory n/a | best-practices 86.5\n'
         '0 new, 0 fixed, 35 unchanged\n'
         'gate passed\n',
       );

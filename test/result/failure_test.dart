@@ -89,7 +89,34 @@ void main() {
             stderr: '\n  Runtime error encountered: Chrome not found  \nmore',
           ),
         ),
-        'lighthouse http://localhost:8080/login exited with code 1: Runtime error encountered: Chrome not found',
+        'lighthouse http://localhost:8080/login exited with code 1: Runtime error encountered: Chrome not found\n'
+        '  more',
+      );
+    });
+
+    test('process failure shows the first and last lines of stderr', () {
+      expect(
+        describe(
+          ProcessFailure(
+            command: 'flutter build web',
+            exitCode: 1,
+            stderr: [
+              'Resolving dependencies...',
+              for (var line = 1; line <= 8; line++) 'progress $line',
+              '',
+              'Because demo requires Flutter SDK version 3.47.7, version '
+                  'solving failed.',
+            ].join('\n'),
+          ),
+        ),
+        'flutter build web exited with code 1: Resolving dependencies...\n'
+        '  ...\n'
+        '  progress 5\n'
+        '  progress 6\n'
+        '  progress 7\n'
+        '  progress 8\n'
+        '  Because demo requires Flutter SDK version 3.47.7, version solving '
+        'failed.',
       );
     });
 

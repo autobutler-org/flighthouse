@@ -148,11 +148,39 @@ void main() {
     },
   );
 
-  test('a missing config file is a config error', () async {
+  test('a missing config file names it and says to create it', () async {
     File(workspace.path('flighthouse.yaml')).deleteSync();
     final run = await workspace.run(['report']);
     expect(run.code, exitUsageError);
-    expect(run.err, contains('config: (file): could not read'));
+    expect(
+      run.err,
+      'config: ${workspace.path('flighthouse.yaml')}: not found; create '
+      'flighthouse.yaml in ${workspace.root.path} '
+      '(see docs/quickstart-web.md#configure)\n',
+    );
+  });
+
+  test('a missing relative config is named against the working directory', () async {
+    final out = StringBuffer();
+    final err = StringBuffer();
+    final code = await runCli(
+      ['--config', 'no-such-dir/flighthouse.yaml', 'report'],
+      version: '9.9.9',
+      environment: (
+        now: DateTime.now,
+        commitOf: (_) async => null,
+        out: out,
+        err: err,
+      ),
+    );
+    expect(code, exitUsageError);
+    expect(
+      '$err',
+      'config: ${p.join(Directory.current.path, 'no-such-dir', 'flighthouse.yaml')}: '
+          'not found; create flighthouse.yaml in '
+          '${p.join(Directory.current.path, 'no-such-dir')} '
+          '(see docs/quickstart-web.md#configure)\n',
+    );
   });
 
   test('an invalid config names the key and exits 2', () async {
@@ -312,8 +340,8 @@ void main() {
     expect(
       run.out,
       startsWith(
-        'quark: overall 80 | a11y 100 | perf 60 | responsiveness n/a | '
-        'memory n/a | best-practices 77\n',
+        'quark: overall 79.6 | a11y 100 | perf 60 | responsiveness n/a | '
+        'memory n/a | best-practices 76.9\n',
       ),
     );
     final report = jsonDecode(
@@ -400,10 +428,25 @@ void main() {
       expect(run.code, exitGateFailed);
       expect(
         run.err,
-        contains('FAIL new critical a11y finding on /signup: button-name:'),
+        contains(
+          'FAIL new critical a11y finding on /signup: button-name at '
+          'body > button: Buttons do not have an accessible name\n',
+        ),
       );
-      expect(run.err, contains('FAIL a11y score dropped from 100.0 to'));
-      expect(run.out, endsWith('gate failed\n'));
+      expect(run.err, contains('FAIL a11y score dropped from 100 to'));
+      expect(
+        run.err.trimRight().split('\n'),
+        everyElement(startsWith('FAIL ')),
+      );
+      expect(
+        run.out,
+        endsWith(
+          'gate failed\n'
+          'details in ${workspace.path('.flighthouse/report.html')}; fix the '
+          'failures above, or accept them as the new baseline with '
+          'flighthouse baseline --update\n',
+        ),
+      );
       expect(
         workspace.read('.flighthouse/report.html'),
         contains('class="badge new"'),

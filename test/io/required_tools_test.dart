@@ -58,6 +58,27 @@ void main() {
     expect(describe(failure), contains('node: not found'));
   });
 
+  for (final stderr in [
+    '/usr/bin/env: \u2018node\u2019: No such file or directory\n',
+    "/usr/bin/env: 'node': No such file or directory\n",
+    'env: node: No such file or directory\n',
+  ]) {
+    test(
+      'a lighthouse without node on PATH says Node.js is required',
+      () async {
+        final failure = _failure(
+          await _check((_, _) async => ProcessResult(1, 127, '', stderr)),
+        );
+        expect(failure, isA<MissingToolFailure>());
+        expect(
+          describe(failure),
+          'Node.js not found. Install it with: https://nodejs.org (Node.js 22 '
+          'is required to run Lighthouse; install it and put node on PATH)',
+        );
+      },
+    );
+  }
+
   for (final output in ['', 'not a version\n', '{"lighthouseVersion":"1"}']) {
     test('output "$output" is an unusable version', () async {
       final failure = _failure(

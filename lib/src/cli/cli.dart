@@ -86,7 +86,7 @@ String _rawDir(_Context context, Source source) =>
     p.join(context.reportDir, 'raw', source.id);
 
 String formatScore(double? score) => switch (score) {
-  final value? => '${displayScore(value)}',
+  final value? => formatPoints(value * 100),
   null => 'n/a',
 };
 
@@ -111,10 +111,22 @@ Future<Result<_Context, Failure>> _load(
   String version,
 ) async {
   final configPath = global.option('config')!;
+  final absoluteConfigPath = p.normalize(p.absolute(configPath));
+  if (!await fileExists(configPath)) {
+    return Err(
+      ConfigFailure(
+        keyPath: absoluteConfigPath,
+        problem:
+            'not found; create ${p.basename(absoluteConfigPath)} in '
+            '${p.dirname(absoluteConfigPath)} '
+            '(see docs/quickstart-web.md#configure)',
+      ),
+    );
+  }
   final text = await readText(configPath);
   return switch (text) {
     Err(:final error) => Err(
-      ConfigFailure(keyPath: '(file)', problem: describe(error)),
+      ConfigFailure(keyPath: absoluteConfigPath, problem: error.reason),
     ),
     Ok(value: final contents) => parseConfig(contents).map((config) {
       final baseDir = p.dirname(configPath);
@@ -521,10 +533,18 @@ final class _CiCommand extends _FlighthouseCommand {
             '--update to accept them',
           );
         }
-        environment.out.writeln(
-          violations.isEmpty ? 'gate passed' : 'gate failed',
-        );
-        return violations.isEmpty ? exitPassed : exitGateFailed;
+        if (violations.isEmpty) {
+          environment.out.writeln('gate passed');
+          return exitPassed;
+        }
+        environment.out
+          ..writeln('gate failed')
+          ..writeln(
+            'details in ${p.join(context.reportDir, 'report.html')}; fix the '
+            'failures above, or accept them as the new baseline with '
+            'flighthouse baseline --update',
+          );
+        return exitGateFailed;
     }
   }
 }

@@ -87,6 +87,30 @@ void main() {
     expectNothingStored();
   });
 
+  test('a lighthouse without node stops collect and names Node.js', () async {
+    final outcome = await collectWith(
+      (_, _) async => ProcessResult(
+        1,
+        127,
+        '',
+        '/usr/bin/env: \u2018node\u2019: No such file or directory\n',
+      ),
+    );
+
+    expect(outcome.run.code, exitInputError);
+    expect(
+      outcome.run.err,
+      contains(
+        'Node.js 22 is required to run Lighthouse; install it and put node '
+        'on PATH',
+      ),
+    );
+    expect(outcome.run.err, isNot(contains('No such file or directory')));
+    expect(outcome.calls, ['lighthouse --version']);
+    expect(outcome.launches, 0);
+    expectNothingStored();
+  });
+
   test('a lighthouse that prints an unusable version stops collect', () async {
     final outcome = await collectWith(
       (_, _) async => ProcessResult(1, 0, 'Segmentation fault\n', ''),

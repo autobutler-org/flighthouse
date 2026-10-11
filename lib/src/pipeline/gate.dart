@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import '../config/config.dart';
 import '../model/enums.dart';
 import '../model/observations.dart';
+import '../result/failure.dart';
 import 'diff.dart';
 
 const double _pointTolerance = 1e-9;
@@ -142,13 +145,40 @@ List<GateViolation> evaluateGate(
   },
 ]);
 
-String _points(double score) => (score * 100).toStringAsFixed(1);
+/// Renders [points] with at most one decimal, dropping a trailing `.0`.
+String formatPoints(double points) => switch (points.toStringAsFixed(1)) {
+  final text when text.endsWith('.0') => text.substring(0, text.length - 2),
+  final text => text,
+};
+
+String _points(double score) => formatPoints(score * 100);
+
+String _at(String? target) => switch (target) {
+  final selector? when selector.isNotEmpty => ' at ${_selector(selector)}',
+  _ => '',
+};
+
+String _selector(String target) {
+  if (!target.startsWith('[')) {
+    return target;
+  }
+  try {
+    return switch (jsonDecode(target)) {
+      final List<Object?> parts when parts.every((part) => part is String) =>
+        parts.join(' '),
+      _ => target,
+    };
+  } on FormatException {
+    return target;
+  }
+}
 
 /// Renders [violation] as one line for CI output.
 String describeViolation(GateViolation violation) => switch (violation) {
   NewFindingViolation(:final finding) =>
     'new ${finding.severity.id} ${finding.category.id} finding on '
-        '${finding.route}: ${finding.rule}: ${finding.message}',
+        '${finding.route}: ${finding.rule}${_at(finding.target)}: '
+        '${firstLine(finding.message)}',
   CategoryScoreDrop(
     :final category,
     :final baseline,
@@ -156,10 +186,10 @@ String describeViolation(GateViolation violation) => switch (violation) {
     :final maxDrop,
   ) =>
     '${category.id} score dropped from ${_points(baseline)} to '
-        '${_points(current)}, more than the allowed $maxDrop points',
+        '${_points(current)}, more than the allowed ${formatPoints(maxDrop)} points',
   OverallScoreDrop(:final baseline, :final current, :final maxDrop) =>
     'overall score dropped from ${_points(baseline)} to '
-        '${_points(current)}, more than the allowed $maxDrop points',
+        '${_points(current)}, more than the allowed ${formatPoints(maxDrop)} points',
   CategoryNoLongerMeasured(:final category) =>
     '${category.id} was measured in the baseline but not in this run',
   OverallNoLongerMeasured() =>
