@@ -87,8 +87,47 @@ Parsed<ControlPoints> _readControlPoints(YamlNode node, String keyPath) =>
       },
     );
 
+Parsed<LighthouseScoreLines> _readScoreLines(YamlNode node, String keyPath) =>
+    readMapping(node, keyPath, const ['passingScore', 'seriousScore']).flatMap(
+      (mapping) => switch ((
+        optionalField(
+          mapping,
+          'passingScore',
+          keyPath,
+          readUnitInterval,
+          defaultLighthouseScoreLines.passingScore,
+        ),
+        optionalField(
+          mapping,
+          'seriousScore',
+          keyPath,
+          readUnitInterval,
+          defaultLighthouseScoreLines.seriousScore,
+        ),
+      )) {
+        (Ok(value: final passing), Ok(value: final serious))
+            when serious > passing =>
+          invalid(
+            node,
+            keyPath,
+            'seriousScore ($serious) must not exceed passingScore ($passing)',
+          ),
+        (Ok(value: final passing), Ok(value: final serious)) => Ok((
+          passingScore: passing,
+          seriousScore: serious,
+        )),
+        (final passing, final serious) => Err(
+          firstConfigError([passing, serious]),
+        ),
+      },
+    );
+
 Parsed<ScoringConfig> _readScoring(YamlNode node, String keyPath) =>
-    readMapping(node, keyPath, const ['weights', 'metrics']).flatMap(
+    readMapping(node, keyPath, const [
+      'weights',
+      'metrics',
+      'lighthouse',
+    ]).flatMap(
       (mapping) => switch ((
         optionalField(
           mapping,
@@ -104,12 +143,28 @@ Parsed<ScoringConfig> _readScoring(YamlNode node, String keyPath) =>
           openMappingReader(_readControlPoints),
           const <String, ControlPoints>{},
         ),
-      )) {
-        (Ok(value: final weights), Ok(value: final metrics)) => Ok(
-          ScoringConfig(weights: weights, metrics: metrics),
+        optionalField(
+          mapping,
+          'lighthouse',
+          keyPath,
+          _readScoreLines,
+          defaultLighthouseScoreLines,
         ),
-        (final weights, final metrics) => Err(
-          firstConfigError([weights, metrics]),
+      )) {
+        (
+          Ok(value: final weights),
+          Ok(value: final metrics),
+          Ok(value: final lighthouse),
+        ) =>
+          Ok(
+            ScoringConfig(
+              weights: weights,
+              metrics: metrics,
+              lighthouse: lighthouse,
+            ),
+          ),
+        (final weights, final metrics, final lighthouse) => Err(
+          firstConfigError([weights, metrics, lighthouse]),
         ),
       },
     );
@@ -154,7 +209,11 @@ Parsed<_MaxDrops> _readMaxDrops(YamlNode node, String keyPath) =>
     );
 
 Parsed<GateConfig> _readGate(YamlNode node, String keyPath) =>
-    readMapping(node, keyPath, const ['minSeverity', 'maxScoreDrop']).flatMap(
+    readMapping(node, keyPath, const [
+      'minSeverity',
+      'maxScoreDrop',
+      'metricFindings',
+    ]).flatMap(
       (mapping) => switch ((
         optionalField(
           mapping,
@@ -170,16 +229,29 @@ Parsed<GateConfig> _readGate(YamlNode node, String keyPath) =>
           _readMaxDrops,
           _defaultMaxDrops,
         ),
-      )) {
-        (Ok(value: final minSeverity), Ok(value: final drops)) => Ok(
-          GateConfig(
-            minSeverity: minSeverity,
-            overallMaxDrop: drops.overall,
-            categoryMaxDrop: drops.categories,
-          ),
+        optionalField(
+          mapping,
+          'metricFindings',
+          keyPath,
+          enumReader(MetricFindingsGate.values, (mode) => mode.id),
+          MetricFindingsGate.score,
         ),
-        (final minSeverity, final drops) => Err(
-          firstConfigError([minSeverity, drops]),
+      )) {
+        (
+          Ok(value: final minSeverity),
+          Ok(value: final drops),
+          Ok(value: final metricFindings),
+        ) =>
+          Ok(
+            GateConfig(
+              minSeverity: minSeverity,
+              overallMaxDrop: drops.overall,
+              categoryMaxDrop: drops.categories,
+              metricFindings: metricFindings,
+            ),
+          ),
+        (final minSeverity, final drops, final metricFindings) => Err(
+          firstConfigError([minSeverity, drops, metricFindings]),
         ),
       },
     );
@@ -445,15 +517,79 @@ Parsed<WebAuthConfig> _readWebAuth(YamlNode node, String keyPath) =>
       },
     );
 
+Parsed<double> _readAtLeastOne(YamlNode node, String keyPath) => switch (node) {
+  YamlScalar(value: final num number) when number.isFinite && number >= 1 => Ok(
+    number.toDouble(),
+  ),
+  _ => invalid(node, keyPath, 'expected a number of at least 1'),
+};
+
+Parsed<LighthouseThrottling> _readThrottling(YamlNode node, String keyPath) =>
+    readMapping(node, keyPath, const [
+      'rttMs',
+      'throughputKbps',
+      'cpuSlowdownMultiplier',
+    ]).flatMap(
+      (mapping) => switch ((
+        optionalField(
+          mapping,
+          'rttMs',
+          keyPath,
+          readNonNegative,
+          defaultLighthouseThrottling.rttMs,
+        ),
+        optionalField(
+          mapping,
+          'throughputKbps',
+          keyPath,
+          readPositive,
+          defaultLighthouseThrottling.throughputKbps,
+        ),
+        optionalField(
+          mapping,
+          'cpuSlowdownMultiplier',
+          keyPath,
+          _readAtLeastOne,
+          defaultLighthouseThrottling.cpuSlowdownMultiplier,
+        ),
+      )) {
+        (
+          Ok(value: final rttMs),
+          Ok(value: final throughputKbps),
+          Ok(value: final cpuSlowdownMultiplier),
+        ) =>
+          Ok((
+            rttMs: rttMs,
+            throughputKbps: throughputKbps,
+            cpuSlowdownMultiplier: cpuSlowdownMultiplier,
+          )),
+        (final rttMs, final throughputKbps, final cpuSlowdownMultiplier) => Err(
+          firstConfigError([rttMs, throughputKbps, cpuSlowdownMultiplier]),
+        ),
+      },
+    );
+
 Parsed<WebLighthouseConfig> _readWebLighthouse(YamlNode node, String keyPath) =>
-    readMapping(node, keyPath, const ['command']).flatMap(
-      (mapping) => optionalField(
-        mapping,
-        'command',
-        keyPath,
-        _readCommand,
-        const ['lighthouse'],
-      ).map((command) => WebLighthouseConfig(command: command)),
+    readMapping(node, keyPath, const ['command', 'throttling']).flatMap(
+      (mapping) => switch ((
+        optionalField(mapping, 'command', keyPath, _readCommand, const [
+          'lighthouse',
+        ]),
+        optionalField(
+          mapping,
+          'throttling',
+          keyPath,
+          _readThrottling,
+          defaultLighthouseThrottling,
+        ),
+      )) {
+        (Ok(value: final command), Ok(value: final throttling)) => Ok(
+          WebLighthouseConfig(command: command, throttling: throttling),
+        ),
+        (final command, final throttling) => Err(
+          firstConfigError([command, throttling]),
+        ),
+      },
     );
 
 Parsed<WebAxeConfig> _readWebAxe(YamlNode node, String keyPath) =>

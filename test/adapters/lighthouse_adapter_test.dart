@@ -170,9 +170,67 @@ void main() {
     });
 
     test('severityForMeasured uses the score band, info when unweighted', () {
-      expect(severityForMeasured(30, 0.2), Severity.serious);
-      expect(severityForMeasured(30, 0.7), Severity.moderate);
-      expect(severityForMeasured(0, 0.2), Severity.info);
+      expect(severityForMeasured(30, 0.2, 0.5), Severity.serious);
+      expect(severityForMeasured(30, 0.7, 0.5), Severity.moderate);
+      expect(severityForMeasured(0, 0.2, 0.5), Severity.info);
+      expect(severityForMeasured(30, 0.2, 0.1), Severity.moderate);
+      expect(severityForMeasured(30, 0.7, 0.8), Severity.serious);
+    });
+  });
+
+  group('score lines', () {
+    AdapterOutput parsedWith(LighthouseScoreLines scoreLines) =>
+        parseLighthouse(
+          artifactOf(fixture('quark-login.json')),
+          scoreLines: scoreLines,
+        ).fold((output) => output, (failure) => fail('$failure'));
+
+    test('default to passing at 0.9 and serious below 0.5', () {
+      expect(
+        parsedWith(defaultLighthouseScoreLines).findings,
+        parsed(fixture('quark-login.json')).findings,
+      );
+      expect(defaultLighthouseScoreLines, (
+        passingScore: 0.9,
+        seriousScore: 0.5,
+      ));
+    });
+
+    test('a passing line of 0 leaves no findings and no failed rules', () {
+      final output = parsedWith((passingScore: 0, seriousScore: 0));
+      expect(output.findings, isEmpty);
+      expect(output.ruleOutcomes.where((outcome) => !outcome.passed), isEmpty);
+    });
+
+    test('a serious line of 0 makes a failing metric moderate', () {
+      final output = parsedWith((passingScore: 0.9, seriousScore: 0));
+      expect(
+        output.findings
+            .singleWhere((finding) => finding.rule == 'total-blocking-time')
+            .severity,
+        Severity.moderate,
+      );
+    });
+
+    test('an audit between the default and a raised passing line', () {
+      final contents = jsonEncode(
+        withAudit(fixtureJson('quark-login.json'), 'total-blocking-time', {
+          'score': 0.95,
+        }),
+      );
+      bool flagged(AdapterOutput output) => output.findings.any(
+        (finding) => finding.rule == 'total-blocking-time',
+      );
+      expect(flagged(parsed(contents)), isFalse);
+      expect(
+        flagged(
+          parseLighthouse(
+            artifactOf(contents),
+            scoreLines: (passingScore: 1, seriousScore: 0.5),
+          ).fold((output) => output, (failure) => fail('$failure')),
+        ),
+        isTrue,
+      );
     });
   });
 

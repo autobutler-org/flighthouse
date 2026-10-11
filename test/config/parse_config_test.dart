@@ -86,6 +86,8 @@ void main() {
       expect(config.gate.minSeverity, Severity.minor);
       expect(config.gate.overallMaxDrop, 2);
       expect(config.gate.categoryMaxDrop, defaultCategoryMaxDrop);
+      expect(config.gate.metricFindings, MetricFindingsGate.score);
+      expect(config.scoring.lighthouse, (passingScore: 0.9, seriousScore: 0.5));
       expect(config.web, isNull);
       expect(config.auditSources, isEmpty);
     });
@@ -180,6 +182,11 @@ void main() {
       expect(defaults.viewport.deviceScaleFactor, 1);
       expect(defaults.auth, isNull);
       expect(defaults.lighthouse.command, ['lighthouse']);
+      expect(defaults.lighthouse.throttling, (
+        rttMs: 40,
+        throughputKbps: 10240,
+        cpuSlowdownMultiplier: 1,
+      ));
       expect(defaults.axe.version, '4.11.1');
       expect(defaults.axe.scriptPath, isNull);
     });
@@ -237,6 +244,57 @@ void main() {
       expect(config.scoring.weights.clear, throwsUnsupportedError);
       expect(config.scoring.metrics.clear, throwsUnsupportedError);
       expect(config.gate.categoryMaxDrop.clear, throwsUnsupportedError);
+    });
+  });
+
+  group('tolerance overrides', () {
+    test('reads the metric findings gate', () {
+      expect(
+        parsed('app: quark\ngate:\n  metricFindings: new\n')
+            .gate
+            .metricFindings,
+        MetricFindingsGate.newFinding,
+      );
+      expect(
+        parsed('app: quark\ngate:\n  metricFindings: score\n')
+            .gate
+            .metricFindings,
+        MetricFindingsGate.score,
+      );
+    });
+
+    test('reads the Lighthouse score lines, defaulting the one not given', () {
+      expect(
+        parsed(
+          'app: quark\nscoring:\n'
+          '  lighthouse: {passingScore: 0.8, seriousScore: 0.3}\n',
+        ).scoring.lighthouse,
+        (passingScore: 0.8, seriousScore: 0.3),
+      );
+      expect(
+        parsed('app: quark\nscoring:\n  lighthouse: {passingScore: 0.75}\n')
+            .scoring
+            .lighthouse,
+        (passingScore: 0.75, seriousScore: 0.5),
+      );
+    });
+
+    test('reads Lighthouse throttling, defaulting the keys not given', () {
+      LighthouseThrottling throttlingOf(String mapping) => parsed(
+        'app: quark\nweb:\n  routes: [/login]\n'
+        '  lighthouse:\n    throttling: $mapping\n',
+      ).web!.lighthouse.throttling;
+      expect(
+        throttlingOf(
+          '{rttMs: 150, throughputKbps: 1638.4, cpuSlowdownMultiplier: 4}',
+        ),
+        (rttMs: 150, throughputKbps: 1638.4, cpuSlowdownMultiplier: 4),
+      );
+      expect(throttlingOf('{rttMs: 0}'), (
+        rttMs: 0,
+        throughputKbps: 10240,
+        cpuSlowdownMultiplier: 1,
+      ));
     });
   });
 
@@ -494,6 +552,52 @@ void main() {
         'gate.maxScoreDrop.perf',
       );
     });
+
+    test('an unknown metric findings gate lists the choices', () {
+      expectFailure(
+        'app: quark\ngate:\n  metricFindings: always\n',
+        'gate.metricFindings',
+        problem: 'expected one of score, new',
+      );
+    });
+
+    test('a Lighthouse score line above 1', () {
+      expectFailure(
+        'app: quark\nscoring:\n  lighthouse: {passingScore: 1.5}\n',
+        'scoring.lighthouse.passingScore',
+      );
+    });
+
+    test('a serious line above the passing line', () {
+      expectFailure(
+        'app: quark\nscoring:\n'
+            '  lighthouse: {passingScore: 0.4}\n',
+        'scoring.lighthouse',
+        problem: 'seriousScore (0.5) must not exceed passingScore (0.4)',
+      );
+    });
+
+    test('an unknown Lighthouse score line', () {
+      expectFailure(
+        'app: quark\nscoring:\n  lighthouse: {failingScore: 0.5}\n',
+        'scoring.lighthouse.failingScore',
+      );
+    });
+
+    for (final (key, value) in [
+      ('rttMs', '-1'),
+      ('throughputKbps', '0'),
+      ('cpuSlowdownMultiplier', '0.5'),
+      ('rttMs', 'fast'),
+    ]) {
+      test('web rejects throttling $key of $value', () {
+        expectFailure(
+          'app: quark\nweb:\n  routes: [/login]\n'
+              '  lighthouse:\n    throttling: {$key: $value}\n',
+          'web.lighthouse.throttling.$key',
+        );
+      });
+    }
 
     test('a YAML syntax error', () {
       expectFailure('app: quark\ngate: [\n', '(root)', problem: 'invalid YAML');

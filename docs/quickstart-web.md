@@ -227,6 +227,38 @@ Performance scores vary between runs on the same build. [The quark variance meas
 found drops of up to 2.85 perf points and 1.22 overall points between runs with desktop throttling, inside the default
 `maxScoreDrop`. If your app varies more, measure it the same way before raising a tolerance.
 
+Every value that decides the verdict is a config key. Each is optional, and these are the defaults
+([ADR 0028](adr/0028-configurable-gate-tolerances.md)):
+
+```yaml
+web:
+  lighthouse:
+    throttling:
+      rttMs: 40
+      throughputKbps: 10240
+      cpuSlowdownMultiplier: 1
+gate:
+  minSeverity: minor
+  maxScoreDrop: {overall: 2, a11y: 2, perf: 5, responsiveness: 2, memory: 2, best-practices: 2}
+  metricFindings: score
+scoring:
+  lighthouse:
+    passingScore: 0.9
+    seriousScore: 0.5
+```
+
+- `web.lighthouse.throttling` is the network and CPU throttling Lighthouse simulates. The defaults are the values
+  of Lighthouse's desktop preset. `rttMs` is at least 0, `throughputKbps` is above 0, and `cpuSlowdownMultiplier`
+  is at least 1.
+- `gate.metricFindings: new` makes a new finding that carries a metric fail the gate at or above `minSeverity`, like
+  any other new finding. `score` leaves it to the category score drop.
+- `scoring.lighthouse.passingScore` is the Lighthouse audit score below which an audit is a finding.
+  `seriousScore` is the score below which a measured audit is `serious` instead of `moderate`. Both run from 0 to 1,
+  and `seriousScore` cannot be above `passingScore`.
+
+Regenerate the baseline with `flighthouse baseline --update` after changing `throttling` or `scoring.lighthouse`:
+scores and findings taken under different values are not comparable.
+
 ## Troubleshooting
 
 Every message below is printed by flighthouse to standard error. `…` stands for a path, selector, or detail from your

@@ -37,15 +37,22 @@ Assembled assembleReport({
   required DateTime timestamp,
   required String? commit,
   required String flighthouseVersion,
-  Map<Source, Adapter> adapters = defaultAdapters,
+  Map<Source, Adapter>? adapters,
 }) {
+  final Map<Source, Adapter> resolved =
+      adapters ??
+      {
+        ...defaultAdapters,
+        Source.lighthouse: (artifact) =>
+            parseLighthouse(artifact, scoreLines: config.scoring.lighthouse),
+      };
   final unsupported = {
     for (final artifact in artifacts)
-      if (!adapters.containsKey(artifact.source)) artifact.source,
+      if (!resolved.containsKey(artifact.source)) artifact.source,
   };
   final (outputs, adapterFailures) = partition([
     for (final artifact in artifacts)
-      if (adapters[artifact.source] case final adapter?)
+      if (resolved[artifact.source] case final adapter?)
         adapter(artifact)
             .map((output) => (source: artifact.source, output: output)),
   ]);

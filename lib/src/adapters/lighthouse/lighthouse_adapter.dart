@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../../config/config.dart';
 import '../../model/enums.dart';
 import '../../model/json_decode.dart';
 import '../../model/observations.dart';
@@ -39,8 +40,6 @@ const Set<String> _knownModes = {
   ..._unscoredModes,
 };
 
-const double _passingScore = 0.9;
-
 typedef _AuditRef = ({String id, double weight});
 
 typedef _Audit = ({
@@ -69,12 +68,15 @@ Severity severityForWeight(double weight) => switch (weight) {
   _ => Severity.info,
 };
 
-Severity severityForMeasured(double weight, double score) =>
-    switch ((weight, score)) {
-      (<= 0, _) => Severity.info,
-      (_, < 0.5) => Severity.serious,
-      _ => Severity.moderate,
-    };
+Severity severityForMeasured(
+  double weight,
+  double score,
+  double seriousScore,
+) => switch (weight) {
+  <= 0 => Severity.info,
+  _ when score < seriousScore => Severity.serious,
+  _ => Severity.moderate,
+};
 
 Decoded<_AuditRef> _decodeAuditRef(Object? json, String path) =>
     decodeAnyObject(json, path).flatMap(
@@ -297,6 +299,7 @@ Result<_Observed, String> _observe(
   _AuditRef ref,
   Category category,
   String route,
+  LighthouseScoreLines lines,
 ) => switch ((audit.mode, audit.score)) {
   (final mode, _) when !_knownModes.contains(mode) => Err(
     '$rootPath.audits.${ref.id}.scoreDisplayMode: '
@@ -313,7 +316,7 @@ Result<_Observed, String> _observe(
   ),
   (_, null) => const Ok(_nothing),
   (final mode, final double score) when _binaryModes.contains(mode) => Ok((
-    findings: score >= _passingScore
+    findings: score >= lines.passingScore
         ? const []
         : _findingsOf(
             audit,
@@ -329,7 +332,7 @@ Result<_Observed, String> _observe(
         rule: audit.id,
         route: route,
         weight: ref.weight,
-        passed: score >= _passingScore,
+        passed: score >= lines.passingScore,
       ),
     ],
     measurements: const [],
@@ -337,13 +340,13 @@ Result<_Observed, String> _observe(
   (final mode, final double score) when _measuredModes.contains(mode) =>
     _metricOf(audit, score).map(
       (metric) => (
-        findings: score >= _passingScore
+        findings: score >= lines.passingScore
             ? const <Finding>[]
             : _findingsOf(
                 audit,
                 category,
                 route,
-                severityForMeasured(ref.weight, score),
+                severityForMeasured(ref.weight, score, lines.seriousScore),
                 metric,
               ),
         ruleOutcomes: const <RuleOutcome>[],
@@ -374,13 +377,17 @@ int? _majorOf(String version) => int.tryParse(version.split('.').first);
 /// others are ignored. Binary audits become rule outcomes, numeric and
 /// metric-savings audits become measurements with Lighthouse's own score, and
 /// both keep Lighthouse's audit weight, so scoring them reproduces
-/// Lighthouse's category scores. An audit scoring below 0.9 is a finding,
-/// one per failing element when Lighthouse names elements. The route is the
+/// Lighthouse's category scores. An audit scoring below the passing line of
+/// [scoreLines] is a finding, one per failing element when Lighthouse names
+/// elements. The route is the
 /// requested URL, falling back to the final one. Reports from an untested
 /// major version, reports with a runtime error, positively weighted audit
 /// errors or missing scores, and unknown score modes or units are failures
 /// rather than best-effort parses.
-Result<AdapterOutput, Failure> parseLighthouse(RawArtifact artifact) {
+Result<AdapterOutput, Failure> parseLighthouse(
+  RawArtifact artifact, {
+  LighthouseScoreLines scoreLines = defaultLighthouseScoreLines,
+}) {
   AdapterFailure failure(String problem) => AdapterFailure(
     tool: Source.lighthouse.id,
     artifactPath: artifact.path,
@@ -417,6 +424,7 @@ Result<AdapterOutput, Failure> parseLighthouse(RawArtifact artifact) {
             entry.ref,
             entry.category,
             lhr.route,
+            scoreLines,
           ),
         )
         .mapErr<Failure>(failure)
