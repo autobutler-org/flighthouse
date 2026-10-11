@@ -126,6 +126,16 @@ List<String> _arguments({
   '--screenEmulation.width=${viewport.width}',
   '--screenEmulation.height=${viewport.height}',
   '--screenEmulation.deviceScaleFactor=${_scale(viewport.deviceScaleFactor)}',
+  ..._desktopThrottling,
+];
+
+const _desktopThrottling = <String>[
+  '--throttling.rttMs=40',
+  '--throttling.throughputKbps=10240',
+  '--throttling.cpuSlowdownMultiplier=1',
+  '--throttling.requestLatencyMs=0',
+  '--throttling.downloadThroughputKbps=0',
+  '--throttling.uploadThroughputKbps=0',
 ];
 
 String _scale(double value) => value == value.roundToDouble()

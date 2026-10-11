@@ -365,6 +365,12 @@ List<String> _expectedArguments(String route) => [
   '--screenEmulation.width=1440',
   '--screenEmulation.height=900',
   '--screenEmulation.deviceScaleFactor=2.5',
+  '--throttling.rttMs=40',
+  '--throttling.throughputKbps=10240',
+  '--throttling.cpuSlowdownMultiplier=1',
+  '--throttling.requestLatencyMs=0',
+  '--throttling.downloadThroughputKbps=0',
+  '--throttling.uploadThroughputKbps=0',
 ];
 
 String _artifactName(String route) =>
