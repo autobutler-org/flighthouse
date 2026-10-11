@@ -6,6 +6,14 @@ from urllib.parse import urlparse
 
 report = Path(sys.argv[1])
 routes = {"/account", "/public"}
+DESKTOP_THROTTLING = {
+    "rttMs": 40,
+    "throughputKbps": 10240,
+    "cpuSlowdownMultiplier": 1,
+    "requestLatencyMs": 0,
+    "downloadThroughputKbps": 0,
+    "uploadThroughputKbps": 0,
+}
 
 
 def fail(message):
@@ -39,6 +47,8 @@ def route_paths(directory, url_key):
             fail(f"{path.name} viewport is {screen.get('width')}x{screen.get('height')}")
         if screen.get("deviceScaleFactor") != 1:
             fail(f"{path.name} device scale is {screen.get('deviceScaleFactor')}")
+        if settings.get("throttling") != DESKTOP_THROTTLING:
+            fail(f"{path.name} throttling is {settings.get('throttling')}")
     if found != routes:
         fail(f"{directory.name} routes were {sorted(found)}")
 
