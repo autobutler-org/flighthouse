@@ -18,6 +18,13 @@ collects and gates.
 | Lighthouse | 13.5.0, `npm install -g lighthouse@13.5.0` | `collect` |
 | Chrome | 152.0.7977.42, downloaded by `collect` | `collect` |
 | axe-core | 4.11.1, downloaded by `collect` | `collect` |
+| Memory and time | about 115 s and 4.3 to 5.1 GB peak for Quark, almost all in `flutter build web` | `collect` |
+
+The memory and time figures come from [#139](https://github.com/autobutler-org/flighthouse/issues/139): `collect`
+on Quark with one route, on an 8-core, 16 GB machine. Memory climbs through the build; Chrome, Lighthouse, and axe
+then use about 0.6 GB for about 15 s. A machine with 4 to 8 GB, or one already busy with other programs, may run out
+of memory during the build. To leave the build out of `collect`, see
+[Reuse an existing build](#reuse-an-existing-build).
 
 You do not install Chrome or axe yourself. The first `collect` downloads the Chrome build pinned by Puppeteer into
 `~/.cache/flighthouse/chrome` and axe-core into `~/.cache/flighthouse/axe`, then reuses them. On Linux, Chrome
@@ -254,7 +261,13 @@ A first run of the fixture prints:
 
 ```text
 $ flighthouse collect
+building the web app: flutter build web --release --dart-define=FLIGHTHOUSE_SEMANTICS=true --dart-define=FIXTURE_API_ORIGIN=http://127.0.0.1:8090
+starting Chrome
 browser Chrome/152.0.7977.42
+auditing /account with lighthouse
+auditing /public with lighthouse
+auditing /account with axe
+auditing /public with axe
 collected 2 lighthouse files
 collected 2 axe files
 $ flighthouse baseline --update
@@ -265,11 +278,27 @@ web-fixture: overall 69 | a11y 100 | perf 35 | responsiveness n/a | memory n/a |
 gate passed
 ```
 
-`collect` runs `build.command` every time; it never reuses an earlier build. The first run also downloads Chrome. For reference, the first-time Quark run reported in
-[#132](https://github.com/autobutler-org/flighthouse/issues/132) took about two minutes per `collect` on an 8-core
-machine. While iterating on the configuration, you can skip the rebuild by pointing `build.command` at a command
-that does nothing, such as `['true']`, and leaving `outputDir` at a build that already exists. Put the real build
-back before committing.
+`collect` prints a line as it builds the web app, starts Chrome, and audits each route with Lighthouse and then axe,
+so a long build shows which step is running. The first run also downloads Chrome.
+
+### Reuse an existing build
+
+`collect` runs `build.command` every time; it never checks whether the build in `outputDir` is current. To skip the
+build, for example while iterating on routes or `auth`, or on a machine short of memory, build once yourself and set
+the build command to `true`, which does nothing:
+
+```yaml
+web:
+  build:
+    command: ['true']
+    outputDir: build/web
+```
+
+Quote it: unquoted `[true]` is a YAML boolean and fails with `expected a non-empty string`. `collect` then serves
+whatever is in `outputDir`, which must contain `index.html`, so rebuild it with semantics enabled whenever the app
+changes. [The quark variance measurement](evidence/quark-variance.md) collected a copied build this way, with its
+[configuration](evidence/quark-variance.collect.yaml). Put the real build command back before committing, or keep
+this setting in a separate config file passed with `--config`.
 
 ### The baseline
 
