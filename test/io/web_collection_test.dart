@@ -13,9 +13,11 @@ const _timeout = Duration(seconds: 1);
 
 void main() {
   late Directory baseDir;
+  late List<String> progress;
 
   setUp(() async {
     baseDir = await Directory.systemTemp.createTemp('flighthouse-collection');
+    progress = [];
     Directory(p.join(baseDir.path, 'app')).createSync();
   });
 
@@ -45,9 +47,14 @@ void main() {
         return const Ok('captured');
       },
       closeTimeout: _timeout,
+      progress: progress.add,
     );
 
     expect(result, const Ok<String, Failure>('captured'));
+    expect(progress, [
+      'building the web app: flutter build web --release',
+      'starting Chrome',
+    ]);
     expect(launchedViewport.width, 1280);
     expect(launchedViewport.height, 800);
     expect(launchedViewport.deviceScaleFactor, 1);
@@ -83,6 +90,7 @@ void main() {
         );
       },
       closeTimeout: _timeout,
+      progress: progress.add,
     );
 
     expect(result, isA<Err<void, Failure>>());
@@ -109,10 +117,12 @@ void main() {
       },
       collect: (_, _, _) async => const Ok(null),
       closeTimeout: _timeout,
+      progress: progress.add,
     );
     expect(result, isA<Err<void, Failure>>());
     expect((result as Err<void, Failure>).error, isA<ProcessFailure>());
     expect(launches, 0);
+    expect(progress, ['building the web app: flutter build web --release']);
   });
 
   test('closes the browser and server when a lighthouse route fails', () async {
@@ -153,10 +163,12 @@ void main() {
           origin: serverOrigin,
           routes: routes,
           outputDir: p.join(baseDir.path, 'raw', 'lighthouse'),
+          onRoute: (_) {},
           run: run,
         );
       },
       closeTimeout: _timeout,
+      progress: progress.add,
     );
 
     final failure = (result as Err<List<String>, Failure>).error;

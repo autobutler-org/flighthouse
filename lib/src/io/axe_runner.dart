@@ -47,6 +47,7 @@ Future<Result<List<String>, Failure>> runAxeRoutes({
   required Uri origin,
   required List<String> routes,
   required String outputDir,
+  required void Function(String route) onRoute,
   required String cacheDir,
   AxeScriptDownload download = downloadAxeScript,
 }) async {
@@ -62,6 +63,7 @@ Future<Result<List<String>, Failure>> runAxeRoutes({
     case Ok(value: final script):
       final accepted = <_Accepted>[];
       for (final route in routes) {
+        onRoute(route);
         switch (await _collectRoute(
           script: script,
           readiness: readiness,

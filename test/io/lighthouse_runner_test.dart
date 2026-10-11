@@ -92,6 +92,25 @@ void main() {
     expect(Directory(output.path).listSync().whereType<File>(), hasLength(2));
   });
 
+  test('reports each route before auditing it', () async {
+    final events = <String>[];
+
+    await _run(output.path, (executable, arguments, {workingDirectory}) async {
+      final url = arguments.firstWhere(
+        (argument) => argument.startsWith('http://'),
+      );
+      events.add('audit $url');
+      return ProcessResult(1, 0, lighthouseReport(url), '');
+    }, onRoute: (route) => events.add('route $route'));
+
+    expect(events, [
+      for (final route in _routes) ...[
+        'route $route',
+        'audit ${_origin.resolve(route)}',
+      ],
+    ]);
+  });
+
   test('passes the configured throttling to Lighthouse', () async {
     final recorder = Recorder((arguments) async {
       final url = arguments.firstWhere(
@@ -375,6 +394,7 @@ Future<Result<List<String>, Failure>> _run(
   ProcessRun run, {
   List<String> routes = _routes,
   LighthouseThrottling throttling = defaultLighthouseThrottling,
+  void Function(String route)? onRoute,
 }) => runLighthouseRoutes(
   lighthouse: WebLighthouseConfig(
     command: const ['npx', 'lighthouse'],
@@ -385,6 +405,7 @@ Future<Result<List<String>, Failure>> _run(
   origin: _origin,
   routes: routes,
   outputDir: outputDir,
+  onRoute: onRoute ?? (_) {},
   run: run,
 );
 

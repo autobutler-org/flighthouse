@@ -86,6 +86,17 @@ void main() {
       expect(run.out, contains('collected 2 lighthouse files'));
       expect(run.out, contains('collected 2 axe files'));
       expect(run.out, isNot(contains(_secret)));
+      expect(run.out.split('\n'), [
+        'collected 1 attest file',
+        'building the web app: flutter build web --release',
+        'starting Chrome',
+        'browser ${browser.session.info.browserVersion}',
+        for (final route in _routes) 'auditing $route with lighthouse',
+        for (final route in _routes) 'auditing $route with axe',
+        'collected 2 lighthouse files',
+        'collected 2 axe files',
+        '',
+      ]);
       expect(
         workspace.read('.flighthouse/raw/attest/sample.json'),
         '{"tool":"attest"}\n',
