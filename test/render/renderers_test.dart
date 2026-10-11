@@ -3,7 +3,14 @@ import 'dart:io';
 
 import 'package:flighthouse/flighthouse.dart';
 import 'package:flighthouse/src/render/html_renderer.dart'
-    show displayScore, escapeHtml, scoreBand;
+    show
+        displayScore,
+        escapeHtml,
+        formatNumber,
+        formatValue,
+        metricTitle,
+        readableTimestamp,
+        scoreBand;
 import 'package:test/test.dart';
 
 import '../model/samples.dart';
@@ -55,6 +62,24 @@ final Finding fixedFinding = (
   target: null,
   message: 'Buttons must have discernible text',
   metric: null,
+);
+
+const Measurement insightMeasurement = (
+  source: Source.lighthouse,
+  category: Category.perf,
+  route: '/login',
+  metric: (name: 'cache-insight', value: 0, unit: MetricUnit.score),
+  weight: 0,
+  toolScore: 0,
+);
+
+const Measurement byteMeasurement = (
+  source: Source.lighthouse,
+  category: Category.perf,
+  route: '/login',
+  metric: (name: 'total-byte-weight', value: 1572864, unit: MetricUnit.bytes),
+  weight: 0,
+  toolScore: 0.95,
 );
 
 void main() {
@@ -152,13 +177,13 @@ void main() {
       expect(html, contains('<summary>Moderate (1)</summary>'));
       expect(
         html,
-        contains('<p class="detail">frame_build_time_p90: 12.50 ms</p>'),
+        contains('<p class="detail">frame_build_time_p90: 12.5 ms</p>'),
       );
     });
 
     test('marks unscored measurements', () {
-      expect(html, contains('<td>12.50 ms</td><td>not scored</td>'));
-      expect(html, contains('<td>1800 ms</td><td>92</td>'));
+      expect(html, contains('<td>12.5 ms</td><td>not scored</td>'));
+      expect(html, contains('<td>1,800 ms</td><td>92</td>'));
     });
 
     test('without a diff there is no baseline section or new badge', () {
@@ -202,6 +227,117 @@ void main() {
       );
     });
 
+    test('keeps a multi-line message as a headline and its details', () {
+      final multiLine = renderHtml(
+        sampleReport(
+          findings: [
+            withMessage(contrastFinding, 'Fix this\nFirst reason\n<b>el'),
+          ],
+        ),
+        measurementScoreOf: scoreWithoutConfig,
+      );
+      expect(
+        multiLine,
+        contains(
+          '<p class="message">Fix this</p>'
+          '<pre class="message-detail">First reason\n&lt;b&gt;el</pre>',
+        ),
+      );
+      expect(
+        html,
+        contains('<p class="message">${contrastFinding.message}</p>'),
+      );
+      expect(html, isNot(contains('<pre class="message-detail">')));
+    });
+
+    test('explains the score scale, the bands, and each category', () {
+      expect(html, contains('Scores run from 0 to 100'));
+      expect(html, contains('<span class="badge band-pass">90 to 100</span>'));
+      expect(
+        html,
+        contains('<span class="badge band-average">50 to 89</span>'),
+      );
+      expect(html, contains('<span class="badge band-fail">0 to 49</span>'));
+      expect(
+        html,
+        contains(
+          '<dt>Accessibility</dt><dd>Whether people who use a screen reader',
+        ),
+      );
+      expect(html, contains('Measured by axe in this run.</dd>'));
+      expect(html, contains('<dt>Memory</dt><dd>'));
+      expect(html, contains('Not measured in this run.</dd>'));
+    });
+
+    test('says what each tool that fed the report measures', () {
+      expect(
+        html,
+        contains('<li><strong>axe</strong> 4.10.3: accessibility rules'),
+      );
+      expect(html, contains('<li><strong>Lighthouse</strong> 12.8.0: '));
+      expect(html, contains('Feeds Performance.</li>'));
+    });
+
+    test('explains needs-review results and the baseline terms', () {
+      expect(html, contains('Needs review'));
+      expect(html, contains('do not lower the score'));
+      expect(withDiff, contains('The baseline is'));
+      expect(withDiff, contains('<dt>Unchanged</dt>'));
+    });
+
+    test('shows the timestamp as a readable date', () {
+      expect(
+        html,
+        contains(
+          '<time datetime="2026-10-06T19:30:00.000Z">'
+          '6 October 2026, 19:30 UTC</time>',
+        ),
+      );
+    });
+
+    test('titles measurements and lists the worst score first', () {
+      final measured = renderHtml(
+        sampleReport(
+          measurements: [
+            lcpMeasurement,
+            frameMeasurement,
+            insightMeasurement,
+            byteMeasurement,
+          ],
+        ),
+        measurementScoreOf: scoreWithoutConfig,
+      );
+      final rows = RegExp('<tr><td>([^<]*)<br><code>')
+          .allMatches(measured)
+          .map((match) => match.group(1))
+          .toList();
+      expect(rows, [
+        'Cache insight',
+        'Largest contentful paint',
+        'Total byte weight',
+        'Frame build time p90',
+      ]);
+      expect(measured, contains('<td>0 of 100</td><td>0</td>'));
+      expect(measured, contains('<td>1,800 ms</td><td>92</td>'));
+      expect(measured, contains('<td>1.5 MiB</td>'));
+    });
+
+    test('wraps every table so it scrolls on its own', () {
+      for (final document in [html, withDiff]) {
+        expect(
+          '<table'.allMatches(document).length,
+          '<div class="table-wrap" role="region" tabindex="0"'
+              .allMatches(document)
+              .length,
+        );
+      }
+    });
+
+    test('prints every section, including closed groups', () {
+      expect(html, contains('@media print'));
+      expect(html, contains('::details-content'));
+    });
+
     test('matches its goldens', () {
       expectGolden('report.html', html);
       expectGolden('report-with-baseline.html', withDiff);
@@ -222,6 +358,53 @@ void main() {
       expect(displayScore(0.924), 92);
       expect(displayScore(0.926), 93);
       expect(displayScore(1), 100);
+    });
+
+    test('numbers group thousands and drop trailing zeros', () {
+      expect(formatNumber(1234567), '1,234,567');
+      expect(formatNumber(12.5), '12.5');
+      expect(formatNumber(0.125), '0.13');
+      expect(formatNumber(2.004), '2');
+      expect(formatNumber(999), '999');
+    });
+
+    test('values read in their unit', () {
+      expect(
+        formatValue((name: 'x', value: 512, unit: MetricUnit.bytes)),
+        '512 bytes',
+      );
+      expect(
+        formatValue((name: 'x', value: 2048, unit: MetricUnit.bytes)),
+        '2 KiB',
+      );
+      expect(
+        formatValue((name: 'x', value: 1, unit: MetricUnit.score)),
+        '100 of 100',
+      );
+      expect(
+        formatValue((name: 'x', value: 100, unit: MetricUnit.count)),
+        '100',
+      );
+      expect(
+        formatValue((name: 'x', value: 0.25, unit: MetricUnit.ratio)),
+        '0.25',
+      );
+    });
+
+    test('metric ids become sentence-case titles', () {
+      expect(
+        metricTitle('largest-contentful-paint'),
+        'Largest contentful paint',
+      );
+      expect(metricTitle('frame_build_time_p90'), 'Frame build time p90');
+      expect(metricTitle('--'), '--');
+    });
+
+    test('timestamps read as a UTC date and time', () {
+      expect(
+        readableTimestamp(DateTime.utc(2026, 1, 2, 3, 4)),
+        '2 January 2026, 03:04 UTC',
+      );
     });
 
     test('escapeHtml escapes markup and quotes', () {
