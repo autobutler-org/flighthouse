@@ -15,6 +15,30 @@ Finding findingWith(String seed, Severity severity) => (
   metric: null,
 );
 
+Finding metricFindingWith(String seed, Severity severity) => (
+  fingerprint: fingerprintOf(seed),
+  source: Source.lighthouse,
+  category: Category.perf,
+  severity: severity,
+  rule: 'rule-$seed',
+  route: '/login',
+  target: null,
+  message: 'message $seed',
+  metric: (name: 'rule-$seed', value: 1400, unit: MetricUnit.ms),
+);
+
+Finding findingFrom(Source source) => (
+  fingerprint: fingerprintOf(source.id),
+  source: source,
+  category: Category.a11y,
+  severity: Severity.moderate,
+  rule: 'rule-${source.id}',
+  route: '/login',
+  target: null,
+  message: 'message ${source.id}',
+  metric: null,
+);
+
 Report reportWith({
   List<Finding> findings = const [],
   Map<Category, double?> categories = const {},
@@ -88,6 +112,16 @@ void main() {
       expect(rewordedDiff.newFindings, isEmpty);
     });
 
+    test('a new finding that carries a metric is still listed as new', () {
+      final slow = metricFindingWith('slow', Severity.serious);
+      final metricDiff = diffOf(
+        reportWith(findings: [kept, slow]),
+        baselineOf(reportWith(findings: [kept])),
+      );
+      expect(metricDiff.newFindings, [slow]);
+      expect(metricDiff.persistingFindings, [kept]);
+    });
+
     test('pairs every category score with its baseline', () {
       final scored = diffOf(
         reportWith(categories: {Category.a11y: 0.8}, overall: 0.8),
@@ -152,6 +186,46 @@ void main() {
           added,
         ),
       );
+    });
+
+    test('a new finding that carries a metric never fails by itself', () {
+      for (final severity in Severity.values) {
+        expect(
+          gateOf(
+            reportWith(),
+            reportWith(findings: [metricFindingWith('slow', severity)]),
+            gate: gateWith(minSeverity: Severity.info),
+          ),
+          isEmpty,
+          reason: severity.id,
+        );
+      }
+    });
+
+    test('a new metric finding fails through its category score drop', () {
+      final violations = gateOf(
+        reportWith(categories: {Category.perf: 0.90}),
+        reportWith(
+          findings: [metricFindingWith('slow', Severity.serious)],
+          categories: {Category.perf: 0.84},
+        ),
+      );
+      expect(violations.single, isA<CategoryScoreDrop>());
+    });
+
+    test('a new finding without a metric fails from every source', () {
+      for (final source in Source.values) {
+        final finding = findingFrom(source);
+        expect(
+          gateOf(reportWith(), reportWith(findings: [finding])).single,
+          isA<NewFindingViolation>().having(
+            (violation) => violation.finding,
+            'finding',
+            finding,
+          ),
+          reason: source.id,
+        );
+      }
     });
 
     for (final (minimum, failing) in [

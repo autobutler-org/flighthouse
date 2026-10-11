@@ -207,22 +207,25 @@ The summary line scores each category from 0 to 100. A web run measures `a11y`, 
 - **Measurements**: Lighthouse metrics such as Largest Contentful Paint, with their scores.
 
 The gate fails on a new finding at or above `gate.minSeverity` (default `minor`; `info` never fails) or a score drop
-larger than `gate.maxScoreDrop`. Adding a route to the fixture after baselining fails like this (excerpt):
+larger than `gate.maxScoreDrop`. A new finding that carries a measured metric, such as Largest Contentful Paint, is
+counted as new and shown in the report, but does not fail by itself: the category score drop gates it
+([ADR 0027](adr/0027-quark-gate-tolerances.md)). Adding a route to the fixture after baselining fails like this
+(excerpt):
 
 ```text
-12 new, 0 fixed, 12 unchanged
-FAIL new serious perf finding on /account: largest-contentful-paint: Largest Contentful Paint
-…
+8 new, 0 fixed, 7 unchanged
+FAIL new moderate best-practices finding on /account: deprecations: Uses deprecated APIs
 FAIL new serious a11y finding on /account: color-contrast: Needs review: Elements must meet minimum color contrast ratio thresholds
+…
 gate failed
 ```
 
 `Needs review:` marks an axe `incomplete` result: axe could not decide, often because Flutter paints text on a
 canvas. Treat those as questions to check, not confirmed failures.
 
-Performance scores vary between runs on the same build. The [phase 2 summary](phases/phase-2.md#not-measured-or-not-representative)
-records an unchanged quark run that failed the default gate on a new Largest Contentful Paint finding. Until
-variance is measured, consider a larger `maxScoreDrop.perf` or a higher `minSeverity` for performance-heavy apps.
+Performance scores vary between runs on the same build. [The quark variance measurement](evidence/quark-variance.md)
+found drops of up to 2.85 perf points and 1.22 overall points between runs with desktop throttling, inside the default
+`maxScoreDrop`. If your app varies more, measure it the same way before raising a tolerance.
 
 ## Troubleshooting
 

@@ -11,9 +11,10 @@ sealed class GateViolation {
   const GateViolation();
 }
 
-/// A new finding at or above the gate's minimum severity.
+/// A new finding at or above the gate's minimum severity that carries no
+/// metric.
 final class NewFindingViolation extends GateViolation {
-  /// [finding] is new and severe enough to fail the gate.
+  /// [finding] is new, severe enough, and not gated by a score.
   const NewFindingViolation(this.finding);
 
   /// The new finding.
@@ -88,8 +89,10 @@ bool _droppedTooFar(double baseline, double current, double maxDrop) =>
 
 /// Every reason [diff] fails [gate], in a stable order; empty means it passes.
 ///
-/// New findings at or above `minSeverity` fail. A score that drops by more
-/// than its allowed points fails. A category or overall score the baseline
+/// New findings at or above `minSeverity` fail, except a finding that carries
+/// a metric: its category score drop gates it, so a measured value that
+/// crosses a scoring boundary between runs does not fail by itself. A score
+/// that drops by more than its allowed points fails. A category or overall score the baseline
 /// had but this run lacks fails. Fixed findings and newly measured categories
 /// never fail.
 List<GateViolation> evaluateGate(
@@ -97,7 +100,8 @@ List<GateViolation> evaluateGate(
   GateConfig gate,
 ) => List.unmodifiable(<GateViolation>[
   for (final finding in diff.newFindings)
-    if (_isSevereEnough(finding.severity, gate.minSeverity))
+    if (finding.metric == null &&
+        _isSevereEnough(finding.severity, gate.minSeverity))
       NewFindingViolation(finding),
   for (final MapEntry(key: category, value: change)
       in diff.categoryScores.entries)
