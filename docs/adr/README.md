@@ -31,6 +31,7 @@ maintainer; nothing is built on it.
 | [0024](0024-axe-target-identity.md)                   | Preserve distinct axe targets without generated IDs   | Accepted  |
 | [0025](0025-renovate-replaces-dependabot.md)          | Renovate replaces Dependabot                          | Accepted  |
 | [0026](0026-linux-chrome-launch.md)                   | Linux Chrome sandbox stays on; Ubuntu CI opts in     | Accepted  |
-| [0027](0027-quark-gate-tolerances.md)                 | Quark gate tolerances; metric findings score-gated    | Accepted  |
+| [0027](0027-quark-gate-tolerances.md)                 | Quark gate tolerances; metric findings score-gated    | Accepted; configurability superseded by 0028 |
+| [0028](0028-configurable-gate-tolerances.md)          | Every gate tolerance is a config key                  | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
