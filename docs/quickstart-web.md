@@ -33,6 +33,14 @@ flighthouse --version
 
 Make sure `~/.pub-cache/bin` is on your `PATH`.
 
+A repository install prints `flighthouse 0.1.0`, the same as the pub.dev release, so the version does not tell
+you whether you have the web runner. `flighthouse collect --help` does: with the web runner its first line is
+`Copy imported raw outputs into <reportDir>/raw and run Lighthouse and axe when web is configured.`, and in the
+0.1.0 release it is `Copy each configured source's raw outputs into <reportDir>/raw.`
+
+An app's own build can need more than this table. Quark's backend, for example, is built with Go (see
+[Quark's configuration](#quarks-configuration)).
+
 ## Turn on semantics in the app
 
 Lighthouse and axe read the DOM. A Flutter web app only exposes its semantics tree to the DOM after something
@@ -72,11 +80,17 @@ a free port, the viewport is 1280 × 800 at scale 1, Lighthouse runs as `lightho
 and reports go to `.flighthouse/`, and the baseline is `flighthouse-baseline.json`. Relative paths resolve against
 the config file's directory.
 
-Commit `flighthouse.yaml` and `flighthouse-baseline.json`. Add `.flighthouse/` to `.gitignore`.
+Commit `flighthouse.yaml` and `flighthouse-baseline.json`; both live next to each other in the app repository's
+root unless you move them. Add `.flighthouse/` to `.gitignore`. `collect` also runs the build, which writes
+`build.outputDir` (`build/web` by default, inside Flutter's own `build/` directory) and whatever else a custom build
+command writes. flighthouse does not clean those up, so ignore them the way the app already does.
 
 ### Every key
 
-This is the web fixture's configuration with the defaults written out:
+This is the web fixture's configuration with every key written out. The values are the defaults, except `app`,
+the extra `--dart-define` in `build.command`, `routes`, `readiness.selector`, and `auth`, which have no default.
+The fixture's own [`flighthouse.yaml`](../integration/web_fixture/flighthouse.yaml) also moves `reportDir` and
+`baseline` under `build/` and raises `readiness.timeoutSeconds` to 90.
 
 ```yaml
 app: web-fixture
@@ -99,7 +113,7 @@ web:
     - /account
     - /public
   readiness:
-    timeoutSeconds: 90
+    timeoutSeconds: 30
     selector: '[role="main"]'
   viewport:
     width: 1280
@@ -128,10 +142,12 @@ gate:
 ```
 
 - `build.command` is an executable and its arguments, run in `projectDir` with no shell. A custom command must
-  enable semantics itself. Quark's run uses `[make, build/frontend/web, FLUTTER_BUILD_MODE=release]`.
+  enable semantics itself. Quote any element YAML would read as something other than a string: `[true]` is a
+  boolean and fails with `expected a non-empty string`, while `['true']` runs the `true` command.
 - `routes` are absolute paths, collected in order. Duplicates are rejected.
 - `readiness` waits for Flutter's first frame and a nonempty semantics tree, then for `selector` if set.
-  `timeoutSeconds` also bounds navigation and every auth step.
+  `timeoutSeconds` defaults to 30 and also bounds navigation and every auth step. Raise it for a slow first load
+  or a slow sign-in.
 - `lighthouse.command` can be `[npx, --yes, lighthouse@13.5.0]` instead of a global install.
 - `axe.scriptPath` can point at a local `axe.min.js` instead of downloading `axe.version`.
 - `sources.lighthouse` and `sources.axe` cannot be set together with `web`. Other `sources`, such as `attest`, can.
@@ -216,6 +232,20 @@ flighthouse collect
 A username or password from the file is only typed into the page. It never appears in a report, a raw output, an
 error message, or a log line.
 
+### Quark's configuration
+
+A fresh browser that opens Quark is sent to `/terms` until it accepts the terms and signs in, so the minimal
+configuration with `routes: [/]` fails with `could not verify displayed web route /: browser displayed /terms after
+readiness`. Collecting Quark needs `auth`, and `auth` needs a running Quark backend with an existing account.
+
+The phase-2 run's configuration is recorded in
+[`test/fixtures/quark/d8d2618e/collect.yaml`](../test/fixtures/quark/d8d2618e/collect.yaml). It builds with
+`[make, build/frontend/web, FLUTTER_BUILD_MODE=release]`, waits up to 60 seconds, and signs in through Quark's terms
+page, host picker, and sign-in form. Its [`SOURCE.md`](../test/fixtures/quark/d8d2618e/SOURCE.md) records the
+versions used (Flutter 3.47.7, a backend built with `go build ./cmd/quark`) and how the backend, owner account, and
+data were set up. The selectors are positional and break when Quark rearranges those screens; the
+[phase 2 summary](phases/phase-2.md#what-was-assumed) explains why.
+
 ## Run
 
 ```sh
@@ -240,8 +270,30 @@ web-fixture: overall 69 | a11y 100 | perf 35 | responsiveness n/a | memory n/a |
 gate passed
 ```
 
-`ci` without a baseline exits 3 with `baseline …: not found. Run: flighthouse baseline --update`. `flighthouse
-baseline` without `--update` prints the same `new, fixed, unchanged` counts as `ci` and changes nothing.
+`collect` runs `build.command` every time; it never reuses an earlier build. The first run also downloads Chrome. For reference, the first-time Quark run reported in
+[#132](https://github.com/autobutler-org/flighthouse/issues/132) took about two minutes per `collect` on an 8-core
+machine. While iterating on the configuration, you can skip the rebuild by pointing `build.command` at a command
+that does nothing, such as `['true']`, and leaving `outputDir` at a build that already exists. Put the real build
+back before committing.
+
+### The baseline
+
+The baseline, `flighthouse-baseline.json`, is a snapshot of the findings and scores you have accepted. `ci` compares
+the current run against it: findings that are not in it are new, findings in it that are gone are fixed, and score
+drops are measured from its scores. The gate fails only on new findings and score drops, so existing problems do not
+block a merge.
+
+`baseline --update` accepts every current finding, whatever it is. The first baseline therefore accepts everything
+the app has today, including real failures and `Needs review:` results; read the first report before committing
+it. Update the baseline when you have fixed findings (`ci` lists them as fixed), when you deliberately accept a new
+finding or a lower score, or when you add a route. Run `baseline --update` locally after a `collect`, review the
+diff of `flighthouse-baseline.json`, and commit it.
+
+`ci` without a baseline exits 3 with `baseline …: not found. Run: flighthouse baseline --update`, not 0, so a CI job
+fails until a baseline is committed. `flighthouse baseline` without `--update` prints the same `new, fixed,
+unchanged` counts as `ci` and changes nothing.
+
+### In CI
 
 In CI, run `collect` and then `ci`, and commit baseline changes from a local `baseline --update`. Exit codes:
 
@@ -252,14 +304,61 @@ In CI, run `collect` and then `ci`, and commit baseline changes from a local `ba
 | 2 | usage or configuration error |
 | 3 | unusable input or a missing tool; the gate was not evaluated |
 
+Treat 1 as a result: the change introduced a new finding or a score drop. Fix it, or, if it is accepted, update the
+baseline. Treat 2 and 3 as a broken job: the configuration, a tool, the build, or the browser failed, and the gate
+never ran, so the result says nothing about the change. Fix the cause and run the job again.
+
 On GitHub's `ubuntu-latest` runners Chrome cannot start with its sandbox, so the web workflow sets
 `FLIGHTHOUSE_CI_CHROME_NO_SANDBOX=true` for those jobs only. See [ADR 0026](adr/0026-linux-chrome-launch.md) before
 setting it anywhere else.
 
+flighthouse's own [`.github/workflows/web.yml`](../.github/workflows/web.yml) is a working example: its `web` job
+installs Flutter 3.47.7, Node 22, Lighthouse 13.5.0, and Chrome's libraries, then collects the web fixture and runs
+the gate. A job for your app follows the same steps. The sketch below is adapted from that job and has not been run
+as written; replace the build, credentials, and paths with your app's:
+
+```yaml
+jobs:
+  flighthouse:
+    runs-on: ubuntu-latest
+    env:
+      FLIGHTHOUSE_CI_CHROME_NO_SANDBOX: "true"
+      FLIGHTHOUSE_USERNAME: ${{ secrets.FLIGHTHOUSE_USERNAME }}
+      FLIGHTHOUSE_PASSWORD: ${{ secrets.FLIGHTHOUSE_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - run: npm install --global lighthouse@13.5.0
+      - run: tool/chrome_libraries.sh
+      - run: |
+          dart pub global activate --source git https://github.com/autobutler-org/flighthouse.git
+          echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
+      - run: flighthouse collect
+      - run: flighthouse ci
+```
+
+`tool/chrome_libraries.sh` is a copy of [`chrome_libraries.sh`](../integration/web_fixture/tool/chrome_libraries.sh)
+in your repository. Drop the credentials if the app has no `auth`, and keep in mind that `auth` needs a backend the
+job can reach.
+
 ## Read the report
 
-The summary line scores each category from 0 to 100. A web run measures `a11y`, `perf`, and `best-practices`.
-`responsiveness` and `memory` show `n/a` and are left out of `overall`.
+The summary line scores each category from 0 to 100. A web run measures three:
+
+- `a11y`: Lighthouse's accessibility audits and axe's rules.
+- `perf`: Lighthouse's performance audits and metrics, such as Largest Contentful Paint.
+- `best-practices`: Lighthouse's best-practices audits.
+
+`responsiveness` and `memory` show `n/a` and are left out of `overall`. `overall` is the weighted mean of the
+measured categories; by default `a11y` and `perf` weigh 3 times as much as `best-practices`. `report.html` colors
+each score the way Lighthouse does: 90 to 100 passes, 50 to 89 is average, and 0 to 49 fails. The bands are only a
+reading aid; the gate compares scores with the baseline, not with the bands.
 
 `report.html` is self-contained and has these sections:
 
@@ -345,7 +444,13 @@ The build command is `flutter` and it is not on `PATH`.
 
 #### `… not found. Install it with: install it or change web.build.command to a command that is installed`
 
-The first word of a custom `build.command` could not be started.
+The executable named first in a custom `build.command`, shown at the start of the message, could not be started.
+Install that program and put it on `PATH`, or change `build.command` to one that is installed.
+
+#### `… Node.js 22 is required to run Lighthouse; install it and put node on PATH`
+
+Lighthouse is installed but `node` is not on `PATH`, so its `lighthouse --version` check could not start. Install
+Node.js 22 and make sure `node` runs from the same shell as `flighthouse`.
 
 #### `axe-core … not found. Install it with: set web.axe.scriptPath to a local axe.min.js or choose a published axe-core version`
 
@@ -452,6 +557,16 @@ typed. The reason is one of:
   element matched but could not be used.
 
 ### Config, report, and gate
+
+#### `… create flighthouse.yaml in … (see docs/quickstart-web.md#configure)`
+
+There is no `flighthouse.yaml` in the working directory. Run flighthouse from the app's root, pass `--config` with
+the file's path, or create the file as [Configure](#configure) shows.
+
+#### `config: … expected a non-empty string`
+
+A value that should be a string is empty or was read as another type. Unquoted `true`, `false`, `null`, and numbers
+are not strings in YAML; quote them, as in `command: ['true']`.
 
 #### `config: sources.axe (line …, column …): axe cannot be imported when web is configured`
 

@@ -34,7 +34,8 @@ dart pub global activate flighthouse
 ```
 
 The web runner is not in a pub.dev release yet. To use it, install from the repository as the
-[quickstart](docs/quickstart-web.md#prerequisites) shows.
+[quickstart](docs/quickstart-web.md#prerequisites) shows. Both installs print `flighthouse 0.1.0`; the quickstart
+says how to tell them apart with `flighthouse collect --help`.
 
 ## Usage
 
@@ -45,7 +46,9 @@ flighthouse ci                  # report, then gate against the baseline
 flighthouse baseline --update   # accept the current findings and scores as the baseline
 ```
 
-Exit codes: `0` passed, `1` the gate failed, `2` usage or config error, `3` unusable input or missing tool.
+Exit codes: `0` passed, `1` the gate failed, `2` usage or config error, `3` unusable input or missing tool. `ci`
+exits `3` until a baseline exists. The quickstart explains [the baseline](docs/quickstart-web.md#the-baseline) and
+[how CI should treat each code](docs/quickstart-web.md#in-ci).
 
 Today flighthouse reads attest, Lighthouse, and axe JSON. `TimelineSummary` and flutter_lighthouse adapters are
 in progress.
