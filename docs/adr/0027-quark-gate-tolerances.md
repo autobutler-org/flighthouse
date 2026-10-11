@@ -1,6 +1,6 @@
 # 0027. Gate tolerances for quark, and what the gate must stop doing first
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-10-09
 
 ## Context

@@ -13,7 +13,7 @@ maintainer; nothing is built on it.
 | [0006](0006-core-schema.md)                           | Core schema                                           | Accepted  |
 | [0007](0007-fingerprints-and-normalization.md)        | Fingerprints and normalization                        | Accepted; axe rule superseded by 0024 |
 | [0008](0008-scoring.md)                               | Scoring: Lighthouse log-normal port, weights          | Accepted  |
-| [0009](0009-baseline-and-ci-gate.md)                  | Baseline diff and CI gate                             | Accepted  |
+| [0009](0009-baseline-and-ci-gate.md)                  | Baseline diff and CI gate                             | Accepted; metric findings superseded by 0027 |
 | [0010](0010-configuration.md)                         | `flighthouse.yaml` configuration                      | Accepted  |
 | [0011](0011-cli.md)                                   | CLI commands and exit codes                           | Accepted  |
 | [0012](0012-renderers.md)                             | JSON and self-contained HTML renderers                | Accepted  |
@@ -27,10 +27,10 @@ maintainer; nothing is built on it.
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
 | [0021](0021-configuration-refinements.md)             | Configuration refinements found while implementing    | Accepted, flagged for review |
 | [0022](0022-measurement-weights.md)                   | Measurements carry a weight                           | Accepted  |
-| [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Accepted  |
+| [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Accepted; throttling added by 0027 |
 | [0024](0024-axe-target-identity.md)                   | Preserve distinct axe targets without generated IDs   | Accepted  |
 | [0025](0025-renovate-replaces-dependabot.md)          | Renovate replaces Dependabot                          | Accepted  |
 | [0026](0026-linux-chrome-launch.md)                   | Linux Chrome sandbox stays on; Ubuntu CI opts in     | Accepted  |
-| [0027](0027-quark-gate-tolerances.md)                 | Quark gate tolerances; metric findings score-gated    | Proposed  |
+| [0027](0027-quark-gate-tolerances.md)                 | Quark gate tolerances; metric findings score-gated    | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
