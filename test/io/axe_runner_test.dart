@@ -60,6 +60,15 @@ void main() {
     expect(browser.closes, 0);
   });
 
+  test('reports each route it audits in order', () async {
+    final reported = <String>[];
+
+    final result = await _run(root, _Browser(), onRoute: reported.add);
+
+    expect(result, isA<Ok<List<String>, Failure>>());
+    expect(reported, _routes);
+  });
+
   test('writes a large result unchanged under a safe name', () async {
     final browser = _Browser();
     final outputDir = p.join(root.path, 'raw', 'axe');
@@ -418,6 +427,7 @@ Future<Result<List<String>, Failure>> _run(
   String? cacheDir,
   WebReadinessConfig readiness = _readiness,
   AxeScriptDownload? download,
+  void Function(String route)? onRoute,
 }) {
   final config =
       axe ?? const WebAxeConfig(version: '4.11.1', scriptPath: 'axe.min.js');
@@ -430,6 +440,7 @@ Future<Result<List<String>, Failure>> _run(
     origin: _origin,
     routes: routes,
     outputDir: outputDir ?? p.join(root.path, 'out'),
+    onRoute: onRoute ?? (_) {},
     cacheDir: cacheDir ?? p.join(root.path, 'cache'),
     download:
         download ??

@@ -13,6 +13,8 @@ typedef WebBrowserLauncher = Future<Result<BrowserSession, IoFailure>> Function(
   BrowserViewport viewport,
 );
 
+typedef ProgressSink = void Function(String line);
+
 typedef WebRouteCollector<T> = Future<Result<T, Failure>> Function(
   BrowserSession browser,
   Uri origin,
@@ -28,10 +30,12 @@ Future<Result<T, Failure>> runWebCollection<T>({
   required WebBrowserLauncher launch,
   required WebRouteCollector<T> collect,
   required Duration closeTimeout,
+  required ProgressSink progress,
 }) async {
   final projectDir = p.isAbsolute(config.projectDir)
       ? p.normalize(config.projectDir)
       : p.normalize(p.join(configBaseDir, config.projectDir));
+  progress('building the web app: ${config.build.command.join(' ')}');
   final built = await buildWebApp(
     projectDir: projectDir,
     config: config.build,
@@ -58,6 +62,7 @@ Future<Result<T, Failure>> runWebCollection<T>({
             launch: launch,
             collect: collect,
             closeTimeout: closeTimeout,
+            progress: progress,
           );
           final closed = await value.close();
           return _withCleanup(result, closed);
@@ -73,7 +78,9 @@ Future<Result<T, Failure>> _runWithBrowser<T>({
   required WebBrowserLauncher launch,
   required WebRouteCollector<T> collect,
   required Duration closeTimeout,
+  required ProgressSink progress,
 }) async {
+  progress('starting Chrome');
   final launched = await launch(
     BrowserViewport(
       width: config.viewport.width,

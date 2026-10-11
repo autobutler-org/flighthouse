@@ -34,10 +34,12 @@ Future<Result<List<String>, Failure>> runLighthouseRoutes({
   required Uri origin,
   required List<String> routes,
   required String outputDir,
+  required void Function(String route) onRoute,
   ProcessRun run = _runProcess,
 }) async {
   final accepted = <_Accepted>[];
   for (final route in routes) {
+    onRoute(route);
     switch (await _collectRoute(
       lighthouse: lighthouse,
       viewport: viewport,
