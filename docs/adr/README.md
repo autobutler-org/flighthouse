@@ -27,11 +27,12 @@ maintainer; nothing is built on it.
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
 | [0021](0021-configuration-refinements.md)             | Configuration refinements found while implementing    | Accepted, flagged for review |
 | [0022](0022-measurement-weights.md)                   | Measurements carry a weight                           | Accepted  |
-| [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Accepted; throttling added by 0027 |
+| [0023](0023-web-runner-configuration.md)              | Optional web build, routes, auth, and capture config   | Accepted; throttling added by 0027, hosts file by 0029 |
 | [0024](0024-axe-target-identity.md)                   | Preserve distinct axe targets without generated IDs   | Accepted  |
 | [0025](0025-renovate-replaces-dependabot.md)          | Renovate replaces Dependabot                          | Accepted  |
 | [0026](0026-linux-chrome-launch.md)                   | Linux Chrome sandbox stays on; Ubuntu CI opts in     | Accepted  |
 | [0027](0027-quark-gate-tolerances.md)                 | Quark gate tolerances; metric findings score-gated    | Accepted; configurability superseded by 0028 |
 | [0028](0028-configurable-gate-tolerances.md)          | Every gate tolerance is a config key                  | Accepted  |
+| [0029](0029-host-credentials-file.md)                 | A gitignored hosts file maps hosts to credentials     | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
