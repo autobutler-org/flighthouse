@@ -132,7 +132,10 @@ final class BaselineFailure extends Failure {
   final String problem;
 }
 
-/// Renders [failure] as one line a user can act on.
+/// Renders [failure] as a message a user can act on.
+///
+/// The message is one line, except that a failed process also lists the
+/// last lines of its standard error, where tools usually print the cause.
 String describe(Failure failure) => switch (failure) {
   ConfigFailure(:final keyPath, :final problem, location: null) =>
     'config: $keyPath: $problem',
@@ -151,16 +154,30 @@ String describe(Failure failure) => switch (failure) {
   IoFailure(:final operation, :final path, :final reason) =>
     'could not $operation $path: ${firstLine(reason)}',
   ProcessFailure(:final command, :final exitCode, :final stderr) =>
-    switch (firstLine(stderr)) {
-      '' => '$command exited with code $exitCode',
-      final detail => '$command exited with code $exitCode: $detail',
+    switch (_nonBlankLines(stderr)) {
+      [] => '$command exited with code $exitCode',
+      [final first, ...final rest] => [
+        '$command exited with code $exitCode: $first',
+        if (rest.length > _stderrTailLines) ...[
+          '...',
+          ...rest.sublist(rest.length - _stderrTailLines),
+        ] else
+          ...rest,
+      ].join('\n  '),
     },
   BaselineFailure(:final path, :final problem) =>
     'baseline $path: $problem. Run: flighthouse baseline --update',
 };
 
+const _stderrTailLines = 5;
+
+List<String> _nonBlankLines(String text) => [
+  for (final line in text.split('\n'))
+    if (line.trim() case final trimmed when trimmed.isNotEmpty) trimmed,
+];
+
 /// The first non-blank line of [text], trimmed, or an empty string.
-String firstLine(String text) => text
-    .split('\n')
-    .map((line) => line.trim())
-    .firstWhere((line) => line.isNotEmpty, orElse: () => '');
+String firstLine(String text) => switch (_nonBlankLines(text)) {
+  [final first, ...] => first,
+  [] => '',
+};

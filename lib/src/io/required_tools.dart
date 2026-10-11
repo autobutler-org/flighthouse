@@ -9,6 +9,17 @@ const missingLighthouse = MissingToolFailure(
   installHint: 'npm install -g lighthouse',
 );
 
+const missingNode = MissingToolFailure(
+  tool: 'Node.js',
+  installHint:
+      'https://nodejs.org (Node.js 22 is required to run Lighthouse; install '
+      'it and put node on PATH)',
+);
+
+const _commandNotFound = 127;
+
+final _envMissingNode = RegExp(r'\benv: \W?node\W?: No such file');
+
 const _flutterInstallHint =
     'follow https://docs.flutter.dev/get-started/install and put flutter on '
     'PATH';
@@ -43,6 +54,10 @@ Future<Result<String, Failure>> checkLighthouse({
     result = await run(command.first, arguments);
   } on ProcessException {
     return const Err(missingLighthouse);
+  }
+  if (result.exitCode == _commandNotFound &&
+      _envMissingNode.hasMatch('${result.stderr}')) {
+    return const Err(missingNode);
   }
   if (result.exitCode != 0) {
     return Err(

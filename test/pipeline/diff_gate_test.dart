@@ -408,6 +408,67 @@ void main() {
   });
 
   group('describeViolation', () {
+    test('a new finding is one line with its selector and short reason', () {
+      final finding = (
+        fingerprint: fingerprintOf('contrast'),
+        source: Source.axe,
+        category: Category.a11y,
+        severity: Severity.serious,
+        rule: 'color-contrast',
+        route: '/terms',
+        target: '.quark-wordmark',
+        message:
+            'Needs review: Elements must meet minimum color contrast ratio '
+            'thresholds\nFix any of the following:\n  Element background '
+            'could not be determined\n[".quark-wordmark"]\n'
+            '<div class="quark-wordmark" style="color: red">Quark</div>',
+        metric: null,
+      );
+      expect(
+        describeViolation(NewFindingViolation(finding)),
+        'new serious a11y finding on /terms: color-contrast at '
+        '.quark-wordmark: Needs review: Elements must meet minimum color '
+        'contrast ratio thresholds',
+      );
+    });
+
+    test('a new finding prints an axe target as a plain selector', () {
+      final finding = (
+        fingerprint: fingerprintOf('label'),
+        source: Source.axe,
+        category: Category.a11y,
+        severity: Severity.critical,
+        rule: 'label',
+        route: '/photos',
+        target: '["flutter-view > input[aria-label=\\"photo\\"]"]',
+        message: 'Form elements must have labels',
+        metric: null,
+      );
+      expect(
+        describeViolation(NewFindingViolation(finding)),
+        'new critical a11y finding on /photos: label at '
+        'flutter-view > input[aria-label="photo"]: Form elements must have '
+        'labels',
+      );
+    });
+
+    test('a score drop prints points the way the score line does', () {
+      expect(
+        describeViolation(
+          const CategoryScoreDrop(
+            category: Category.perf,
+            baseline: 0.9,
+            current: 0.745,
+            maxDrop: 5,
+          ),
+        ),
+        'perf score dropped from 90 to 74.5, more than the allowed 5 points',
+      );
+      expect(formatPoints(74.5), '74.5');
+      expect(formatPoints(100), '100');
+      expect(formatPoints(83.44), '83.4');
+    });
+
     test('describes each case in one line', () {
       expect(
         describeViolation(NewFindingViolation(added)),
@@ -422,14 +483,13 @@ void main() {
             maxDrop: 5,
           ),
         ),
-        'perf score dropped from 90.0 to 80.0, more than the allowed 5.0 points',
+        'perf score dropped from 90 to 80, more than the allowed 5 points',
       );
       expect(
         describeViolation(
           const OverallScoreDrop(baseline: 0.9, current: 0.8, maxDrop: 2),
         ),
-        'overall score dropped from 90.0 to 80.0, more than the allowed 2.0 '
-        'points',
+        'overall score dropped from 90 to 80, more than the allowed 2 points',
       );
       expect(
         describeViolation(const CategoryNoLongerMeasured(Category.memory)),

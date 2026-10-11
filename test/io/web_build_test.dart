@@ -76,6 +76,30 @@ void main() {
     expect(describe(failure), contains('compiler failed'));
   });
 
+  test('a failed build reports the last lines of its stderr', () async {
+    final result = await buildWebApp(
+      projectDir: project.path,
+      config: config,
+      run: (_, _, {workingDirectory}) async => ProcessResult(
+        1,
+        1,
+        '',
+        'Resolving dependencies...\n'
+            'The current Flutter SDK version is 3.47.6.\n\n'
+            'Because quark requires Flutter SDK version 3.47.7, version '
+            'solving failed.\n',
+      ),
+    );
+    final failure = (result as Err<BuiltWebApp, Failure>).error;
+    expect(
+      describe(failure),
+      contains(
+        'Because quark requires Flutter SDK version 3.47.7, version solving '
+        'failed.',
+      ),
+    );
+  });
+
   test('rejects a successful command without an output directory', () async {
     final result = await buildWebApp(
       projectDir: project.path,

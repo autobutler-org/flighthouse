@@ -53,7 +53,7 @@ void main() {
         final ci = await workspace.run(['ci']);
         expect(ci.code, exitPassed);
         expect(ci.err, isEmpty);
-        expect(ci.out, contains('overall 81 | a11y 94 | perf 69'));
+        expect(ci.out, contains('overall 81.5 | a11y 94 | perf 69.2'));
         expect(ci.out, contains('0 new, 0 fixed, 71 unchanged'));
         expect(ci.out, endsWith('gate passed\n'));
         final report = jsonDecode(
@@ -91,7 +91,8 @@ void main() {
         final ci = await workspace.run(['ci']);
         expect(ci.code, exitGateFailed);
         expect(ci.err, contains('new serious a11y finding on /recover/narrow'));
-        expect(ci.out, endsWith('gate failed\n'));
+        expect(ci.out, contains('gate failed\ndetails in '));
+        expect(ci.out, endsWith('flighthouse baseline --update\n'));
         expect(
           await File(workspace.baselinePath).readAsString(),
           previousBaseline,
@@ -162,7 +163,7 @@ void main() {
       expect(ci.err, isEmpty);
       expect(
         ci.out,
-        contains('overall 74 | a11y 88 | perf 58 | responsiveness n/a'),
+        contains('overall 74.1 | a11y 87.7 | perf 58.2 | responsiveness n/a'),
       );
       expect(ci.out, contains('0 new, 0 fixed, 157 unchanged'));
       expect(ci.out, endsWith('gate passed\n'));
@@ -198,8 +199,10 @@ void main() {
         ci.err,
         contains('new serious a11y finding on /photos: nested-interactive'),
       );
-      expect(ci.err, contains('aria-label="photo-01.jpg"'));
-      expect(ci.out, endsWith('gate failed\n'));
+      expect(ci.err, isNot(contains('aria-label="photo-01.jpg"')));
+      expect(ci.err.trimRight().split('\n'), everyElement(startsWith('FAIL ')));
+      expect(ci.out, contains('gate failed\ndetails in '));
+      expect(ci.out, endsWith('flighthouse baseline --update\n'));
       expect(
         await File(workspace.baselinePath).readAsString(),
         previousBaseline,
