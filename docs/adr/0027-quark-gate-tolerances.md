@@ -1,6 +1,6 @@
 # 0027. Gate tolerances for quark, and what the gate must stop doing first
 
-- Status: Accepted
+- Status: Accepted; "Nothing new is configurable" superseded by ADR 0028
 - Date: 2026-10-09
 
 ## Context
