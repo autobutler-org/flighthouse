@@ -24,19 +24,14 @@ You do not install Chrome or axe yourself. The first `collect` downloads the Chr
 needs `unzip` and its shared libraries; [`chrome_libraries.sh`](../integration/web_fixture/tool/chrome_libraries.sh)
 lists the Debian and Ubuntu packages.
 
-The web runner is newer than the 0.1.0 release on pub.dev, so install flighthouse from the repository:
+Install flighthouse 0.2.0 or later from pub.dev:
 
 ```sh
-dart pub global activate --source git https://github.com/autobutler-org/flighthouse.git
+dart pub global activate flighthouse
 flighthouse --version
 ```
 
 Make sure `~/.pub-cache/bin` is on your `PATH`.
-
-A repository install prints `flighthouse 0.1.0`, the same as the pub.dev release, so the version does not tell
-you whether you have the web runner. `flighthouse collect --help` does: with the web runner its first line is
-`Copy imported raw outputs into <reportDir>/raw and run Lighthouse and axe when web is configured.`, and in the
-0.1.0 release it is `Copy each configured source's raw outputs into <reportDir>/raw.`
 
 An app's own build can need more than this table. Quark's backend, for example, is built with Go (see
 [Quark's configuration](#quarks-configuration)).
