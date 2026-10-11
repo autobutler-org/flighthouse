@@ -33,10 +33,6 @@ files and do not launch Chrome, Node, Lighthouse, or Flutter. Start with the
 dart pub global activate flighthouse
 ```
 
-The web runner is not in a pub.dev release yet. To use it, install from the repository as the
-[quickstart](docs/quickstart-web.md#prerequisites) shows. Both installs print `flighthouse 0.1.0`; the quickstart
-says how to tell them apart with `flighthouse collect --help`.
-
 ## Usage
 
 ```sh

@@ -41,4 +41,4 @@ export 'src/result/failure.dart' hide firstLine;
 export 'src/result/result.dart';
 
 /// The version of this package.
-const String packageVersion = '0.1.0';
+const String packageVersion = '0.2.0';
