@@ -1,6 +1,6 @@
 # 0009. Baseline diff and CI gate
 
-- Status: Accepted
+- Status: Accepted; new-finding rule superseded for Lighthouse metric findings by ADR 0027
 - Date: 2026-10-06
 
 ## Context
