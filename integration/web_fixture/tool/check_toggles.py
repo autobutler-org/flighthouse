@@ -28,7 +28,7 @@ def config_for(defects):
             "projectDir": str(fixture),
             "build": {"command": ["true"], "outputDir": "build/web"},
             "serve": {"port": 0},
-            "routes": [f"/planted?defects={','.join(defects)}"],
+            "routes": [f"/planted?defects={','.join(defects) or 'none'}"],
             "readiness": {"timeoutSeconds": 90, "selector": '[role="main"]'},
             "viewport": {"width": 1280, "height": 800, "deviceScaleFactor": 1},
             "lighthouse": {"command": ["lighthouse"]},
