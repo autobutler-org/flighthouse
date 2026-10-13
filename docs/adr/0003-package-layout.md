@@ -1,6 +1,6 @@
 # 0003. Package layout: Flutter-free core, Flutter companion
 
-- Status: Accepted
+- Status: Accepted; workspace resolution superseded by [ADR 0030](0030-companion-resolves-separately.md)
 - Date: 2026-10-06
 
 ## Context

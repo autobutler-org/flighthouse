@@ -34,12 +34,28 @@ jobs:
       - name: Resolve dependencies
         run: make setup/deps
       - name: Check formatting and analysis
-        run: make check
+        run: make check/format check/lint
       - name: Test
         run: make test
       - name: Run the CLI against recorded fixtures
         run: make test/cli
       - name: Score the package like pub.dev
-        run: make check/pana
+        run: make check/pana/flighthouse
       - name: Validate the package for publishing
         run: make check/publish
+  flutter:
+    name: Flutter companion package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Analyze the companion package
+        run: make check/flutter
+      - name: Score the companion package like pub.dev
+        run: make check/pana/flutter

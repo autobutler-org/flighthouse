@@ -11,6 +11,7 @@ analyzer:
   exclude:
     - build/**
     - integration/**
+    - packages/**
     - test/fixtures/**
 
 linter:

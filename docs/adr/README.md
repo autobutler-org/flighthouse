@@ -7,7 +7,7 @@ maintainer; nothing is built on it.
 | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------- |
 | [0001](0001-record-architecture-decisions.md)         | Record architecture decisions                         | Accepted  |
 | [0002](0002-aggregate-existing-tools.md)              | Aggregate existing tools, do not reimplement them     | Accepted  |
-| [0003](0003-package-layout.md)                        | Flutter-free core, Flutter companion package          | Accepted  |
+| [0003](0003-package-layout.md)                        | Flutter-free core, Flutter companion package          | Accepted; workspace superseded by 0030 |
 | [0004](0004-functional-core-imperative-shell.md)      | Functional core, imperative shell                     | Accepted  |
 | [0005](0005-failure-as-values.md)                     | In-repo sealed Result, no FP library                  | Accepted  |
 | [0006](0006-core-schema.md)                           | Core schema                                           | Accepted  |
@@ -21,7 +21,7 @@ maintainer; nothing is built on it.
 | [0014](0014-external-tools.md)                        | External tools are optional subprocesses              | Accepted  |
 | [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted; Linux CI launch is 0026 |
 | [0016](0016-semantics-enabled-web-builds.md)          | Semantics-enabled Flutter web builds                  | Accepted  |
-| [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025 |
+| [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025, companion by 0030 |
 | [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted  |
 | [0019](0019-testing-and-ci.md)                        | Testing and CI                                        | Accepted  |
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
@@ -34,5 +34,6 @@ maintainer; nothing is built on it.
 | [0027](0027-quark-gate-tolerances.md)                 | Quark gate tolerances; metric findings score-gated    | Accepted; configurability superseded by 0028 |
 | [0028](0028-configurable-gate-tolerances.md)          | Every gate tolerance is a config key                  | Accepted  |
 | [0029](0029-host-credentials-file.md)                 | A gitignored hosts file maps hosts to credentials     | Accepted  |
+| [0030](0030-companion-resolves-separately.md)         | The Flutter companion resolves outside the workspace  | Accepted  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
