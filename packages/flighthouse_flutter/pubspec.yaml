@@ -1,0 +1,24 @@
+name: flighthouse_flutter
+description: >-
+  Flutter test helpers for flighthouse, the scored accessibility and performance report and CI gate for
+  Flutter apps.
+version: 0.2.0
+repository: https://github.com/autobutler-org/flighthouse/tree/main/packages/flighthouse_flutter
+issue_tracker: https://github.com/autobutler-org/flighthouse/issues
+topics:
+  - accessibility
+  - a11y
+  - performance
+  - lighthouse
+  - testing
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  lints: ^6.1.0

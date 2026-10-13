@@ -10,6 +10,7 @@ unexport GIT_WORK_TREE
 unexport GIT_PREFIX
 
 FIXTURES := test/fixtures
+COMPANION := packages/flighthouse_flutter
 VERSION := $(shell sed -n 's/^version: //p' pubspec.yaml)
 RELEASE_TAG := v$(VERSION)
 
@@ -18,7 +19,7 @@ help: ## List targets
 	grep -hE '^[a-zA-Z0-9_/.-]+:.*## ' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-28s %s\n", $$1, $$2}'
 
 .PHONY: setup
-setup: setup/hooks setup/deps ## Install hooks and resolve dependencies
+setup: setup/hooks setup/deps setup/deps/flutter ## Install hooks and resolve dependencies
 
 .PHONY: setup/hooks
 setup/hooks: ## Install git hooks
@@ -30,8 +31,12 @@ setup/hooks: ## Install git hooks
 setup/deps: ## Resolve the workspace
 	dart pub get
 
+.PHONY: setup/deps/flutter
+setup/deps/flutter: ## Resolve the Flutter companion package (needs Flutter)
+	flutter pub get --directory $(COMPANION)
+
 .PHONY: check
-check: check/format check/lint ## The whole gate: format and analyze
+check: check/format check/lint check/flutter ## The whole gate: format and analyze both packages
 
 .PHONY: check/format
 check/format: ## Fail on unformatted Dart
@@ -41,10 +46,22 @@ check/format: ## Fail on unformatted Dart
 check/lint: setup/deps ## Analyze with strict options, infos are fatal
 	dart analyze --fatal-infos
 
+.PHONY: check/flutter
+check/flutter: setup/deps/flutter ## Analyze the Flutter companion package (needs Flutter)
+	cd $(COMPANION) && dart analyze --fatal-infos
+
 .PHONY: check/pana
-check/pana: ## Score the package the way pub.dev does
+check/pana: check/pana/flighthouse check/pana/flutter ## Score both packages the way pub.dev does
+
+.PHONY: check/pana/flighthouse
+check/pana/flighthouse: ## Score the flighthouse package the way pub.dev does
 	dart pub global activate pana >/dev/null
 	dart pub global run pana --exit-code-threshold 0 .
+
+.PHONY: check/pana/flutter
+check/pana/flutter: ## Score the Flutter companion package the way pub.dev does (needs Flutter)
+	dart pub global activate pana >/dev/null
+	dart pub global run pana --exit-code-threshold 0 $(COMPANION)
 
 .PHONY: check/publish
 check/publish: ## Validate the package for pub.dev with no warnings
