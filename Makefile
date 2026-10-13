@@ -125,3 +125,7 @@ run/chrome-smoke: ## Launch pinned Chrome, inject axe, and write the result
 .PHONY: run/web-fixture
 run/web-fixture: ## Collect the Flutter web fixture and exercise the CI gate
 	integration/web_fixture/tool/run_fixture.sh
+
+.PHONY: run/web-fixture/performance
+run/web-fixture/performance: ## Re-record the fixture's performance score ranges over RUNS runs (default 5) of the build run/web-fixture left
+	python3 integration/web_fixture/tool/check_performance.py . integration/web_fixture/performance.json build/web-fixture-performance --record $(or $(RUNS),5)

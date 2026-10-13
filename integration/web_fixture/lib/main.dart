@@ -44,6 +44,9 @@ Route<void> _route(RouteSettings settings) {
     '/account' => const AccountPage(),
     '/public' => const PublicPage(),
     '/planted' => PlantedPage(defects: _defectsOf(uri)),
+    '/perf/control' => const ControlPage(),
+    '/perf/heavy' => const HeavyPage(),
+    '/perf/janky' => const JankyPage(),
     _ => const PublicPage(),
   };
   return MaterialPageRoute<void>(settings: settings, builder: (_) => page);
@@ -57,6 +60,109 @@ class PublicPage extends StatelessWidget {
     return const Scaffold(
       body: _Main(label: 'Public', child: Text('Public')),
     );
+  }
+}
+
+class ControlPage extends StatelessWidget {
+  const ControlPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: _Main(label: 'Control', child: Text('Control')),
+    );
+  }
+}
+
+class HeavyPage extends StatelessWidget {
+  const HeavyPage({super.key});
+
+  static const tiles = 4000;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _Main(
+        label: 'Heavy tree',
+        child: SizedBox(
+          width: 1200,
+          child: Wrap(
+            children: [
+              for (var index = 0; index < tiles; index++)
+                SizedBox(
+                  width: 15,
+                  height: 15,
+                  child: ColoredBox(
+                    color: Colors.primaries[index % Colors.primaries.length],
+                    child: Text(
+                      '${index % 10}',
+                      style: const TextStyle(fontSize: 8),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class JankyPage extends StatefulWidget {
+  const JankyPage({super.key});
+
+  static const frameWork = Duration(milliseconds: 120);
+  static const length = Duration(seconds: 4);
+
+  @override
+  State<JankyPage> createState() => _JankyPageState();
+}
+
+class _JankyPageState extends State<JankyPage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _spin = AnimationController(
+    vsync: this,
+    duration: JankyPage.length,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_spin.forward());
+  }
+
+  @override
+  void dispose() {
+    _spin.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _Main(
+        label: 'Janky animation',
+        child: AnimatedBuilder(
+          animation: _spin,
+          builder: (context, child) {
+            _block(JankyPage.frameWork);
+            return Transform.rotate(angle: _spin.value * 6.28, child: child);
+          },
+          child: const SizedBox(
+            width: 96,
+            height: 96,
+            child: ColoredBox(color: Colors.teal, child: Text('Janky')),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+void _block(Duration duration) {
+  final watch = Stopwatch()..start();
+  while (watch.elapsed < duration) {
+    continue;
   }
 }
 

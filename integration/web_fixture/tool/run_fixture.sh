@@ -46,3 +46,5 @@ python3 integration/web_fixture/tool/check_planted.py \
 python3 integration/web_fixture/tool/check_gate.py "$root" "$config" "$report"
 python3 integration/web_fixture/tool/check_toggles.py "$root" \
   integration/web_fixture/planted.json "$report/toggles"
+python3 integration/web_fixture/tool/check_performance.py "$root" \
+  integration/web_fixture/performance.json "$report/performance"
