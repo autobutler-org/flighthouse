@@ -36,5 +36,6 @@ maintainer; nothing is built on it.
 | [0029](0029-host-credentials-file.md)                 | A gitignored hosts file maps hosts to credentials     | Accepted  |
 | [0030](0030-companion-resolves-separately.md)         | The Flutter companion resolves outside the workspace  | Accepted  |
 | [0031](0031-timeline-summary-writer.md)               | The TimelineSummary writer                            | Accepted, flagged for review |
+| [0032](0032-web-frame-timing-source.md)              | Web frame timing from watchPerformance                | Proposed  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
