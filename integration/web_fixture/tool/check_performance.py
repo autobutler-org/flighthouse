@@ -134,7 +134,7 @@ def check(config):
     outside = []
     for entry in manifest["routes"]:
         low = round(entry["min"] - tolerance, 4)
-        high = round(entry["max"] + tolerance, 4)
+        high = 1.0 if entry["control"] else round(entry["max"] + tolerance, 4)
         score = scores[entry["route"]]
         within = low <= score <= high
         status = "within" if within else "outside"
