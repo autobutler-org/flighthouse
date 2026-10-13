@@ -1,5 +1,8 @@
 /// Flutter test helpers for flighthouse.
 ///
-/// Integration test helpers that write results where the `flighthouse` CLI
-/// collects them arrive in later releases.
+/// [writeTimelineSummary] writes an integration test's `TimelineSummary`
+/// where `flighthouse collect` reads it. Call it from the driver script, for
+/// example in the `responseDataCallback` of `integrationDriver`.
 library;
+
+export 'src/timeline_summary_writer.dart';

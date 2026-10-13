@@ -19,6 +19,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   lints: ^6.1.0

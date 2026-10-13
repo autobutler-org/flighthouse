@@ -21,7 +21,7 @@ maintainer; nothing is built on it.
 | [0014](0014-external-tools.md)                        | External tools are optional subprocesses              | Accepted  |
 | [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted; Linux CI launch is 0026 |
 | [0016](0016-semantics-enabled-web-builds.md)          | Semantics-enabled Flutter web builds                  | Accepted  |
-| [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025, companion by 0030 |
+| [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025, companion by 0030 and 0031 |
 | [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted  |
 | [0019](0019-testing-and-ci.md)                        | Testing and CI                                        | Accepted  |
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
@@ -35,5 +35,6 @@ maintainer; nothing is built on it.
 | [0028](0028-configurable-gate-tolerances.md)          | Every gate tolerance is a config key                  | Accepted  |
 | [0029](0029-host-credentials-file.md)                 | A gitignored hosts file maps hosts to credentials     | Accepted  |
 | [0030](0030-companion-resolves-separately.md)         | The Flutter companion resolves outside the workspace  | Accepted  |
+| [0031](0031-timeline-summary-writer.md)               | The TimelineSummary writer                            | Accepted, flagged for review |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.

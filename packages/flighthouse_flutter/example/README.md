@@ -6,12 +6,40 @@ Add the package as a dev dependency of the Flutter app that `flighthouse` report
 flutter pub add --dev flighthouse_flutter
 ```
 
-Then import it from an integration test:
+Record a timeline in an integration test with `traceAction`, keyed by the scenario name:
+
+```dart
+await binding.traceAction(
+  () async => tester.fling(find.byType(ListView), const Offset(0, -500), 1000),
+  reportKey: 'files-scroll',
+);
+```
+
+Then write its summary from the driver script, `test_driver/perf_driver.dart`:
 
 ```dart
 import 'package:flighthouse_flutter/flighthouse_flutter.dart';
+import 'package:flutter_driver/flutter_driver.dart';
+import 'package:integration_test/integration_test_driver.dart';
+
+Future<void> main() => integrationDriver(
+  responseDataCallback: (data) async {
+    final timeline = Timeline.fromJson(
+      data!['files-scroll'] as Map<String, dynamic>,
+    );
+    final written = await writeTimelineSummary(
+      TimelineSummary.summarize(timeline),
+      name: 'files-scroll',
+    );
+    switch (written) {
+      case TimelineSummaryWritten():
+        break;
+      case TimelineSummaryWriteFailed(:final path, :final reason):
+        throw StateError('could not write $path: $reason');
+    }
+  },
+);
 ```
 
-The package exports no API yet. The helper that writes `integration_test` frame timings where
-`flighthouse collect` reads them is tracked in
-[issue #31](https://github.com/autobutler-org/flighthouse/issues/31).
+The summary lands in `build/flighthouse/timeline/files-scroll.timeline_summary.json`. Set `sources.timeline.dir`
+to `build/flighthouse/timeline` in `flighthouse.yaml` so `flighthouse collect` picks it up.
