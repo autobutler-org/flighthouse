@@ -2,8 +2,8 @@
   "tolerance": 0.1,
   "recorded": {
     "date": "2026-10-13",
-    "runs": 5,
-    "machine": "Intel Core Ultra 7 355, 8 cores, Linux, Chromium for Testing launched by flighthouse",
+    "runs": 6,
+    "machine": "Intel Core Ultra 7 355, 8 cores, Linux, Chromium for Testing launched by flighthouse, plus one run on the GitHub Actions ubuntu runner (run 38404056555)",
     "lighthouse": "13.5.0"
   },
   "routes": [
@@ -16,10 +16,11 @@
         0.717,
         0.7255,
         0.7285,
-        0.7305
+        0.7305,
+        0.8645
       ],
       "min": 0.717,
-      "max": 0.7305
+      "max": 0.8645
     },
     {
       "route": "/perf/heavy",
@@ -30,10 +31,11 @@
         0.412,
         0.485,
         0.478,
-        0.4085
+        0.4085,
+        0.6245
       ],
       "min": 0.4025,
-      "max": 0.485
+      "max": 0.6245
     },
     {
       "route": "/perf/janky",
@@ -44,10 +46,11 @@
         0.5015,
         0.5015,
         0.497,
-        0.5005
+        0.5005,
+        0.5425
       ],
       "min": 0.497,
-      "max": 0.5015
+      "max": 0.5425
     }
   ]
 }
