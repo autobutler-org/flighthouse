@@ -37,5 +37,6 @@ maintainer; nothing is built on it.
 | [0030](0030-companion-resolves-separately.md)         | The Flutter companion resolves outside the workspace  | Accepted  |
 | [0031](0031-timeline-summary-writer.md)               | The TimelineSummary writer                            | Accepted, flagged for review |
 | [0032](0032-web-frame-timing-source.md)              | Web frame timing from watchPerformance                | Proposed  |
+| [0033](0033-help-links-needs-review-and-metric-titles.md) | Help links, needs-review, and metric titles in the schema | Proposed  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
