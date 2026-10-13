@@ -44,3 +44,5 @@ dart run bin/flighthouse.dart --config "$config" report
 python3 integration/web_fixture/tool/check_planted.py \
   integration/web_fixture/planted.json "$report/report.json"
 python3 integration/web_fixture/tool/check_gate.py "$root" "$config" "$report"
+python3 integration/web_fixture/tool/check_toggles.py "$root" \
+  integration/web_fixture/planted.json "$report/toggles"

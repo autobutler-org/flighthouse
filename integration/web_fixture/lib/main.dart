@@ -38,11 +38,12 @@ class FixtureApp extends StatelessWidget {
 }
 
 Route<void> _route(RouteSettings settings) {
-  final page = switch (settings.name) {
+  final uri = Uri.parse(settings.name ?? '/');
+  final page = switch (uri.path) {
     '/login' => const LoginPage(),
     '/account' => const AccountPage(),
     '/public' => const PublicPage(),
-    '/planted' => const PlantedPage(),
+    '/planted' => PlantedPage(defects: _defectsOf(uri)),
     _ => const PublicPage(),
   };
   return MaterialPageRoute<void>(settings: settings, builder: (_) => page);
@@ -60,10 +61,13 @@ class PublicPage extends StatelessWidget {
 }
 
 class PlantedPage extends StatelessWidget {
-  const PlantedPage({super.key});
+  const PlantedPage({required this.defects, super.key});
+
+  final Set<Defect> defects;
 
   @override
   Widget build(BuildContext context) {
+    final target = defects.contains(Defect.targetSize) ? 8.0 : 48.0;
     return Scaffold(
       body: _Main(
         label: 'Planted defects',
@@ -72,15 +76,24 @@ class PlantedPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const TextField(),
+              TextField(
+                decoration: defects.contains(Defect.label)
+                    ? null
+                    : const InputDecoration(labelText: 'Name'),
+              ),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Faint text',
-                style: TextStyle(color: Color(0xFFF2F2F2)),
+                style: TextStyle(
+                  color: defects.contains(Defect.contrast)
+                      ? const Color(0xFFF2F2F2)
+                      : const Color(0xFF202020),
+                ),
               ),
               const SizedBox(height: 16),
               Row(
                 mainAxisSize: MainAxisSize.min,
+                spacing: defects.contains(Defect.targetSize) ? 0 : 8,
                 children: [
                   for (final label in ['Tiny one', 'Tiny two'])
                     Semantics(
@@ -88,10 +101,10 @@ class PlantedPage extends StatelessWidget {
                       focusable: true,
                       label: label,
                       onTap: () {},
-                      child: const SizedBox(
-                        width: 8,
-                        height: 8,
-                        child: ColoredBox(color: Colors.black),
+                      child: SizedBox(
+                        width: target,
+                        height: target,
+                        child: const ColoredBox(color: Colors.black),
                       ),
                     ),
                 ],
@@ -99,6 +112,7 @@ class PlantedPage extends StatelessWidget {
               const SizedBox(height: 16),
               Semantics(
                 image: true,
+                label: defects.contains(Defect.imageAlt) ? null : 'Blue square',
                 child: const SizedBox(
                   width: 48,
                   height: 48,
@@ -107,13 +121,39 @@ class PlantedPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               FilledButton(onPressed: () {}, child: const Text('Save')),
-              FilledButton(onPressed: () {}, child: const Text('Save')),
+              FilledButton(
+                onPressed: () {},
+                child: Text(
+                  defects.contains(Defect.duplicateName)
+                      ? 'Save'
+                      : 'Save draft',
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+enum Defect {
+  label('label'),
+  imageAlt('image-alt'),
+  targetSize('target-size'),
+  contrast('contrast'),
+  duplicateName('duplicate-name');
+
+  const Defect(this.key);
+
+  final String key;
+}
+
+Set<Defect> _defectsOf(Uri uri) {
+  final requested = uri.queryParameters['defects'];
+  if (requested == null) return Defect.values.toSet();
+  final keys = requested.split(',').map((key) => key.trim()).toSet();
+  return Defect.values.where((defect) => keys.contains(defect.key)).toSet();
 }
 
 class LoginPage extends StatefulWidget {
