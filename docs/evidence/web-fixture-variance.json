@@ -1,0 +1,250 @@
+{
+  "started": "2026-10-13T13:09:50+00:00",
+  "finished": "2026-10-13T13:13:55+00:00",
+  "machine": "Linux x86_64, 8 CPUs",
+  "routes": [
+    "/public",
+    "/planted"
+  ],
+  "runs": 5,
+  "failedRuns": 0,
+  "scores": {
+    "overall": {
+      "min": 0.7818,
+      "median": 0.7961,
+      "max": 0.8062,
+      "failures": 0,
+      "values": [
+        0.7818,
+        0.7961,
+        0.792,
+        0.799,
+        0.8062
+      ]
+    },
+    "a11y": {
+      "min": 0.9061,
+      "median": 0.9061,
+      "max": 0.9061,
+      "failures": 0,
+      "values": [
+        0.9061,
+        0.9061,
+        0.9061,
+        0.9061,
+        0.9061
+      ]
+    },
+    "perf": {
+      "min": 0.649,
+      "median": 0.6822,
+      "max": 0.7057,
+      "failures": 0,
+      "values": [
+        0.649,
+        0.6822,
+        0.6728,
+        0.689,
+        0.7057
+      ]
+    },
+    "responsiveness": {
+      "min": null,
+      "median": null,
+      "max": null,
+      "failures": 0,
+      "values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "memory": {
+      "min": null,
+      "median": null,
+      "max": null,
+      "failures": 0,
+      "values": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "best-practices": {
+      "min": 0.8077,
+      "median": 0.8077,
+      "max": 0.8077,
+      "failures": 0,
+      "values": [
+        0.8077,
+        0.8077,
+        0.8077,
+        0.8077,
+        0.8077
+      ]
+    }
+  },
+  "detections": {
+    "text field without a label": {
+      "min": 1.0,
+      "median": 1.0,
+      "max": 1.0,
+      "expected": true,
+      "detected": 5,
+      "failures": 0
+    },
+    "image without alternative text": {
+      "min": 1.0,
+      "median": 1.0,
+      "max": 1.0,
+      "expected": true,
+      "detected": 5,
+      "failures": 0
+    },
+    "two adjacent 8px buttons": {
+      "min": 1.0,
+      "median": 1.0,
+      "max": 1.0,
+      "expected": true,
+      "detected": 5,
+      "failures": 0
+    },
+    "light gray text on white": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0,
+      "expected": false,
+      "detected": 0,
+      "failures": 0
+    },
+    "two buttons both named Save": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0,
+      "expected": false,
+      "detected": 0,
+      "failures": 0
+    }
+  },
+  "perRun": [
+    {
+      "run": 1,
+      "scores": {
+        "overall": 0.7818463359844576,
+        "a11y": 0.9060773480662984,
+        "perf": 0.649,
+        "responsiveness": null,
+        "memory": null,
+        "best-practices": 0.8076923076923077
+      },
+      "detected": {
+        "text field without a label": true,
+        "image without alternative text": true,
+        "two adjacent 8px buttons": true,
+        "light gray text on white": false,
+        "two buttons both named Save": false
+      },
+      "toolVersions": {
+        "lighthouse": "13.5.0",
+        "axe": "4.11.1"
+      },
+      "loadAverage": 6.9
+    },
+    {
+      "run": 2,
+      "scores": {
+        "overall": 0.7960963359844575,
+        "a11y": 0.9060773480662984,
+        "perf": 0.6822499999999999,
+        "responsiveness": null,
+        "memory": null,
+        "best-practices": 0.8076923076923077
+      },
+      "detected": {
+        "text field without a label": true,
+        "image without alternative text": true,
+        "two adjacent 8px buttons": true,
+        "light gray text on white": false,
+        "two buttons both named Save": false
+      },
+      "toolVersions": {
+        "lighthouse": "13.5.0",
+        "axe": "4.11.1"
+      },
+      "loadAverage": 5.9
+    },
+    {
+      "run": 3,
+      "scores": {
+        "overall": 0.7920249074130291,
+        "a11y": 0.9060773480662984,
+        "perf": 0.6727500000000001,
+        "responsiveness": null,
+        "memory": null,
+        "best-practices": 0.8076923076923077
+      },
+      "detected": {
+        "text field without a label": true,
+        "image without alternative text": true,
+        "two adjacent 8px buttons": true,
+        "light gray text on white": false,
+        "two buttons both named Save": false
+      },
+      "toolVersions": {
+        "lighthouse": "13.5.0",
+        "axe": "4.11.1"
+      },
+      "loadAverage": 5.8
+    },
+    {
+      "run": 4,
+      "scores": {
+        "overall": 0.7989891931273148,
+        "a11y": 0.9060773480662984,
+        "perf": 0.689,
+        "responsiveness": null,
+        "memory": null,
+        "best-practices": 0.8076923076923077
+      },
+      "detected": {
+        "text field without a label": true,
+        "image without alternative text": true,
+        "two adjacent 8px buttons": true,
+        "light gray text on white": false,
+        "two buttons both named Save": false
+      },
+      "toolVersions": {
+        "lighthouse": "13.5.0",
+        "axe": "4.11.1"
+      },
+      "loadAverage": 6.2
+    },
+    {
+      "run": 5,
+      "scores": {
+        "overall": 0.8061677645558861,
+        "a11y": 0.9060773480662984,
+        "perf": 0.70575,
+        "responsiveness": null,
+        "memory": null,
+        "best-practices": 0.8076923076923077
+      },
+      "detected": {
+        "text field without a label": true,
+        "image without alternative text": true,
+        "two adjacent 8px buttons": true,
+        "light gray text on white": false,
+        "two buttons both named Save": false
+      },
+      "toolVersions": {
+        "lighthouse": "13.5.0",
+        "axe": "4.11.1"
+      },
+      "loadAverage": 4.5
+    }
+  ]
+}

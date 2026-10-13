@@ -133,3 +133,7 @@ run/web-fixture/performance: ## Re-record the fixture's performance score ranges
 .PHONY: run/web-fixture/responsive
 run/web-fixture/responsive: ## Re-record what flighthouse reports for the fixture's responsive routes at a wide and a narrow viewport, from the build run/web-fixture left
 	python3 integration/web_fixture/tool/check_responsive.py . integration/web_fixture/responsive.json build/web-fixture-responsive --record
+
+.PHONY: run/web-fixture/variance
+run/web-fixture/variance: ## Collect the fixture RUNS times (default 3) from the build run/web-fixture left and print each score's and planted defect's spread
+	python3 integration/web_fixture/tool/variance.py . integration/web_fixture/planted.json build/web-fixture-variance --runs $(or $(RUNS),3)
