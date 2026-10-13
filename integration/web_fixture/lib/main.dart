@@ -42,6 +42,7 @@ Route<void> _route(RouteSettings settings) {
     '/login' => const LoginPage(),
     '/account' => const AccountPage(),
     '/public' => const PublicPage(),
+    '/planted' => const PlantedPage(),
     _ => const PublicPage(),
   };
   return MaterialPageRoute<void>(settings: settings, builder: (_) => page);
@@ -54,6 +55,63 @@ class PublicPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: _Main(label: 'Public', child: Text('Public')),
+    );
+  }
+}
+
+class PlantedPage extends StatelessWidget {
+  const PlantedPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _Main(
+        label: 'Planted defects',
+        child: SizedBox(
+          width: 320,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const TextField(),
+              const SizedBox(height: 16),
+              const Text(
+                'Faint text',
+                style: TextStyle(color: Color(0xFFF2F2F2)),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final label in ['Tiny one', 'Tiny two'])
+                    Semantics(
+                      button: true,
+                      focusable: true,
+                      label: label,
+                      onTap: () {},
+                      child: const SizedBox(
+                        width: 8,
+                        height: 8,
+                        child: ColoredBox(color: Colors.black),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Semantics(
+                image: true,
+                child: const SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: ColoredBox(color: Colors.blue),
+                ),
+              ),
+              const SizedBox(height: 16),
+              FilledButton(onPressed: () {}, child: const Text('Save')),
+              FilledButton(onPressed: () {}, child: const Text('Save')),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

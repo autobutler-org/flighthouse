@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 report = Path(sys.argv[1])
-routes = {"/account", "/public"}
+routes = {"/account", "/public", "/planted"}
 DESKTOP_THROTTLING = {
     "rttMs": 40,
     "throughputKbps": 10240,
