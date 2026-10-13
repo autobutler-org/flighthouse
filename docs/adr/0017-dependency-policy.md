@@ -1,6 +1,6 @@
 # 0017. Dependency policy
 
-- Status: Accepted; update tooling amended by [ADR 0025](0025-renovate-replaces-dependabot.md); companion dev dependency amended by [ADR 0030](0030-companion-resolves-separately.md)
+- Status: Accepted; update tooling amended by [ADR 0025](0025-renovate-replaces-dependabot.md); companion dev dependency amended by [ADR 0030](0030-companion-resolves-separately.md); companion `flutter_driver` dependency amended by [ADR 0031](0031-timeline-summary-writer.md)
 - Date: 2026-10-06
 
 ## Context
