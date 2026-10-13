@@ -129,3 +129,7 @@ run/web-fixture: ## Collect the Flutter web fixture and exercise the CI gate
 .PHONY: run/web-fixture/performance
 run/web-fixture/performance: ## Re-record the fixture's performance score ranges over RUNS runs (default 5) of the build run/web-fixture left
 	python3 integration/web_fixture/tool/check_performance.py . integration/web_fixture/performance.json build/web-fixture-performance --record $(or $(RUNS),5)
+
+.PHONY: run/web-fixture/responsive
+run/web-fixture/responsive: ## Re-record what flighthouse reports for the fixture's responsive routes at a wide and a narrow viewport, from the build run/web-fixture left
+	python3 integration/web_fixture/tool/check_responsive.py . integration/web_fixture/responsive.json build/web-fixture-responsive --record

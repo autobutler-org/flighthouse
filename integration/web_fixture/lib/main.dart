@@ -47,6 +47,8 @@ Route<void> _route(RouteSettings settings) {
     '/perf/control' => const ControlPage(),
     '/perf/heavy' => const HeavyPage(),
     '/perf/janky' => const JankyPage(),
+    '/responsive/control' => const ReflowPage(),
+    '/responsive/overflow' => const OverflowPage(),
     _ => const PublicPage(),
   };
   return MaterialPageRoute<void>(settings: settings, builder: (_) => page);
@@ -154,6 +156,60 @@ class _JankyPageState extends State<JankyPage>
             child: ColoredBox(color: Colors.teal, child: Text('Janky')),
           ),
         ),
+      ),
+    );
+  }
+}
+
+const _cards = [_Card(1), _Card(2), _Card(3), _Card(4), _Card(5), _Card(6)];
+const _cardWidth = 112.0;
+const _cardGap = 8.0;
+
+class ReflowPage extends StatelessWidget {
+  const ReflowPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: _Main(
+        label: 'Reflowing cards',
+        child: Wrap(spacing: _cardGap, runSpacing: _cardGap, children: _cards),
+      ),
+    );
+  }
+}
+
+class OverflowPage extends StatelessWidget {
+  const OverflowPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: _Main(
+        label: 'Overflowing cards',
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: _cardGap,
+          children: _cards,
+        ),
+      ),
+    );
+  }
+}
+
+class _Card extends StatelessWidget {
+  const _Card(this.index);
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: _cardWidth,
+      height: 64,
+      child: ColoredBox(
+        color: Colors.indigo.shade100,
+        child: Center(child: Text('Card $index')),
       ),
     );
   }
