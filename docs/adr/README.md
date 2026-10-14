@@ -10,13 +10,13 @@ maintainer; nothing is built on it.
 | [0003](0003-package-layout.md)                        | Flutter-free core, Flutter companion package          | Accepted; workspace superseded by 0030 |
 | [0004](0004-functional-core-imperative-shell.md)      | Functional core, imperative shell                     | Accepted  |
 | [0005](0005-failure-as-values.md)                     | In-repo sealed Result, no FP library                  | Accepted  |
-| [0006](0006-core-schema.md)                           | Core schema                                           | Accepted  |
+| [0006](0006-core-schema.md)                           | Core schema                                           | Accepted; finding kind, help link, metric title, schema version 2 added by 0033 |
 | [0007](0007-fingerprints-and-normalization.md)        | Fingerprints and normalization                        | Accepted; axe rule superseded by 0024 |
 | [0008](0008-scoring.md)                               | Scoring: Lighthouse log-normal port, weights          | Accepted  |
 | [0009](0009-baseline-and-ci-gate.md)                  | Baseline diff and CI gate                             | Accepted; metric findings superseded by 0027 |
 | [0010](0010-configuration.md)                         | `flighthouse.yaml` configuration                      | Accepted  |
 | [0011](0011-cli.md)                                   | CLI commands and exit codes                           | Accepted  |
-| [0012](0012-renderers.md)                             | JSON and self-contained HTML renderers                | Accepted  |
+| [0012](0012-renderers.md)                             | JSON and self-contained HTML renderers                | Accepted; finding links and needs-review badge added by 0033 |
 | [0013](0013-adapter-contract.md)                      | Adapter contract and the docs-first rule              | Accepted  |
 | [0014](0014-external-tools.md)                        | External tools are optional subprocesses              | Accepted  |
 | [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted; Linux CI launch is 0026 |
@@ -35,9 +35,9 @@ maintainer; nothing is built on it.
 | [0028](0028-configurable-gate-tolerances.md)          | Every gate tolerance is a config key                  | Accepted  |
 | [0029](0029-host-credentials-file.md)                 | A gitignored hosts file maps hosts to credentials     | Accepted  |
 | [0030](0030-companion-resolves-separately.md)         | The Flutter companion resolves outside the workspace  | Accepted  |
-| [0031](0031-timeline-summary-writer.md)               | The TimelineSummary writer                            | Accepted, flagged for review |
-| [0032](0032-web-frame-timing-source.md)              | Web frame timing from watchPerformance                | Proposed  |
-| [0033](0033-help-links-needs-review-and-metric-titles.md) | Help links, needs-review, and metric titles in the schema | Proposed  |
-| [0034](0034-web-responsive-layout-out-of-scope.md)   | Web responsive layout is out of scope                 | Proposed  |
+| [0031](0031-timeline-summary-writer.md)               | The TimelineSummary writer                            | Accepted, flagged for review; writer input extended by 0032 |
+| [0032](0032-web-frame-timing-source.md)              | Web frame timing from watchPerformance                | Accepted (delegated review) |
+| [0033](0033-help-links-needs-review-and-metric-titles.md) | Help links, needs-review, and metric titles in the schema | Accepted (delegated review) |
+| [0034](0034-web-responsive-layout-out-of-scope.md)   | Web responsive layout is out of scope                 | Accepted (delegated review) |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.

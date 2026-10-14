@@ -1,6 +1,6 @@
 # 0034. Web responsive layout is out of scope
 
-- Status: Proposed
+- Status: Accepted by delegated Opus review, 2026-10-13; maintainer may revert
 - Date: 2026-10-13
 
 ## Context
