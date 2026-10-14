@@ -1,0 +1,7 @@
+{
+  "category": "a11y",
+  "clean": "/planted?defects=none",
+  "planted": "/planted",
+  "margin": 0.05,
+  "reason": "docs/evidence/web-fixture-variance.md measured an a11y spread of 0 across 5 runs, so the margin covers no noise and is the smallest drop counted as the planted defects lowering the score"
+}
