@@ -1,6 +1,6 @@
 # 0012. JSON and HTML renderers
 
-- Status: Accepted
+- Status: Accepted; finding links and needs-review badge added by [ADR 0033](0033-help-links-needs-review-and-metric-titles.md)
 - Date: 2026-10-06
 
 ## Decision
