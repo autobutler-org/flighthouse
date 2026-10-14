@@ -1,7 +1,8 @@
 # Web fixture run-to-run variance
 
 Measured on 2026-10-13 for [#153](https://github.com/autobutler-org/flighthouse/issues/153). The data is in
-[`web-fixture-variance.json`](web-fixture-variance.json).
+[`web-fixture-variance.json`](web-fixture-variance.json). The fixture's routes and checks are described in its
+[README](../../integration/web_fixture/README.md).
 
 ## Recipe
 
