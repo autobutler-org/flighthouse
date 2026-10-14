@@ -1,0 +1,46 @@
+{
+  "planted": [
+    {
+      "defect": "text field without a label",
+      "route": "/planted",
+      "category": "a11y",
+      "rule": "label",
+      "sources": ["axe", "lighthouse"],
+      "detectable": true
+    },
+    {
+      "defect": "image without alternative text",
+      "route": "/planted",
+      "category": "a11y",
+      "rule": "role-img-alt",
+      "sources": ["axe"],
+      "detectable": true
+    },
+    {
+      "defect": "two adjacent 8px buttons",
+      "route": "/planted",
+      "category": "a11y",
+      "rule": "target-size",
+      "sources": ["lighthouse"],
+      "detectable": true
+    },
+    {
+      "defect": "light gray text on white",
+      "route": "/planted",
+      "category": "a11y",
+      "rule": "color-contrast",
+      "sources": ["axe", "lighthouse"],
+      "detectable": false,
+      "reason": "Flutter draws text on a canvas, so axe 4.11.1 marks every text node needs review and Lighthouse 13.5.0 passes the audit"
+    },
+    {
+      "defect": "two buttons both named Save",
+      "route": "/planted",
+      "category": "a11y",
+      "rule": null,
+      "sources": [],
+      "detectable": false,
+      "reason": "neither axe 4.11.1 nor Lighthouse 13.5.0 has a rule for duplicate button names"
+    }
+  ]
+}

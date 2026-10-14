@@ -40,4 +40,7 @@ fi
 dart run bin/flighthouse.dart --config "$config" collect
 cp -a "$report/raw" "$report/raw-collected"
 python3 integration/web_fixture/tool/check_raw.py "$report"
+dart run bin/flighthouse.dart --config "$config" report
+python3 integration/web_fixture/tool/check_planted.py \
+  integration/web_fixture/planted.json "$report/report.json"
 python3 integration/web_fixture/tool/check_gate.py "$root" "$config" "$report"

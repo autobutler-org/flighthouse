@@ -17,6 +17,7 @@ web:
   routes:
     - /account
     - /public
+    - /planted
   readiness:
     timeoutSeconds: 90
     selector: '[role="main"]'
