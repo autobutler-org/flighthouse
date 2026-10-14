@@ -140,4 +140,119 @@ void main() {
     expect(describe(failure), contains('Flutter not found'));
     expect(describe(failure), contains('docs.flutter.dev'));
   });
+
+  group('Flutter pin', () {
+    final machineOutput = File(
+      'test/fixtures/flutter_pin/3.47.7/version_machine.json',
+    ).readAsStringSync();
+
+    void pin(String version) => File(p.join(project.path, 'pubspec.yaml'))
+        .writeAsStringSync(
+          'name: quark\nenvironment:\n  sdk: ^3.11.0\n  flutter: $version\n',
+        );
+
+    Future<Result<BuiltWebApp, Failure>> build(
+      List<List<String>> calls, {
+      String versionOutput = '',
+      int versionExitCode = 0,
+    }) => buildWebApp(
+      projectDir: project.path,
+      config: config,
+      run: (command, args, {workingDirectory}) async {
+        calls.add([command, ...args]);
+        if (args.contains('--machine')) {
+          return ProcessResult(1, versionExitCode, versionOutput, 'boom');
+        }
+        File(p.join(workingDirectory!, 'build/web/index.html'))
+          ..parent.createSync(recursive: true)
+          ..writeAsStringSync('app');
+        return ProcessResult(1, 0, '', '');
+      },
+    );
+
+    test('builds when the Flutter on PATH matches the pin', () async {
+      pin('3.47.7');
+      final calls = <List<String>>[];
+      final result = await build(calls, versionOutput: machineOutput);
+      expect(result, isA<Ok<BuiltWebApp, Failure>>());
+      expect(calls.first, ['flutter', '--version', '--machine']);
+      expect(calls, hasLength(2));
+    });
+
+    test('fails before building on a mismatch', () async {
+      pin('3.47.8');
+      final calls = <List<String>>[];
+      final result = await build(calls, versionOutput: machineOutput);
+      final failure = (result as Err<BuiltWebApp, Failure>).error;
+      expect(failure, isA<MissingToolFailure>());
+      final message = describe(failure);
+      expect(message, contains('Flutter 3.47.8'));
+      expect(message, contains('flutter on PATH is 3.47.7'));
+      expect(message, contains(p.join(project.path, 'pubspec.yaml')));
+      expect(message, contains('first on PATH'));
+      expect(calls, [
+        ['flutter', '--version', '--machine'],
+      ]);
+    });
+
+    test('does not ask Flutter for its version without a pin', () async {
+      File(p.join(project.path, 'pubspec.yaml'))
+          .writeAsStringSync('name: app\nenvironment:\n  sdk: ^3.11.0\n');
+      final calls = <List<String>>[];
+      final result = await build(calls);
+      expect(result, isA<Ok<BuiltWebApp, Failure>>());
+      expect(calls.single.first, 'flutter');
+      expect(calls.single, isNot(contains('--machine')));
+    });
+
+    test('fails before building on unparsable version output', () async {
+      pin('3.47.7');
+      final calls = <List<String>>[];
+      final result = await build(calls, versionOutput: 'Flutter 3.47.7');
+      final failure = (result as Err<BuiltWebApp, Failure>).error;
+      expect(failure, isA<IoFailure>());
+      expect(describe(failure), contains('flutter --version --machine'));
+      expect(calls, hasLength(1));
+    });
+
+    test('reports a failed version command', () async {
+      pin('3.47.7');
+      final result = await build([], versionExitCode: 1);
+      final failure = (result as Err<BuiltWebApp, Failure>).error;
+      expect(failure, isA<ProcessFailure>());
+      expect(describe(failure), contains('flutter --version --machine'));
+    });
+
+    test('reports a missing Flutter when a pin is declared', () async {
+      pin('3.47.7');
+      final result = await buildWebApp(
+        projectDir: project.path,
+        config: WebBuildConfig(
+          command: const ['make', 'build/frontend/web'],
+          outputDir: 'build/web',
+        ),
+        run: (command, _, {workingDirectory}) async =>
+            throw ProcessException(command, const [], 'No such file'),
+      );
+      final failure = (result as Err<BuiltWebApp, Failure>).error;
+      expect(describe(failure), contains('Flutter not found'));
+    });
+
+    test('asks the build command\'s own Flutter for its version', () async {
+      pin('3.47.7');
+      String? executable;
+      await buildWebApp(
+        projectDir: project.path,
+        config: WebBuildConfig(
+          command: const ['/opt/flutter/bin/flutter', 'build', 'web'],
+          outputDir: 'build/web',
+        ),
+        run: (command, args, {workingDirectory}) async {
+          executable ??= command;
+          return ProcessResult(1, 0, machineOutput, '');
+        },
+      );
+      expect(executable, '/opt/flutter/bin/flutter');
+    });
+  });
 }
