@@ -60,6 +60,7 @@ to be repeatable, add a target. `make help` lists everything.
 | `make fix`        | `dart fix --apply`, `dart format`                                    |
 | `make test`       | every unit, fixture, and end-to-end test                             |
 | `make test/cli`   | run the CLI's `ci` command against recorded fixtures                 |
+| `make all`        | end-to-end run against a real local Quark (see below)                |
 | `make release`     | tag the pubspec version on a clean, current `main` and push the tag  |
 
 GNU make is required. On macOS use `gmake`.
@@ -124,6 +125,93 @@ footer, or a `claude.ai/code` session link.
 - Report exactly what was run. Never write "verified by hand", "tested manually", or the like unless that
   verification happened in this session.
 - A PR or commit never carries a Claude Code session link, and all prose and identifiers use American spelling.
+
+## End-to-end run against Quark
+
+`make all` (an alias of `make run/quark/e2e`) runs flighthouse against a real Quark, not a recording: it starts the
+pinned Quark release, seeds a test household, builds or reuses Quark's web app, runs `collect`, `report`, and
+`ci`, writes a summary, and stops Quark and deletes its data. Everything lives under `.flighthouse/e2e-quark/`,
+which git ignores. The script is [`tool/e2e_quark/e2e.sh`](tool/e2e_quark/e2e.sh); each step is also its own target.
+
+| Target | Step |
+| --- | --- |
+| `make quark-up` | download Quark `QUARK_VERSION` (checksum-verified) and start it on `PORT` with its own `HOME` |
+| `make seed` | create the owner and upload `SEED_SCALE` photos and two documents; re-running uploads nothing twice |
+| `make run` | build Quark's web app at `QUARK_VERSION` (cached per version), then `flighthouse collect` |
+| `make report` | `flighthouse report` and `ci`; a first run with no baseline writes one first |
+| `make quark-down` | stop Quark; `WIPE=1` also deletes its data and credentials |
+| `make all` | all of the above, then `quark-down WIPE=1` unless `KEEP=1` |
+
+### Prerequisites
+
+Linux (x86_64 or arm64), Dart, `curl`, `git`, `sha256sum`, Node 22 with `npx` (Lighthouse 13.5.0 runs through
+`npx`), and Chrome's shared libraries. Building the web app needs the exact Flutter version Quark's `pubspec.yaml`
+pins (3.47.7 for v0.50.1) and about 90 s and 4 to 5 GB of RAM ([#139](https://github.com/autobutler-org/flighthouse/issues/139)).
+The build is cached in `.flighthouse/e2e-quark/cache/web-<version>`, so only the first run per version pays for it.
+
+### Inputs
+
+All optional, passed as `make VAR=value` or environment variables.
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `QUARK_VERSION` | `v0.50.1` | the Quark release tag for both the server and the web build |
+| `QUARK_BIN` | downloaded | use this Quark binary instead of the release |
+| `QUARK_URL` | unset | use a running Quark (with its `CREDENTIALS`); `quark-up` and `quark-down` skip |
+| `QUARK_SRC` | shallow clone | a Quark checkout at `QUARK_VERSION` to build the web app from |
+| `FLUTTER` | `flutter` | the Flutter binary; it must match Quark's pin |
+| `PORT` | `18531` | the port the harness's Quark listens on, plain HTTP on `127.0.0.1` |
+| `SEED_SCALE` | `6` | photos to seed; raise it for a bigger household in perf work |
+| `KEEP` | `0` | `1` leaves Quark, its data, and its credentials in place after `make all` |
+| `CREDENTIALS` | `.flighthouse/e2e-quark/credentials.env` | the owner's credentials, written once with mode 0600 |
+| `BASELINE` | `.flighthouse/e2e-quark/flighthouse-baseline-<version>-scale<N>.json` | one per version and size |
+
+The seed creates the owner without a browser. Since Quark v0.47 a client never sends a password:
+`quark auth-key` derives the auth key from the password and the salt `GET /auth/salt` returns, which works for a
+username that does not exist yet, so the harness calls `POST /api/v0/auth/setup` with that key. The password is
+generated once and only ever stored in the credentials file.
+
+### Reading the results
+
+`make all` writes `.flighthouse/e2e-quark/runs/current/`:
+
+- `summary.json`: `verdict` (`passed`, `gate-failed`, or `broken`), `exitCode`, `failedStep`, per-step exit codes
+  and seconds, `scores` (0 to 1, from `report.json`), `gate` (`new`, `fixed`, `unchanged`), versions, and paths.
+  Read this first.
+- `report/report.html` and `report/report.json`: the full report; `report/raw/`: Lighthouse and axe output.
+- `logs/<step>.log` for every step, and `logs/quark.log` for the server.
+
+Exit codes of `make all`: `0` the gate passed, `1` the gate failed (a result: new findings or a score drop), `2`
+or `3` flighthouse could not evaluate the gate (see the [quickstart](docs/quickstart-web.md#in-ci)), `10` Quark
+did not start, `11` the seed failed, `12` the web build failed, `13` `collect` failed, `14` `report` failed, and
+`130` interrupted. Any code other than 0 and 1 says nothing about the app.
+
+### Common failures
+
+- `pins Flutter 3.47.7 but FLUTTER ... is 3.47.6`: set `FLUTTER` to a binary of the pinned version, for example a
+  `git clone --depth 1 -b 3.47.7 https://github.com/flutter/flutter.git` checkout.
+- `something already answers on http://127.0.0.1:18531`: another Quark (often one left by `KEEP=1`) holds the
+  port. Run `make quark-down`, pick another `PORT`, or set `QUARK_URL` to use it.
+- The seed fails with `/auth/login -> 401`: the credentials do not belong to that Quark, usually because
+  `QUARK_URL` points at an instance that was set up by someone else. Pass its `CREDENTIALS`.
+- `collect` fails with `browser displayed /terms`: the sign-in steps, which are positional selectors shared with
+  [`test/fixtures/quark/d8d2618e/collect.yaml`](test/fixtures/quark/d8d2618e/collect.yaml), no longer match
+  Quark's screens. They work on v0.50.1.
+- The gate fails after changing `SEED_SCALE` or `QUARK_VERSION` with an explicit `BASELINE`: the data on
+  `/photos` changed, so the findings did. The default baseline is per version and size for this reason.
+- The web build is killed: the machine ran out of memory; free some or build once on a bigger machine and copy
+  `build/web` to `.flighthouse/e2e-quark/cache/web-<version>`.
+
+### Known gaps
+
+- The release tarball ships only the server, so the web app is still built from source at the same tag. A Quark
+  release that published its web build would remove the Flutter requirement.
+- macOS and Windows have no path yet; Quark's release has no binary for them, so set `QUARK_BIN`.
+- The harness runs the routes of the d8d2618e configuration: `/files`, `/photos`, and `/settings/general`.
+- `SEED_SCALE` only adds photos; members and channels are not seeded yet.
+- Back-to-back runs on one version and size are not yet stable: a second run has failed the gate on axe
+  `color-contrast` "Needs review" findings at transient `div > div:nth-child(n)` targets on `/files` and `/photos`.
+  Treat a gate failure made only of those as noise until the gate tolerances cover it.
 
 ## Dart code rules (always)
 

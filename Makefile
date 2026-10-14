@@ -118,6 +118,43 @@ test/quark/web: ## Run the CI gate against the recorded authenticated quark web 
 run/quark/web: ## Collect quark live (needs ../quark, its backend, and FLIGHTHOUSE_* variables)
 	dart run bin/flighthouse.dart --config $(FIXTURES)/quark/d8d2618e/collect.yaml collect
 
+# Inputs of tool/e2e_quark/e2e.sh, passed through from `make VAR=value`. An unset one keeps its default.
+export QUARK_VERSION QUARK_REPO QUARK_BIN QUARK_URL QUARK_SRC PORT WORK_DIR RUN_DIR CREDENTIALS BASELINE SEED_SCALE KEEP FLUTTER
+
+.PHONY: run/quark/e2e
+run/quark/e2e: ## One command: pinned Quark up, seed, web build, collect, report, ci, tear down (KEEP=1 keeps Quark)
+	tool/e2e_quark/e2e.sh all
+
+.PHONY: run/quark/up
+run/quark/up: ## Start the pinned Quark release on PORT (default 18531) with its own HOME
+	tool/e2e_quark/e2e.sh quark-up
+
+.PHONY: run/quark/seed
+run/quark/seed: ## Seed the test household idempotently (SEED_SCALE photos, default 6)
+	tool/e2e_quark/e2e.sh seed
+
+.PHONY: run/quark/run
+run/quark/run: ## Build or reuse Quark's web build, then flighthouse collect against the running Quark
+	tool/e2e_quark/e2e.sh web
+	tool/e2e_quark/e2e.sh collect
+
+.PHONY: run/quark/report
+run/quark/report: ## flighthouse report and ci for the last collect (the first run writes the baseline)
+	tool/e2e_quark/e2e.sh report
+	tool/e2e_quark/e2e.sh ci
+
+.PHONY: run/quark/down
+run/quark/down: ## Stop the harness's Quark (WIPE=1 also removes its data and credentials)
+	tool/e2e_quark/e2e.sh quark-down $(if $(filter 1,$(WIPE)),wipe,)
+
+.PHONY: all quark-up seed run report quark-down
+all: run/quark/e2e ## Alias of run/quark/e2e
+quark-up: run/quark/up ## Alias of run/quark/up
+seed: run/quark/seed ## Alias of run/quark/seed
+run: run/quark/run ## Alias of run/quark/run
+report: run/quark/report ## Alias of run/quark/report
+quark-down: run/quark/down ## Alias of run/quark/down
+
 .PHONY: run/chrome-acquire
 run/chrome-acquire: ## Download the pinned Chrome and print its version
 	dart run tool/chrome_smoke.dart --acquire-only
