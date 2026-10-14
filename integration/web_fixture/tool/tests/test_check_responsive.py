@@ -6,6 +6,7 @@ from check_responsive import (
     config_for,
     difference,
     matches_recorded,
+    mismatch_message,
     observation,
     overflowing_route,
     recorded_manifest,
@@ -91,6 +92,23 @@ class RecordTest(unittest.TestCase):
         self.assertNotIn("lighthouse", updated["observed"]["wide"])
         self.assertEqual(updated["gap"], manifest["gap"])
         self.assertEqual(manifest, recorded.responsive())
+
+
+class GapTest(unittest.TestCase):
+    def test_gap_points_at_the_adr_that_leaves_layout_overflow_out_of_scope(self):
+        self.assertEqual(
+            recorded.responsive()["gap"],
+            "https://github.com/autobutler-org/flighthouse/blob/main/docs/adr/0034-web-responsive-layout-out-of-scope.md",
+        )
+
+    def test_mismatch_message_cites_the_adr_and_its_decision(self):
+        message = mismatch_message(recorded.responsive(), "responsive.json")
+        self.assertIn("responsive.json", message)
+        self.assertIn("ADR 0034", message)
+        self.assertIn(recorded.responsive()["gap"], message)
+        self.assertIn("out of scope", message)
+        self.assertIn("widget tests", message)
+        self.assertNotIn("issues/161", message)
 
 
 class ConfigTest(unittest.TestCase):

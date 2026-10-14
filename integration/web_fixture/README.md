@@ -137,9 +137,9 @@ and what it says:
   regression flighthouse cannot see in these two will not fail anything.
 - **One toggle.** `check_toggles.py` turns on only the first detectable defect, `label`. The other toggles are
   exercised only together, through `/planted`.
-- **No responsiveness signal.** No web adapter emits a responsiveness score or finding yet
-  ([#161](https://github.com/autobutler-org/flighthouse/issues/161),
-  [ADR 0034](../../docs/adr/0034-web-responsive-layout-out-of-scope.md)). `responsive.json` records a `null` score
+- **No responsiveness signal.** Web layout overflow is out of scope for flighthouse per
+  [ADR 0034](../../docs/adr/0034-web-responsive-layout-out-of-scope.md); catch it with widget tests at narrow surface
+  sizes. No web adapter emits a responsiveness score or finding. `responsive.json` records a `null` score
   and a difference of 0 on the overflowing route. `check_responsive.py` is a guard that fails when that changes, not
   proof that overflow is caught. The narrow viewport's lower a11y count on `/responsive/overflow` comes from
   clipped cards dropping out of the semantics tree, not from a layout check.
