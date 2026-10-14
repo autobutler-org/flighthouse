@@ -1,5 +1,5 @@
 {
-  "gap": "https://github.com/autobutler-org/flighthouse/issues/161",
+  "gap": "https://github.com/autobutler-org/flighthouse/blob/main/docs/adr/0034-web-responsive-layout-out-of-scope.md",
   "recorded": {
     "date": "2026-10-13",
     "machine": "Intel Core Ultra 7 355, 8 cores, Linux, Chromium for Testing launched by flighthouse",

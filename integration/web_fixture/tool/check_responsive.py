@@ -102,6 +102,15 @@ def recorded_manifest(manifest, observed, recorded):
     }
 
 
+def mismatch_message(manifest, manifest_name):
+    return (
+        "flighthouse reports the responsive routes differently than "
+        f"{manifest_name} recorded. ADR 0034 ({manifest['gap']}) puts web layout "
+        "overflow out of scope and leaves it to widget tests at narrow sizes, so a "
+        "layout signal needs a new ADR superseding it before this is re-recorded"
+    )
+
+
 def run(root, config, command):
     completed = subprocess.run(
         ["dart", "run", "bin/flighthouse.dart", "--config", config, command],
@@ -161,11 +170,7 @@ def main():
         manifest_path.write_text(json.dumps(updated, indent=2) + "\n")
         print(f"recorded to {manifest_path}")
     elif not matches_recorded(manifest, observed):
-        fail(
-            "flighthouse reports the responsive routes differently than "
-            f"{manifest_path.name} recorded; if it gained a layout signal, "
-            f"re-record and close {manifest['gap']}"
-        )
+        fail(mismatch_message(manifest, manifest_path.name))
 
 
 if __name__ == "__main__":
