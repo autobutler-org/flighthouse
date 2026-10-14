@@ -320,6 +320,9 @@ Notes on the workflow:
   `^3.26.0` at install time. The `Collect` step therefore checks the `browser Chrome/…` line `collect` prints and
   fails on any other build, so a Puppeteer release cannot silently change the browser under the baseline. The cache
   key carries the same version.
+- **Flutter pin.** If quark's `pubspec.yaml` pins an exact Flutter version, `collect` stops before building when the
+  `flutter` that `setup-flutter` put on `PATH` is a different one
+  ([quickstart prerequisites](../quickstart-web.md#prerequisites)).
 - **Node.** Quark's `setup-node` installs Node from `.nvmrc` (24.21.0 today). flighthouse's own workflow runs
   Lighthouse 13.5.0 on Node 22, and the variance runs used Node 26.8.2; Node 24 was not tried.
 - **Exit codes.** `ci` exits 1 when the gate fails, and 2 or 3 when the config, a tool, the build, the browser, or
