@@ -1,6 +1,6 @@
 # 0032. Web frame timing from watchPerformance
 
-- Status: Proposed
+- Status: Accepted by delegated Opus review, 2026-10-13; maintainer may revert
 - Date: 2026-10-13
 
 ## Context

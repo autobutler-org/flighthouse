@@ -1,6 +1,6 @@
 # 0031. The TimelineSummary writer
 
-- Status: Accepted (by the implementer under the maintainer's go-ahead for #31; flagged for review in PR)
+- Status: Accepted (by the implementer under the maintainer's go-ahead for #31; flagged for review in PR); writer input extended by [ADR 0032](0032-web-frame-timing-source.md)
 - Date: 2026-10-13
 
 ## Context

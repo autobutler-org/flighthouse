@@ -1,6 +1,6 @@
 # 0006. Core schema
 
-- Status: Accepted; `Measurement.weight` added by [ADR 0022](0022-measurement-weights.md)
+- Status: Accepted; `Measurement.weight` added by [ADR 0022](0022-measurement-weights.md); `Finding.kind`, `Finding.helpUrl`, `Metric.title`, and schema version 2 added by [ADR 0033](0033-help-links-needs-review-and-metric-titles.md)
 - Date: 2026-10-06
 
 ## Context

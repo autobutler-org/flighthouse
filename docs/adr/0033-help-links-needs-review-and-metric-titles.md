@@ -1,6 +1,6 @@
 # 0033. Carry help links, needs-review, and metric titles through the schema
 
-- Status: Proposed
+- Status: Accepted by delegated Opus review, 2026-10-13; maintainer may revert
 - Date: 2026-10-13
 - Amends: [ADR 0006](0006-core-schema.md), [ADR 0012](0012-renderers.md)
 
