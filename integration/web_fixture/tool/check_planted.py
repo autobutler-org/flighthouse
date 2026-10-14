@@ -23,9 +23,7 @@ def detected_by_all(entry, findings):
     )
 
 
-def main():
-    manifest = json.loads(Path(sys.argv[1]).read_text())["planted"]
-    findings = json.loads(Path(sys.argv[2]).read_text())["findings"]
+def classify(manifest, findings):
     detected = []
     missing = []
     surprises = []
@@ -39,7 +37,13 @@ def main():
             reported(entry, source, findings) for source in entry["sources"]
         ):
             surprises.append(entry)
+    return detected, missing, surprises
 
+
+def main():
+    manifest = json.loads(Path(sys.argv[1]).read_text())["planted"]
+    findings = json.loads(Path(sys.argv[2]).read_text())["findings"]
+    detected, missing, surprises = classify(manifest, findings)
     print(f"planted defects detected: {len(detected)}/{len(manifest)}")
     for entry in manifest:
         status = "detected" if entry in detected else "not detected"

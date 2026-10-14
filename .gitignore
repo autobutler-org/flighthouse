@@ -12,3 +12,4 @@ flighthouse-report/
 
 .env
 pubspec.lock
+__pycache__/

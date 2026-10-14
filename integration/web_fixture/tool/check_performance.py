@@ -6,31 +6,17 @@ import sys
 from datetime import date
 from pathlib import Path
 
-parser = argparse.ArgumentParser()
-parser.add_argument("root")
-parser.add_argument("manifest")
-parser.add_argument("work")
-parser.add_argument("--record", type=int, metavar="RUNS")
-parser.add_argument("--machine")
-args = parser.parse_args()
-
-root = Path(args.root).resolve()
-manifest_path = Path(args.manifest).resolve()
-manifest = json.loads(manifest_path.read_text())
-work = Path(args.work).resolve()
-fixture = root / "integration" / "web_fixture"
-report = work / "report"
-routes = [entry["route"] for entry in manifest["routes"]]
-control = next(entry["route"] for entry in manifest["routes"] if entry["control"])
-
 
 def fail(message):
     raise SystemExit(message)
 
 
-def write_config():
-    path = work / "performance.yaml"
-    config = {
+def control_route(manifest):
+    return next(entry["route"] for entry in manifest["routes"] if entry["control"])
+
+
+def config_for(fixture, report, work, routes):
+    return {
         "app": "web-fixture-performance",
         "reportDir": str(report),
         "baseline": str(work / "flighthouse-baseline.json"),
@@ -45,27 +31,9 @@ def write_config():
             "axe": {"version": "4.11.1"},
         },
     }
-    path.write_text(json.dumps(config, indent=2) + "\n")
-    return str(path)
 
 
-def run(config, command):
-    completed = subprocess.run(
-        ["dart", "run", "bin/flighthouse.dart", "--config", config, command],
-        cwd=root,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if completed.returncode != 0:
-        sys.stderr.write(completed.stdout + completed.stderr)
-        fail(f"{command} exited {completed.returncode}")
-
-
-def route_scores(config):
-    run(config, "collect")
-    run(config, "report")
-    data = json.loads((report / "report.json").read_text())
+def scores_from_report(data, routes):
     scores = {}
     for route in routes:
         items = [
@@ -87,8 +55,8 @@ def route_scores(config):
     return scores
 
 
-def check_separation(scores, tolerance):
-    for route in routes:
+def check_separation(scores, control, tolerance):
+    for route in scores:
         if route != control and scores[route] > scores[control] - tolerance:
             fail(
                 f"{route} scored {scores[route]}, not at least {tolerance} below "
@@ -96,60 +64,128 @@ def check_separation(scores, tolerance):
             )
 
 
-def record(config, runs):
+def score_range(entry, tolerance):
+    low = round(entry["min"] - tolerance, 4)
+    high = 1.0 if entry["control"] else round(entry["max"] + tolerance, 4)
+    return low, high
+
+
+def range_results(manifest, scores):
+    results = []
+    for entry in manifest["routes"]:
+        low, high = score_range(entry, manifest["tolerance"])
+        score = scores[entry["route"]]
+        results.append((entry, score, low, high, low <= score <= high))
+    return results
+
+
+def recorded_manifest(manifest, samples, recorded):
+    routes = [
+        {
+            **entry,
+            "scores": samples[entry["route"]],
+            "min": min(samples[entry["route"]]),
+            "max": max(samples[entry["route"]]),
+        }
+        for entry in manifest["routes"]
+    ]
+    return {**manifest, "recorded": recorded, "routes": routes}
+
+
+def run(root, config, command):
+    completed = subprocess.run(
+        ["dart", "run", "bin/flighthouse.dart", "--config", config, command],
+        cwd=root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        sys.stderr.write(completed.stdout + completed.stderr)
+        fail(f"{command} exited {completed.returncode}")
+
+
+def route_scores(root, config, report, routes):
+    run(root, config, "collect")
+    run(root, config, "report")
+    return scores_from_report(json.loads((report / "report.json").read_text()), routes)
+
+
+def record(root, config, report, manifest, manifest_path, runs, machine):
     if runs < 2:
         fail("record at least two runs, a range from one run is not a range")
-    tolerance = manifest["tolerance"]
+    routes = [entry["route"] for entry in manifest["routes"]]
+    control = control_route(manifest)
     samples = {route: [] for route in routes}
     for index in range(runs):
-        scores = route_scores(config)
-        check_separation(scores, tolerance)
+        scores = route_scores(root, config, report, routes)
+        check_separation(scores, control, manifest["tolerance"])
         for route in routes:
             samples[route].append(scores[route])
         print(f"run {index + 1}/{runs}: {scores}")
-    manifest["recorded"] = {
+    recorded = {
         "date": date.today().isoformat(),
         "runs": runs,
-        "machine": args.machine or manifest["recorded"]["machine"],
+        "machine": machine or manifest["recorded"]["machine"],
         "lighthouse": json.loads((report / "report.json").read_text())["metadata"][
             "toolVersions"
         ]["lighthouse"],
     }
-    for entry in manifest["routes"]:
-        entry["scores"] = samples[entry["route"]]
-        entry["min"] = min(samples[entry["route"]])
-        entry["max"] = max(samples[entry["route"]])
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+    updated = recorded_manifest(manifest, samples, recorded)
+    manifest_path.write_text(json.dumps(updated, indent=2) + "\n")
     print(f"recorded {runs} runs to {manifest_path}")
 
 
-def check(config):
+def check(root, config, report, manifest):
     tolerance = manifest["tolerance"]
-    scores = route_scores(config)
+    routes = [entry["route"] for entry in manifest["routes"]]
+    control = control_route(manifest)
+    scores = route_scores(root, config, report, routes)
     recorded = manifest["recorded"]
     print(
         f"performance ranges from {recorded['runs']} runs on {recorded['date']}, "
         f"tolerance {tolerance}"
     )
     outside = []
-    for entry in manifest["routes"]:
-        low = round(entry["min"] - tolerance, 4)
-        high = 1.0 if entry["control"] else round(entry["max"] + tolerance, 4)
-        score = scores[entry["route"]]
-        within = low <= score <= high
+    for entry, score, low, high, within in range_results(manifest, scores):
         status = "within" if within else "outside"
         print(f"  {entry['route']}: {score} {status} [{low}, {high}] ({entry['cost']})")
         if not within:
             outside.append(entry["route"])
     if outside:
         fail(f"performance scores outside their recorded range: {', '.join(outside)}")
-    check_separation(scores, tolerance)
+    check_separation(scores, control, tolerance)
     print(f"every slowed route scores at least {tolerance} below {control}")
 
 
-work.mkdir(parents=True, exist_ok=True)
-config = write_config()
-if args.record:
-    record(config, args.record)
-else:
-    check(config)
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("root")
+    parser.add_argument("manifest")
+    parser.add_argument("work")
+    parser.add_argument("--record", type=int, metavar="RUNS")
+    parser.add_argument("--machine")
+    args = parser.parse_args()
+
+    root = Path(args.root).resolve()
+    manifest_path = Path(args.manifest).resolve()
+    manifest = json.loads(manifest_path.read_text())
+    work = Path(args.work).resolve()
+    fixture = root / "integration" / "web_fixture"
+    report = work / "report"
+    routes = [entry["route"] for entry in manifest["routes"]]
+
+    work.mkdir(parents=True, exist_ok=True)
+    config_path = work / "performance.yaml"
+    config_path.write_text(
+        json.dumps(config_for(fixture, report, work, routes), indent=2) + "\n"
+    )
+    config = str(config_path)
+    if args.record:
+        record(root, config, report, manifest, manifest_path, args.record, args.machine)
+    else:
+        check(root, config, report, manifest)
+
+
+if __name__ == "__main__":
+    main()

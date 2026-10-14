@@ -14,27 +14,13 @@ from check_planted import detected_by_all
 
 ROUTES = ["/public", "/planted"]
 
-parser = argparse.ArgumentParser()
-parser.add_argument("root")
-parser.add_argument("manifest")
-parser.add_argument("work")
-parser.add_argument("--runs", type=int, default=3)
-args = parser.parse_args()
-
-root = Path(args.root).resolve()
-planted = json.loads(Path(args.manifest).read_text())["planted"]
-work = Path(args.work).resolve()
-fixture = root / "integration" / "web_fixture"
-report = work / "report"
-
 
 def fail(message):
     raise SystemExit(message)
 
 
-def write_config():
-    path = work / "variance.yaml"
-    config = {
+def config_for(fixture, report, work):
+    return {
         "app": "web-fixture-variance",
         "reportDir": str(report),
         "baseline": str(work / "flighthouse-baseline.json"),
@@ -49,11 +35,9 @@ def write_config():
             "axe": {"version": "4.11.1"},
         },
     }
-    path.write_text(json.dumps(config, indent=2) + "\n")
-    return str(path)
 
 
-def run(config, command):
+def run(root, config, command):
     return subprocess.run(
         ["dart", "run", "bin/flighthouse.dart", "--config", config, command],
         cwd=root,
@@ -63,10 +47,11 @@ def run(config, command):
     )
 
 
-def collect_once(config, index):
+def collect_once(root, config, work, planted, index):
+    report = work / "report"
     shutil.rmtree(report, ignore_errors=True)
     for command in ["collect", "report"]:
-        completed = run(config, command)
+        completed = run(root, config, command)
         if completed.returncode != 0:
             tail = (completed.stdout + completed.stderr).strip().splitlines()[-5:]
             return {"run": index, "failed": f"{command} exited {completed.returncode}", "output": tail}
@@ -91,7 +76,7 @@ def spread(values):
     }
 
 
-def summarize(runs):
+def summarize(planted, runs):
     completed = [entry for entry in runs if "failed" not in entry]
     failed_runs = len(runs) - len(completed)
     names = list(dict.fromkeys(name for entry in completed for name in entry["scores"]))
@@ -138,31 +123,55 @@ def print_summary(summary):
     print_table("planted defect, 1 when detected", summary["detections"])
 
 
-if args.runs < 1:
-    fail("--runs must be at least 1")
-if not (fixture / "build" / "web" / "index.html").exists():
-    fail("no fixture build at integration/web_fixture/build/web, run make run/web-fixture first")
-shutil.rmtree(work / "runs", ignore_errors=True)
-(work / "runs").mkdir(parents=True)
-config = write_config()
-started = datetime.now(timezone.utc)
-runs = []
-for index in range(1, args.runs + 1):
-    entry = collect_once(config, index)
-    entry["loadAverage"] = round(os.getloadavg()[0], 1)
-    runs.append(entry)
-    print(f"run {index}/{args.runs}: {entry.get('failed', 'ok')}, load {entry['loadAverage']}", flush=True)
-summary = summarize(runs)
-result = {
-    "started": started.isoformat(timespec="seconds"),
-    "finished": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-    "machine": f"{platform.system()} {platform.machine()}, {os.cpu_count()} CPUs",
-    "routes": ROUTES,
-    **summary,
-    "perRun": runs,
-}
-(work / "variance.json").write_text(json.dumps(result, indent=2) + "\n")
-print_summary(summary)
-print(f"wrote {work / 'variance.json'}")
-if summary["failedRuns"] == summary["runs"]:
-    fail("every run failed")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("root")
+    parser.add_argument("manifest")
+    parser.add_argument("work")
+    parser.add_argument("--runs", type=int, default=3)
+    args = parser.parse_args()
+
+    root = Path(args.root).resolve()
+    planted = json.loads(Path(args.manifest).read_text())["planted"]
+    work = Path(args.work).resolve()
+    fixture = root / "integration" / "web_fixture"
+
+    if args.runs < 1:
+        fail("--runs must be at least 1")
+    if not (fixture / "build" / "web" / "index.html").exists():
+        fail("no fixture build at integration/web_fixture/build/web, run make run/web-fixture first")
+    shutil.rmtree(work / "runs", ignore_errors=True)
+    (work / "runs").mkdir(parents=True)
+    config_path = work / "variance.yaml"
+    config_path.write_text(
+        json.dumps(config_for(fixture, work / "report", work), indent=2) + "\n"
+    )
+    config = str(config_path)
+    started = datetime.now(timezone.utc)
+    runs = []
+    for index in range(1, args.runs + 1):
+        entry = collect_once(root, config, work, planted, index)
+        entry["loadAverage"] = round(os.getloadavg()[0], 1)
+        runs.append(entry)
+        print(
+            f"run {index}/{args.runs}: {entry.get('failed', 'ok')}, load {entry['loadAverage']}",
+            flush=True,
+        )
+    summary = summarize(planted, runs)
+    result = {
+        "started": started.isoformat(timespec="seconds"),
+        "finished": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "machine": f"{platform.system()} {platform.machine()}, {os.cpu_count()} CPUs",
+        "routes": ROUTES,
+        **summary,
+        "perRun": runs,
+    }
+    (work / "variance.json").write_text(json.dumps(result, indent=2) + "\n")
+    print_summary(summary)
+    print(f"wrote {work / 'variance.json'}")
+    if summary["failedRuns"] == summary["runs"]:
+        fail("every run failed")
+
+
+if __name__ == "__main__":
+    main()

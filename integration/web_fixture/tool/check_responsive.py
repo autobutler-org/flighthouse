@@ -6,32 +6,20 @@ import sys
 from datetime import date
 from pathlib import Path
 
-parser = argparse.ArgumentParser()
-parser.add_argument("root")
-parser.add_argument("manifest")
-parser.add_argument("work")
-parser.add_argument("--record", action="store_true")
-parser.add_argument("--machine")
-args = parser.parse_args()
-
-root = Path(args.root).resolve()
-manifest_path = Path(args.manifest).resolve()
-manifest = json.loads(manifest_path.read_text())
-work = Path(args.work).resolve()
-fixture = root / "integration" / "web_fixture"
-routes = [entry["route"] for entry in manifest["routes"]]
-overflowing = next(entry["route"] for entry in manifest["routes"] if entry["overflows"])
-categories = ["a11y", "perf", "responsiveness", "memory", "best-practices"]
+CATEGORIES = ["a11y", "perf", "responsiveness", "memory", "best-practices"]
 
 
 def fail(message):
     raise SystemExit(message)
 
 
-def write_config(viewport):
+def overflowing_route(manifest):
+    return next(entry["route"] for entry in manifest["routes"] if entry["overflows"])
+
+
+def config_for(viewport, fixture, work, routes):
     name = viewport["name"]
-    path = work / f"{name}.yaml"
-    config = {
+    return {
         "app": f"web-fixture-responsive-{name}",
         "reportDir": str(work / name),
         "baseline": str(work / name / "flighthouse-baseline.json"),
@@ -50,28 +38,9 @@ def write_config(viewport):
             "axe": {"version": "4.11.1"},
         },
     }
-    path.write_text(json.dumps(config, indent=2) + "\n")
-    return str(path)
 
 
-def run(config, command):
-    completed = subprocess.run(
-        ["dart", "run", "bin/flighthouse.dart", "--config", config, command],
-        cwd=root,
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if completed.returncode != 0:
-        sys.stderr.write(completed.stdout + completed.stderr)
-        fail(f"{command} exited {completed.returncode}")
-
-
-def observe(viewport):
-    config = write_config(viewport)
-    run(config, "collect")
-    run(config, "report")
-    data = json.loads((work / viewport["name"] / "report.json").read_text())
+def observation(viewport, data, routes):
     findings = {
         route: {
             category: sum(
@@ -79,7 +48,7 @@ def observe(viewport):
                 for finding in data["findings"]
                 if finding["route"] == route and finding["category"] == category
             )
-            for category in categories
+            for category in CATEGORIES
         }
         for route in routes
     }
@@ -91,7 +60,8 @@ def observe(viewport):
     }
 
 
-def difference(observed):
+def difference(manifest, observed):
+    overflowing = overflowing_route(manifest)
     wide, narrow = (observed[viewport["name"]] for viewport in manifest["viewports"])
     return (
         narrow["findings"][overflowing]["responsiveness"]
@@ -106,7 +76,7 @@ def summary(observed):
     }
 
 
-def responsiveness(runs):
+def responsiveness(runs, routes):
     return {
         name: (
             run["responsivenessScore"],
@@ -116,31 +86,87 @@ def responsiveness(runs):
     }
 
 
-work.mkdir(parents=True, exist_ok=True)
-observed = {viewport["name"]: observe(viewport) for viewport in manifest["viewports"]}
-for name, run_ in observed.items():
-    print(f"{name} ({run_['width']}px): responsiveness score {run_['responsivenessScore']}")
-    for route in routes:
-        print(f"  {route}: findings by category {run_['findings'][route]}")
-measured = difference(observed)
-print(
-    f"{overflowing} responsiveness findings, narrow minus wide: {measured} "
-    f"(recorded {manifest['difference']})"
-)
-
-if args.record:
-    manifest["recorded"] = {
-        "date": date.today().isoformat(),
-        "machine": args.machine or manifest["recorded"]["machine"],
-        "lighthouse": next(iter(observed.values()))["lighthouse"],
-    }
-    manifest["observed"] = summary(observed)
-    manifest["difference"] = measured
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
-    print(f"recorded to {manifest_path}")
-elif responsiveness(summary(observed)) != responsiveness(manifest["observed"]):
-    fail(
-        "flighthouse reports the responsive routes differently than "
-        f"{manifest_path.name} recorded; if it gained a layout signal, "
-        f"re-record and close {manifest['gap']}"
+def matches_recorded(manifest, observed):
+    routes = [entry["route"] for entry in manifest["routes"]]
+    return responsiveness(summary(observed), routes) == responsiveness(
+        manifest["observed"], routes
     )
+
+
+def recorded_manifest(manifest, observed, recorded):
+    return {
+        **manifest,
+        "recorded": recorded,
+        "observed": summary(observed),
+        "difference": difference(manifest, observed),
+    }
+
+
+def run(root, config, command):
+    completed = subprocess.run(
+        ["dart", "run", "bin/flighthouse.dart", "--config", config, command],
+        cwd=root,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        sys.stderr.write(completed.stdout + completed.stderr)
+        fail(f"{command} exited {completed.returncode}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("root")
+    parser.add_argument("manifest")
+    parser.add_argument("work")
+    parser.add_argument("--record", action="store_true")
+    parser.add_argument("--machine")
+    args = parser.parse_args()
+
+    root = Path(args.root).resolve()
+    manifest_path = Path(args.manifest).resolve()
+    manifest = json.loads(manifest_path.read_text())
+    work = Path(args.work).resolve()
+    fixture = root / "integration" / "web_fixture"
+    routes = [entry["route"] for entry in manifest["routes"]]
+
+    def observe(viewport):
+        path = work / f"{viewport['name']}.yaml"
+        config = config_for(viewport, fixture, work, routes)
+        path.write_text(json.dumps(config, indent=2) + "\n")
+        run(root, str(path), "collect")
+        run(root, str(path), "report")
+        data = json.loads((work / viewport["name"] / "report.json").read_text())
+        return observation(viewport, data, routes)
+
+    work.mkdir(parents=True, exist_ok=True)
+    observed = {viewport["name"]: observe(viewport) for viewport in manifest["viewports"]}
+    for name, run_ in observed.items():
+        print(f"{name} ({run_['width']}px): responsiveness score {run_['responsivenessScore']}")
+        for route in routes:
+            print(f"  {route}: findings by category {run_['findings'][route]}")
+    print(
+        f"{overflowing_route(manifest)} responsiveness findings, narrow minus wide: "
+        f"{difference(manifest, observed)} (recorded {manifest['difference']})"
+    )
+
+    if args.record:
+        recorded = {
+            "date": date.today().isoformat(),
+            "machine": args.machine or manifest["recorded"]["machine"],
+            "lighthouse": next(iter(observed.values()))["lighthouse"],
+        }
+        updated = recorded_manifest(manifest, observed, recorded)
+        manifest_path.write_text(json.dumps(updated, indent=2) + "\n")
+        print(f"recorded to {manifest_path}")
+    elif not matches_recorded(manifest, observed):
+        fail(
+            "flighthouse reports the responsive routes differently than "
+            f"{manifest_path.name} recorded; if it gained a layout signal, "
+            f"re-record and close {manifest['gap']}"
+        )
+
+
+if __name__ == "__main__":
+    main()

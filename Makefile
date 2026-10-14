@@ -73,8 +73,12 @@ fix: setup/deps ## Format and apply analyzer fixes
 	dart format .
 
 .PHONY: test
-test: ## Run every unit, fixture, and end-to-end test
+test: test/web-fixture-tools ## Run every unit, fixture, and end-to-end test
 	dart test
+
+.PHONY: test/web-fixture-tools
+test/web-fixture-tools: ## Unit test the web fixture's Python check scripts offline
+	python3 -m unittest discover --start-directory integration/web_fixture/tool/tests --top-level-directory integration/web_fixture/tool
 
 .PHONY: run/cli
 run/cli: ## Run the CLI (CLI_ARGS supplies the command and options)
