@@ -6,7 +6,8 @@ route. `report`, `ci`, and `baseline` only read what `collect` wrote.
 
 The configuration is specified in [ADR 0023](adr/0023-web-runner-configuration.md). A working example is the web
 fixture in [`integration/web_fixture/`](../integration/web_fixture/flighthouse.yaml), which `make run/web-fixture`
-collects and gates.
+collects and gates. Its [README](../integration/web_fixture/README.md) lists the fixture's routes, manifests, and
+checks.
 
 ## Prerequisites
 

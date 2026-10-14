@@ -73,8 +73,12 @@ fix: setup/deps ## Format and apply analyzer fixes
 	dart format .
 
 .PHONY: test
-test: ## Run every unit, fixture, and end-to-end test
+test: test/web-fixture-tools ## Run every unit, fixture, and end-to-end test
 	dart test
+
+.PHONY: test/web-fixture-tools
+test/web-fixture-tools: ## Unit test the web fixture's Python check scripts offline
+	python3 -m unittest discover --start-directory integration/web_fixture/tool/tests --top-level-directory integration/web_fixture/tool
 
 .PHONY: run/cli
 run/cli: ## Run the CLI (CLI_ARGS supplies the command and options)
@@ -125,3 +129,15 @@ run/chrome-smoke: ## Launch pinned Chrome, inject axe, and write the result
 .PHONY: run/web-fixture
 run/web-fixture: ## Collect the Flutter web fixture and exercise the CI gate
 	integration/web_fixture/tool/run_fixture.sh
+
+.PHONY: run/web-fixture/performance
+run/web-fixture/performance: ## Re-record the fixture's performance score ranges over RUNS runs (default 5) of the build run/web-fixture left
+	python3 integration/web_fixture/tool/check_performance.py . integration/web_fixture/performance.json build/web-fixture-performance --record $(or $(RUNS),5)
+
+.PHONY: run/web-fixture/responsive
+run/web-fixture/responsive: ## Re-record what flighthouse reports for the fixture's responsive routes at a wide and a narrow viewport, from the build run/web-fixture left
+	python3 integration/web_fixture/tool/check_responsive.py . integration/web_fixture/responsive.json build/web-fixture-responsive --record
+
+.PHONY: run/web-fixture/variance
+run/web-fixture/variance: ## Collect the fixture RUNS times (default 3) from the build run/web-fixture left and print each score's and planted defect's spread
+	python3 integration/web_fixture/tool/variance.py . integration/web_fixture/planted.json build/web-fixture-variance --runs $(or $(RUNS),3)

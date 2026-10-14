@@ -1,0 +1,77 @@
+{
+  "gap": "https://github.com/autobutler-org/flighthouse/issues/161",
+  "recorded": {
+    "date": "2026-10-13",
+    "machine": "Intel Core Ultra 7 355, 8 cores, Linux, Chromium for Testing launched by flighthouse",
+    "lighthouse": "13.5.0"
+  },
+  "viewports": [
+    {
+      "name": "wide",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "name": "narrow",
+      "width": 360,
+      "height": 800
+    }
+  ],
+  "routes": [
+    {
+      "route": "/responsive/control",
+      "layout": "six 112px cards in a Wrap that reflows to the viewport",
+      "overflows": false,
+      "overflowsBelow": null
+    },
+    {
+      "route": "/responsive/overflow",
+      "layout": "six 112px cards 8px apart in a Row, 712px wide, clipped below that width",
+      "overflows": true,
+      "overflowsBelow": 712
+    }
+  ],
+  "observed": {
+    "wide": {
+      "width": 1280,
+      "responsivenessScore": null,
+      "findings": {
+        "/responsive/control": {
+          "a11y": 6,
+          "perf": 7,
+          "responsiveness": 0,
+          "memory": 0,
+          "best-practices": 2
+        },
+        "/responsive/overflow": {
+          "a11y": 6,
+          "perf": 7,
+          "responsiveness": 0,
+          "memory": 0,
+          "best-practices": 2
+        }
+      }
+    },
+    "narrow": {
+      "width": 360,
+      "responsivenessScore": null,
+      "findings": {
+        "/responsive/control": {
+          "a11y": 6,
+          "perf": 7,
+          "responsiveness": 0,
+          "memory": 0,
+          "best-practices": 2
+        },
+        "/responsive/overflow": {
+          "a11y": 3,
+          "perf": 7,
+          "responsiveness": 0,
+          "memory": 0,
+          "best-practices": 2
+        }
+      }
+    }
+  },
+  "difference": 0
+}

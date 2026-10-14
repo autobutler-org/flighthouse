@@ -1,0 +1,57 @@
+{
+  "margin": 0.1,
+  "floor": 0.25,
+  "recorded": {
+    "date": "2026-10-13",
+    "runs": 6,
+    "machine": "Intel Core Ultra 7 355, 8 cores, Linux, Chromium for Testing launched by flighthouse, plus one run on the GitHub Actions ubuntu runner (run 38404056555)",
+    "lighthouse": "13.5.0"
+  },
+  "routes": [
+    {
+      "route": "/perf/control",
+      "cost": "one line of text",
+      "control": true,
+      "scores": [
+        0.724,
+        0.717,
+        0.7255,
+        0.7285,
+        0.7305,
+        0.8645
+      ],
+      "min": 0.717,
+      "max": 0.8645
+    },
+    {
+      "route": "/perf/heavy",
+      "cost": "4000 colored text tiles built in the first frame",
+      "control": false,
+      "scores": [
+        0.4025,
+        0.412,
+        0.485,
+        0.478,
+        0.4085,
+        0.6245
+      ],
+      "min": 0.4025,
+      "max": 0.6245
+    },
+    {
+      "route": "/perf/janky",
+      "cost": "a 4 second animation that blocks the main thread for 120 ms every frame",
+      "control": false,
+      "scores": [
+        0.4975,
+        0.5015,
+        0.5015,
+        0.497,
+        0.5005,
+        0.5425
+      ],
+      "min": 0.497,
+      "max": 0.5425
+    }
+  ]
+}
