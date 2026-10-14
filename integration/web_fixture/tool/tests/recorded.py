@@ -39,3 +39,11 @@ def finding(source, rule, route, category="a11y", message="a defect", fingerprin
 
 def findings_for(entry):
     return [finding(source, entry["rule"], entry["route"], entry["category"]) for source in entry["sources"]]
+
+
+def scores():
+    return load(FIXTURE / "scores.json")
+
+
+def fixture_variance():
+    return load(ROOT / "docs" / "evidence" / "web-fixture-variance.json")

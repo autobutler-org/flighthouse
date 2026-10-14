@@ -47,6 +47,7 @@ report it (`sources`), and whether it is `detectable`. An undetectable entry car
 | `make run/web-fixture` | Builds the fixture, collects it, and runs every check below. CI runs this in `.github/workflows/web.yml`. |
 | `make run/web-fixture/performance` | Re-records `performance.json` over `RUNS` runs (default 5). |
 | `make run/web-fixture/responsive` | Re-records `responsive.json` at a wide and a narrow viewport. |
+| `make run/web-fixture/scores` | Runs only `check_scores.py`, on the build `make run/web-fixture` left. |
 | `make run/web-fixture/variance` | Collects `RUNS` times (default 3) and prints each score's and planted defect's spread. |
 | `make test/web-fixture-tools` | Unit tests the check scripts offline against recorded data. `make test` runs it too. |
 
@@ -79,10 +80,20 @@ into `build/web-fixture/`, then runs the checks in this order:
 6. [`check_responsive.py`](tool/check_responsive.py) collects the `/responsive/*` routes at each viewport in
    `responsive.json`. It fails when the responsiveness score or the responsiveness finding count on either route
    differs from what was recorded.
+7. [`check_scores.py`](tool/check_scores.py) collects `/planted?defects=none` and then `/planted`, each on its own,
+   and reads flighthouse's accessibility score from each `report.json`. It fails when the planted score is not at
+   least `margin` in [`scores.json`](scores.json) below the clean score from the same run. The margin is 0.05. The
+   accessibility score did not move across five runs
+   ([evidence](../../docs/evidence/web-fixture-variance.md)), so the margin covers no noise and is the smallest drop
+   counted as the planted defects lowering the score. A unit test fails when the margin is not above that recorded
+   spread.
 
-Steps 4 to 6 reuse the build from step 1 instead of rebuilding.
+Steps 4 to 7 reuse the build from step 1 instead of rebuilding.
 
 ## Re-recording the manifests
+
+`make run/web-fixture/scores` also reuses that build. `scores.json` has no recording step: the check prints both
+scores on every run, and `margin` is edited by hand.
 
 The three re-recording targets reuse the build that `make run/web-fixture` left in `build/web`, so run that first.
 
