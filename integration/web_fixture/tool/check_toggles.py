@@ -46,12 +46,14 @@ def by_fingerprint(findings):
     return {finding["fingerprint"]: finding for finding in findings}
 
 
-def new_findings(current, known):
+def new_findings(current, known, category):
     seen = by_fingerprint(known)
     return [
         finding
         for fingerprint, finding in by_fingerprint(current).items()
-        if fingerprint not in seen and not finding["message"].startswith(NEEDS_REVIEW)
+        if fingerprint not in seen
+        and finding["category"] == category
+        and not finding["message"].startswith(NEEDS_REVIEW)
     ]
 
 
@@ -110,7 +112,7 @@ def main():
     print("clean build passes against its own baseline")
 
     failed = collect_and_ci([entry["toggle"]], 1)
-    new = new_findings(findings_in(report / "report.json"), findings_in(baseline))
+    new = new_findings(findings_in(report / "report.json"), findings_in(baseline), entry["category"])
     expected = expected_keys(entry)
     actual = actual_keys(new)
     if actual != expected:

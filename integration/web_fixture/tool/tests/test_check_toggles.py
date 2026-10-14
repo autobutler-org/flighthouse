@@ -63,23 +63,27 @@ class NewFindingsTest(unittest.TestCase):
 
     def test_only_the_toggled_defect_is_new(self):
         current = self.known + findings_for(self.entry)
-        self.assertEqual(actual_keys(new_findings(current, self.known)), expected_keys(self.entry))
+        self.assertEqual(actual_keys(new_findings(current, self.known, self.entry["category"])), expected_keys(self.entry))
+
+    def test_a_new_finding_in_another_category_is_noise(self):
+        current = self.known + findings_for(self.entry) + [finding("lighthouse", "max-potential-fid", "/planted", category="perf")]
+        self.assertEqual(actual_keys(new_findings(current, self.known, self.entry["category"])), expected_keys(self.entry))
 
     def test_needs_review_findings_are_not_new(self):
         current = self.known + [finding("axe", "color-contrast", "/planted", message="Needs review: x")]
-        self.assertEqual(new_findings(current, self.known), [])
+        self.assertEqual(new_findings(current, self.known, self.entry["category"]), [])
 
     def test_an_extra_finding_makes_the_sets_differ(self):
         current = self.known + findings_for(self.entry) + [finding("axe", "button-name", "/planted")]
-        self.assertNotEqual(actual_keys(new_findings(current, self.known)), expected_keys(self.entry))
+        self.assertNotEqual(actual_keys(new_findings(current, self.known, self.entry["category"])), expected_keys(self.entry))
 
     def test_a_missing_source_makes_the_sets_differ(self):
         current = self.known + findings_for(self.entry)[:1]
-        self.assertNotEqual(actual_keys(new_findings(current, self.known)), expected_keys(self.entry))
+        self.assertNotEqual(actual_keys(new_findings(current, self.known, self.entry["category"])), expected_keys(self.entry))
 
     def test_findings_are_matched_to_the_baseline_by_fingerprint(self):
         renamed = {**self.known[0], "message": "a reworded message"}
-        self.assertEqual(new_findings([renamed], self.known), [])
+        self.assertEqual(new_findings([renamed], self.known, "perf"), [])
 
 
 if __name__ == "__main__":
