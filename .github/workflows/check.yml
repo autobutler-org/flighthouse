@@ -1,7 +1,6 @@
 name: Check
 on:
   pull_request:
-  merge_group:
   push:
     branches: [main]
   workflow_dispatch:
@@ -17,19 +16,52 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container: mirror.gcr.io/library/dart:stable
     steps:
-      - name: Install make, git, and Python
-        run: |
-          apt-get update -qq
-          apt-get install -y -qq --no-install-recommends make git python3 >/dev/null
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Prove the image has no Node
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.13.5
+      - name: Cache the pub cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.pub-cache
+          key: pub-${{ runner.os }}-dart-3.13.5-${{ hashFiles('**/pubspec.yaml', '**/pubspec.lock') }}
+          restore-keys: |
+            pub-${{ runner.os }}-dart-3.13.5-
+      - name: Remove Node from the runner
+        run: |
+          while node_path="$(command -v node)"; do
+            sudo rm -f "$node_path"
+            hash -r
+            if [ -e "$node_path" ]; then
+              echo "could not remove $node_path"
+              exit 1
+            fi
+          done
+      - name: Prove the runner has no Node
         run: |
           if command -v node >/dev/null; then
             echo "node is on PATH; the core must build and test without it"
             exit 1
+          fi
+      - name: Decide whether to score the package
+        id: pana
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch --quiet --depth=1 origin "$BASE_SHA"
+          changed="$(git diff --name-only "$BASE_SHA" HEAD)"
+          echo "$changed"
+          if grep -qE '^(pubspec\.yaml|README\.md|CHANGELOG\.md|LICENSE|Makefile|\.github/workflows/check\.yml|example/|lib/)' <<<"$changed"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Resolve dependencies
         run: make setup/deps
@@ -40,6 +72,7 @@ jobs:
       - name: Run the CLI against recorded fixtures
         run: make test/cli
       - name: Score the package like pub.dev
+        if: steps.pana.outputs.run == 'true'
         run: make check/pana/flighthouse
       - name: Validate the package for publishing
         run: make check/publish
@@ -55,7 +88,25 @@ jobs:
           channel: stable
           flutter-version: 3.47.7
           cache: true
+      - name: Decide whether to score the companion package
+        id: pana
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git fetch --quiet --depth=1 origin "$BASE_SHA"
+          changed="$(git diff --name-only "$BASE_SHA" HEAD)"
+          echo "$changed"
+          if grep -qE '^(packages/flighthouse_flutter/(pubspec\.yaml|README\.md|CHANGELOG\.md|LICENSE|example/|lib/)|Makefile|\.github/workflows/check\.yml)' <<<"$changed"; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Analyze the companion package
         run: make check/flutter
       - name: Score the companion package like pub.dev
+        if: steps.pana.outputs.run == 'true'
         run: make check/pana/flutter
