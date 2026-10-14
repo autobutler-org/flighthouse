@@ -37,8 +37,11 @@ HOME="$PWD/audit-home" PORT=18431 QUARK_INSECURE=true ./quark-server serve
 
 `GET /api/v0/auth/status` answered `{"setup":false}` before provisioning. The
 owner `audit-owner` was then created through quark's real `/setup` form in a
-Puppeteer-driven browser. Quark derives the auth key in the client, so the API
-cannot create the account directly. The password was generated locally and
+Puppeteer-driven browser. Quark derives the auth key in the client, but the
+API can still create the account directly: `GET /auth/salt` answers for a
+username that does not exist yet, so `quark auth-key` can derive the key and
+`POST /api/v0/auth/setup` accept it. `make seed` does this
+(see the "End-to-end run against Quark" section of AGENTS.md). The password was generated locally and
 never printed or committed.
 
 ## Dataset
