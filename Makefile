@@ -76,6 +76,20 @@ fix: setup/deps ## Format and apply analyzer fixes
 test: test/web-fixture-tools ## Run every unit, fixture, and end-to-end test
 	dart test
 
+.PHONY: test/coverage
+test/coverage: test/web-fixture-tools ## Run every test with coverage and write coverage/lcov.info for lib/
+	rm -rf coverage
+	dart test --coverage=coverage
+	dart run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib --check-ignore
+
+.PHONY: check/coverage
+check/coverage: test/coverage ## Summarize line coverage of lib/ per file and fail below the floor in coverage_floor
+	dart run tool/coverage.dart coverage/lcov.info coverage_floor coverage/summary.md
+
+.PHONY: test/flutter
+test/flutter: setup/deps/flutter ## Run the Flutter companion package's tests (needs Flutter)
+	cd $(COMPANION) && flutter test
+
 .PHONY: test/web-fixture-tools
 test/web-fixture-tools: ## Unit test the web fixture's Python check scripts offline
 	python3 -m unittest discover --start-directory integration/web_fixture/tool/tests --top-level-directory integration/web_fixture/tool

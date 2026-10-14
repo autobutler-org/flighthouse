@@ -67,8 +67,14 @@ jobs:
         run: make setup/deps
       - name: Check formatting and analysis
         run: make check/format check/lint
-      - name: Test
-        run: make test
+      - name: Test with line coverage of lib/ against the floor
+        run: make check/coverage
+      - name: Publish the line coverage summary
+        if: always()
+        run: |
+          if [ -f coverage/summary.md ]; then
+            cat coverage/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Run the CLI against recorded fixtures
         run: make test/cli
       - name: Score the package like pub.dev
@@ -107,6 +113,8 @@ jobs:
           fi
       - name: Analyze the companion package
         run: make check/flutter
+      - name: Test the companion package
+        run: make test/flutter
       - name: Score the companion package like pub.dev
         if: steps.pana.outputs.run == 'true'
         run: make check/pana/flutter

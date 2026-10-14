@@ -60,6 +60,8 @@ to be repeatable, add a target. `make help` lists everything.
 | `make fix`        | `dart fix --apply`, `dart format`                                    |
 | `make test`       | every unit, fixture, and end-to-end test                             |
 | `make test/cli`   | run the CLI's `ci` command against recorded fixtures                 |
+| `make test/flutter` | run the companion package's `flutter test` (needs Flutter)         |
+| `make check/coverage` | run `make test` with coverage and fail below `coverage_floor`    |
 | `make release`     | tag the pubspec version on a clean, current `main` and push the tag  |
 
 GNU make is required. On macOS use `gmake`.
@@ -79,6 +81,9 @@ footer, or a `claude.ai/code` session link.
   not disable a rule to avoid a fix.
 - **Layering**: `test/architecture_test.dart` fails when a file outside `lib/src/io/` and `lib/src/cli/`
   imports `dart:io`, `dart:isolate`, or `package:puppeteer`, or when anything under `lib/` imports Flutter.
+- **Coverage floor**: CI runs `make check/coverage`, which writes a per-file line-coverage table for `lib/` to the
+  job summary and fails when the total falls below the percent in [`coverage_floor`](coverage_floor). Raise the
+  floor when coverage rises. Lowering it needs a reason in the PR.
 - **pub.dev score**: CI runs `make check/pana` and fails below full points (see
   [ADR 0018](docs/adr/0018-packaging-and-pub-dev.md)). On a pull request each package is scored only when its
   `pubspec.yaml`, `README.md`, `CHANGELOG.md`, `LICENSE`, `example/`, or `lib/` changes, or when the `Makefile` or
