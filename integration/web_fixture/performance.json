@@ -1,5 +1,6 @@
 {
-  "tolerance": 0.1,
+  "margin": 0.1,
+  "floor": 0.25,
   "recorded": {
     "date": "2026-10-13",
     "runs": 6,

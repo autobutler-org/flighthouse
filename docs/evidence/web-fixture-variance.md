@@ -58,3 +58,23 @@ run was 4.5 to 6.9. Five runs took 4 minutes 5 seconds, about 49 seconds each.
   ([#161](https://github.com/autobutler-org/flighthouse/issues/161)), so they have no spread to measure.
 - Five runs on a shared machine bound the spread from below. They do not set a gate tolerance, and they say nothing
   about quark, whose variance is in [`quark-variance.md`](quark-variance.md).
+
+## Performance routes on shared CI runners
+
+[`check_performance.py`](../../integration/web_fixture/tool/check_performance.py) audits `/perf/control`,
+`/perf/heavy`, and `/perf/janky`. It used to fail when a route's absolute score left its recorded range widened by
+0.1. GitHub Actions runners broke that rule across identical runs: `/perf/heavy` scored 0.6245 in one run and 0.735 in
+the next, past its old ceiling of 0.7245, and `/perf/control` scored 0.844 to 0.862. A shared runner moves every
+route's absolute score, so an absolute ceiling fails on noise.
+
+The gate is now relative within one run. [`performance.json`](../../integration/web_fixture/performance.json) holds
+two numbers it enforces:
+
+- `margin`: every slowed route must score at least this far below `/perf/control` in the same run. It is 0.1, or the
+  smallest separation in the recorded runs when that is smaller. The smallest recorded separation is 0.2155.
+- `floor`: every route, the control included, must score at least this much, so a route that breaks outright still
+  fails. It is 0.25, below the lowest recorded score of 0.4025.
+
+Each route's recorded `min` and `max` are printed beside its score for information and never fail the check.
+`make run/web-fixture/performance RUNS=n` re-records them, and fails when a recorded run misses the margin or the
+floor.

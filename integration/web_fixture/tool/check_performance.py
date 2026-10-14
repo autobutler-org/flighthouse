@@ -55,28 +55,41 @@ def scores_from_report(data, routes):
     return scores
 
 
-def check_separation(scores, control, tolerance):
-    for route in scores:
-        if route != control and scores[route] > scores[control] - tolerance:
-            fail(
-                f"{route} scored {scores[route]}, not at least {tolerance} below "
-                f"{control} at {scores[control]}"
-            )
+def gate_failures(scores, control, margin, floor):
+    below_floor = [
+        f"{route} scored {score}, below the floor {floor}"
+        for route, score in scores.items()
+        if score < floor
+    ]
+    too_close = [
+        f"{route} scored {score}, not at least {margin} below {control} at {scores[control]}"
+        for route, score in scores.items()
+        if route != control and score > round(scores[control] - margin, 4)
+    ]
+    return below_floor + too_close
 
 
-def score_range(entry, tolerance):
-    low = round(entry["min"] - tolerance, 4)
-    high = 1.0 if entry["control"] else round(entry["max"] + tolerance, 4)
-    return low, high
+def check_gate(scores, control, manifest):
+    failures = gate_failures(scores, control, manifest["margin"], manifest["floor"])
+    if failures:
+        fail("\n".join(failures))
 
 
-def range_results(manifest, scores):
-    results = []
+def range_notes(manifest, scores):
+    notes = []
     for entry in manifest["routes"]:
-        low, high = score_range(entry, manifest["tolerance"])
         score = scores[entry["route"]]
-        results.append((entry, score, low, high, low <= score <= high))
-    return results
+        if score < entry["min"]:
+            place = "below"
+        elif score > entry["max"]:
+            place = "above"
+        else:
+            place = "within"
+        notes.append(
+            f"{entry['route']}: {score} {place} recorded [{entry['min']}, {entry['max']}] "
+            f"({entry['cost']})"
+        )
+    return notes
 
 
 def recorded_manifest(manifest, samples, recorded):
@@ -119,7 +132,7 @@ def record(root, config, report, manifest, manifest_path, runs, machine):
     samples = {route: [] for route in routes}
     for index in range(runs):
         scores = route_scores(root, config, report, routes)
-        check_separation(scores, control, manifest["tolerance"])
+        check_gate(scores, control, manifest)
         for route in routes:
             samples[route].append(scores[route])
         print(f"run {index + 1}/{runs}: {scores}")
@@ -137,25 +150,21 @@ def record(root, config, report, manifest, manifest_path, runs, machine):
 
 
 def check(root, config, report, manifest):
-    tolerance = manifest["tolerance"]
     routes = [entry["route"] for entry in manifest["routes"]]
     control = control_route(manifest)
     scores = route_scores(root, config, report, routes)
     recorded = manifest["recorded"]
     print(
-        f"performance ranges from {recorded['runs']} runs on {recorded['date']}, "
-        f"tolerance {tolerance}"
+        f"recorded ranges from {recorded['runs']} runs on {recorded['date']}, "
+        "informational only"
     )
-    outside = []
-    for entry, score, low, high, within in range_results(manifest, scores):
-        status = "within" if within else "outside"
-        print(f"  {entry['route']}: {score} {status} [{low}, {high}] ({entry['cost']})")
-        if not within:
-            outside.append(entry["route"])
-    if outside:
-        fail(f"performance scores outside their recorded range: {', '.join(outside)}")
-    check_separation(scores, control, tolerance)
-    print(f"every slowed route scores at least {tolerance} below {control}")
+    for note in range_notes(manifest, scores):
+        print(f"  {note}")
+    check_gate(scores, control, manifest)
+    print(
+        f"every route scores at least {manifest['floor']}, and every slowed route "
+        f"scores at least {manifest['margin']} below {control}"
+    )
 
 
 def main():

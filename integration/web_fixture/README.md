@@ -71,9 +71,11 @@ into `build/web-fixture/`, then runs the checks in this order:
    pass. It turns on the first detectable defect's toggle and expects `ci` to exit 1 with exactly that defect's
    rule from its sources as the new findings. It turns the toggle off and expects `ci` to pass again.
 5. [`check_performance.py`](tool/check_performance.py) collects the `/perf/*` routes and computes each route's
-   weighted performance score from `report.json`. Each score must fall within its recorded `min` and `max` widened by
-   `tolerance` (the control route has no upper bound), and each slowed route must score at least `tolerance` below
-   the control.
+   weighted performance score from `report.json`. The gate is relative within the run: each slowed route must score
+   at least `margin` below the control, and every route must score at least `floor`. Each route's recorded `min` and
+   `max` are printed beside its score for information and never fail the check, because shared runners move every
+   absolute score
+   ([evidence](../../docs/evidence/web-fixture-variance.md#performance-routes-on-shared-ci-runners)).
 6. [`check_responsive.py`](tool/check_responsive.py) collects the `/responsive/*` routes at each viewport in
    `responsive.json`. It fails when the responsiveness score or the responsiveness finding count on either route
    differs from what was recorded.
@@ -91,9 +93,10 @@ make run/web-fixture/responsive
 ```
 
 - **`performance.json`**: `run/web-fixture/performance` collects the `/perf/*` routes `RUNS` times, refuses fewer
-  than two, and fails if any run breaks the separation from the control. It writes each route's `scores`, `min`,
-  and `max`, the date, the run count, and the Lighthouse version. `tolerance`, `cost`, and `control` are kept as
-  they were. The script's `--machine` option sets the `recorded.machine` text, which otherwise stays the same. The
+  than two, and fails if any run misses the `margin` or the `floor`. It writes each route's `scores`, `min`,
+  and `max`, the date, the run count, and the Lighthouse version. `margin`, `floor`, `cost`, and
+  `control` are kept as they were. `margin` is 0.1, or the smallest recorded separation when that is smaller, and a unit
+  test fails when it is anything else. The script's `--machine` option sets the `recorded.machine` text, which otherwise stays the same. The
   current ranges add one run on the GitHub Actions runner to five local runs.
 - **`responsive.json`**: `run/web-fixture/responsive` collects both routes at each viewport and writes the score and
   finding counts per category under `observed`, plus `difference`, the overflowing route's narrow minus wide
@@ -143,6 +146,6 @@ and what it says:
 - **Memory.** No route plants a memory cost, and the score is `null` in every run.
 - **Performance beyond Lighthouse.** The performance check uses the Lighthouse-derived perf score only. Frame
   timing from `integration_test` is not collected from the fixture
-  ([ADR 0032](../../docs/adr/0032-web-frame-timing-source.md)). The ranges are recorded on one machine and one CI
-  run, so a slower or busier runner can fall outside them.
+  ([ADR 0032](../../docs/adr/0032-web-frame-timing-source.md)). The recorded ranges come from one machine and one CI
+  run, so a slower or busier runner can fall outside them; only the relative margin and the floor gate.
 - **One viewport for accessibility.** Every check except `check_responsive.py` audits at 1280 by 800.

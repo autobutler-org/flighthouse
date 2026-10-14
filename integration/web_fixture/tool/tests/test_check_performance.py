@@ -2,83 +2,23 @@ import unittest
 from pathlib import Path
 
 from check_performance import (
-    check_separation,
+    check_gate,
     config_for,
     control_route,
-    range_results,
+    gate_failures,
+    range_notes,
     recorded_manifest,
-    score_range,
     scores_from_report,
 )
 from tests import recorded
 
 
-def scores_within(manifest):
-    return {entry["route"]: entry["min"] for entry in manifest["routes"]}
+def recorded_runs(manifest):
+    routes = [entry["route"] for entry in manifest["routes"]]
+    return [dict(zip(routes, run)) for run in zip(*(entry["scores"] for entry in manifest["routes"]))]
 
 
-def outside(manifest, scores):
-    return [entry["route"] for entry, _, _, _, within in range_results(manifest, scores) if not within]
-
-
-class ScoreRangeTest(unittest.TestCase):
-    def setUp(self):
-        self.manifest = recorded.performance()
-        self.tolerance = self.manifest["tolerance"]
-        self.entries = {entry["route"]: entry for entry in self.manifest["routes"]}
-
-    def test_recorded_tolerance_widens_a_slowed_route_on_both_sides(self):
-        self.assertEqual(score_range(self.entries["/perf/heavy"], self.tolerance), (0.3025, 0.7245))
-
-    def test_zero_tolerance_is_the_recorded_min_and_max(self):
-        self.assertEqual(score_range(self.entries["/perf/janky"], 0), (0.497, 0.5425))
-
-    def test_control_route_has_no_upper_bound_below_a_perfect_score(self):
-        self.assertEqual(score_range(self.entries["/perf/control"], self.tolerance), (0.617, 1.0))
-        self.assertEqual(score_range(self.entries["/perf/control"], 0), (0.717, 1.0))
-
-    def test_bounds_are_rounded_to_four_places(self):
-        entry = {"min": 0.3, "max": 0.7, "control": False}
-        self.assertEqual(score_range(entry, 0.1), (0.2, 0.8))
-
-    def test_every_recorded_sample_is_within_its_range_without_tolerance(self):
-        manifest = {**self.manifest, "tolerance": 0}
-        for entry in manifest["routes"]:
-            for sample in entry["scores"]:
-                scores = {**scores_within(manifest), entry["route"]: sample}
-                self.assertEqual(outside(manifest, scores), [], f"{entry['route']} {sample}")
-
-    def test_scores_on_the_bounds_are_within(self):
-        scores = {
-            "/perf/control": 0.617,
-            "/perf/heavy": 0.7245,
-            "/perf/janky": 0.397,
-        }
-        self.assertEqual(outside(self.manifest, scores), [])
-
-    def test_scores_just_past_the_bounds_are_outside(self):
-        scores = {
-            "/perf/control": 0.6169,
-            "/perf/heavy": 0.7246,
-            "/perf/janky": 0.3969,
-        }
-        self.assertEqual(outside(self.manifest, scores), ["/perf/control", "/perf/heavy", "/perf/janky"])
-
-    def test_control_scoring_above_its_recorded_max_is_within(self):
-        scores = {**scores_within(self.manifest), "/perf/control": 0.99}
-        self.assertEqual(outside(self.manifest, scores), [])
-
-    def test_slowed_route_scoring_above_its_recorded_max_plus_tolerance_is_outside(self):
-        scores = {**scores_within(self.manifest), "/perf/janky": 0.65}
-        self.assertEqual(outside(self.manifest, scores), ["/perf/janky"])
-
-    def test_tolerance_decides_whether_a_score_is_within(self):
-        scores = {**scores_within(self.manifest), "/perf/heavy": 0.35}
-        self.assertEqual(outside(self.manifest, scores), [])
-        self.assertEqual(outside({**self.manifest, "tolerance": 0}, scores), ["/perf/heavy"])
-
-
-class SeparationTest(unittest.TestCase):
+class ManifestTest(unittest.TestCase):
     def setUp(self):
         self.manifest = recorded.performance()
         self.control = control_route(self.manifest)
@@ -86,29 +26,90 @@ class SeparationTest(unittest.TestCase):
     def test_control_route_is_the_one_marked_control(self):
         self.assertEqual(self.control, "/perf/control")
 
-    def test_every_recorded_run_separates_by_the_tolerance(self):
-        runs = zip(*(entry["scores"] for entry in self.manifest["routes"]))
-        routes = [entry["route"] for entry in self.manifest["routes"]]
-        for run in runs:
-            check_separation(dict(zip(routes, run)), self.control, self.manifest["tolerance"])
+    def test_margin_is_a_tenth_or_the_smallest_recorded_separation(self):
+        smallest = min(
+            round(run[self.control] - score, 4)
+            for run in recorded_runs(self.manifest)
+            for route, score in run.items()
+            if route != self.control
+        )
+        self.assertEqual(self.manifest["margin"], min(0.1, smallest))
 
-    def test_exactly_the_tolerance_below_the_control_separates(self):
-        check_separation({"/perf/control": 0.7, "/perf/heavy": 0.6}, self.control, 0.1)
+    def test_floor_is_below_every_recorded_score(self):
+        lowest = min(score for entry in self.manifest["routes"] for score in entry["scores"])
+        self.assertLess(self.manifest["floor"], lowest)
 
-    def test_less_than_the_tolerance_below_the_control_fails_naming_the_route(self):
-        with self.assertRaises(SystemExit) as raised:
-            check_separation(
-                {"/perf/control": 0.7, "/perf/heavy": 0.5, "/perf/janky": 0.6001},
-                self.control,
-                0.1,
+    def test_every_recorded_run_passes_the_gate(self):
+        for run in recorded_runs(self.manifest):
+            self.assertEqual(
+                gate_failures(run, self.control, self.manifest["margin"], self.manifest["floor"]),
+                [],
+                run,
             )
-        self.assertIn("/perf/janky", str(raised.exception.code))
-        self.assertNotIn("/perf/heavy", str(raised.exception.code))
 
-    def test_zero_tolerance_only_requires_a_lower_score(self):
-        check_separation({"/perf/control": 0.7, "/perf/heavy": 0.7}, self.control, 0)
-        with self.assertRaises(SystemExit):
-            check_separation({"/perf/control": 0.7, "/perf/heavy": 0.7001}, self.control, 0)
+
+class GateTest(unittest.TestCase):
+    def setUp(self):
+        self.control = "/perf/control"
+
+    def failures(self, scores, margin=0.1, floor=0.25):
+        return gate_failures(scores, self.control, margin, floor)
+
+    def test_exactly_the_margin_below_the_control_passes(self):
+        self.assertEqual(self.failures({"/perf/control": 0.7, "/perf/heavy": 0.6}), [])
+
+    def test_less_than_the_margin_below_the_control_fails_naming_the_route(self):
+        failures = self.failures({"/perf/control": 0.7, "/perf/heavy": 0.5, "/perf/janky": 0.6001})
+        self.assertEqual(len(failures), 1)
+        self.assertIn("/perf/janky", failures[0])
+
+    def test_a_wrong_margin_fails_a_run_that_the_recorded_margin_passes(self):
+        scores = {"/perf/control": 0.85, "/perf/heavy": 0.7, "/perf/janky": 0.6}
+        self.assertEqual(self.failures(scores, margin=0.1), [])
+        self.assertEqual(len(self.failures(scores, margin=0.2)), 1)
+
+    def test_separation_is_relative_to_the_control_in_the_same_run(self):
+        self.assertEqual(self.failures({"/perf/control": 0.95, "/perf/heavy": 0.84}), [])
+        self.assertEqual(len(self.failures({"/perf/control": 0.6, "/perf/heavy": 0.55})), 1)
+
+    def test_zero_margin_only_requires_a_score_no_higher(self):
+        self.assertEqual(self.failures({"/perf/control": 0.7, "/perf/heavy": 0.7}, margin=0), [])
+        self.assertEqual(len(self.failures({"/perf/control": 0.7, "/perf/heavy": 0.7001}, margin=0)), 1)
+
+    def test_a_route_below_the_floor_fails_even_when_separated(self):
+        failures = self.failures({"/perf/control": 0.7, "/perf/heavy": 0.2499, "/perf/janky": 0.25})
+        self.assertEqual(len(failures), 1)
+        self.assertIn("/perf/heavy", failures[0])
+        self.assertIn("floor", failures[0])
+
+    def test_a_broken_control_below_the_floor_fails(self):
+        failures = self.failures({"/perf/control": 0.1, "/perf/heavy": 0.0, "/perf/janky": 0.0})
+        self.assertTrue(any("/perf/control" in failure and "floor" in failure for failure in failures))
+
+    def test_check_gate_exits_with_every_failure(self):
+        manifest = {"margin": 0.1, "floor": 0.25}
+        with self.assertRaises(SystemExit) as raised:
+            check_gate({"/perf/control": 0.7, "/perf/heavy": 0.2, "/perf/janky": 0.65}, self.control, manifest)
+        self.assertIn("/perf/heavy", str(raised.exception.code))
+        self.assertIn("/perf/janky", str(raised.exception.code))
+
+
+class RangeNotesTest(unittest.TestCase):
+    def setUp(self):
+        self.manifest = recorded.performance()
+
+    def test_notes_place_each_score_against_its_recorded_range(self):
+        scores = {"/perf/control": 0.9, "/perf/heavy": 0.3, "/perf/janky": 0.5}
+        notes = range_notes(self.manifest, scores)
+        self.assertEqual(
+            [note.split(" recorded")[0] for note in notes],
+            ["/perf/control: 0.9 above", "/perf/heavy: 0.3 below", "/perf/janky: 0.5 within"],
+        )
+
+    def test_a_score_above_its_recorded_max_does_not_fail_the_gate(self):
+        scores = {"/perf/control": 0.95, "/perf/heavy": 0.8, "/perf/janky": 0.7}
+        self.assertIn("above", range_notes(self.manifest, scores)[1])
+        check_gate(scores, control_route(self.manifest), self.manifest)
 
 
 class ScoresFromReportTest(unittest.TestCase):
@@ -148,7 +149,8 @@ class RecordTest(unittest.TestCase):
         stamp = {"date": "2026-10-13", "runs": 2, "machine": "m", "lighthouse": "13.5.0"}
         updated = recorded_manifest(manifest, samples, stamp)
         self.assertEqual(updated["recorded"], stamp)
-        self.assertEqual(updated["tolerance"], manifest["tolerance"])
+        self.assertEqual(updated["margin"], manifest["margin"])
+        self.assertEqual(updated["floor"], manifest["floor"])
         self.assertEqual(
             [(entry["route"], entry["scores"], entry["min"], entry["max"]) for entry in updated["routes"]],
             [
