@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     container: mirror.gcr.io/library/dart:stable
     steps:
-      - name: Install make and git
+      - name: Install make, git, and Python
         run: |
           apt-get update -qq
-          apt-get install -y -qq --no-install-recommends make git >/dev/null
+          apt-get install -y -qq --no-install-recommends make git python3 >/dev/null
       - name: Checkout code
         uses: actions/checkout@v7
       - name: Prove the image has no Node
