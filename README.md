@@ -33,6 +33,9 @@ files and do not launch Chrome, Node, Lighthouse, or Flutter. Start with the
 dart pub global activate flighthouse
 ```
 
+The web runner needs 0.2.0 or later; `flighthouse --version` prints `(web runner)` after the version when it is
+there. If pub.dev installs an older release, [install from git](docs/quickstart-web.md#install-flighthouse).
+
 ## Usage
 
 ```sh
@@ -42,6 +45,9 @@ flighthouse ci                  # report, then gate against the baseline
 flighthouse baseline --update   # accept the current findings and scores as the baseline
 ```
 
+Every command takes `--config` (default `flighthouse.yaml`) and `--report-dir`; `collect --host` picks an entry of
+`.flighthouse/hosts.yaml` for sign-in.
+
 Exit codes: `0` passed, `1` the gate failed, `2` usage or config error, `3` unusable input or missing tool. `ci`
 exits `3` until a baseline exists. The quickstart explains [the baseline](docs/quickstart-web.md#the-baseline) and
 [how CI should treat each code](docs/quickstart-web.md#in-ci).
@@ -49,7 +55,11 @@ exits `3` until a baseline exists. The quickstart explains [the baseline](docs/q
 Today flighthouse reads attest, Lighthouse, and axe JSON. `TimelineSummary` and flutter_lighthouse adapters are
 in progress.
 
-Configuration lives in `flighthouse.yaml`. See [`example/`](example/README.md).
+Configuration lives in `flighthouse.yaml`. See [`example/`](example/README.md). A top-level key flighthouse does not
+know fails with a message that lists the keys it accepts.
+
+Flutter test helpers that write `TimelineSummary` files for flighthouse live in
+[`packages/flighthouse_flutter`](packages/flighthouse_flutter/README.md).
 
 ## Design
 

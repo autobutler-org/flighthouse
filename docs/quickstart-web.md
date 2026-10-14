@@ -35,6 +35,11 @@ lists the Debian and Ubuntu packages.
 An app's own build can need more than this table. Quark's backend, for example, is built with Go (see
 [Quark's configuration](#quarks-configuration)).
 
+If the app's `pubspec.yaml` pins an exact Flutter version under `environment: flutter:`, `collect` runs
+`flutter --version --machine` before the build and stops when the Flutter on `PATH` is a different version. When
+`build.command` starts with a path to `flutter`, that Flutter is checked instead. A range such as `>=3.47.0` is not
+checked.
+
 ### Install flighthouse
 
 The web runner needs flighthouse 0.2.0 or later. Install it from pub.dev:
@@ -310,7 +315,8 @@ web:
 
 Quote it: unquoted `[true]` is a YAML boolean and fails with `expected a non-empty string`. `collect` then serves
 whatever is in `outputDir`, which must contain `index.html`, so rebuild it with semantics enabled whenever the app
-changes. [The quark variance measurement](evidence/quark-variance.md) collected a copied build this way, with its
+changes. The [Flutter pin check](#prerequisites) still runs, so an app that pins Flutter still needs that version
+on `PATH`. [The quark variance measurement](evidence/quark-variance.md) collected a copied build this way, with its
 [configuration](evidence/quark-variance.collect.yaml). Put the real build command back before committing, or keep
 this setting in a separate config file passed with `--config`.
 
@@ -478,7 +484,12 @@ unusable version` when it printed something else.
 
 #### `Flutter not found. Install it with: follow https://docs.flutter.dev/get-started/install and put flutter on PATH`
 
-The build command is `flutter` and it is not on `PATH`.
+The build command is `flutter`, or `pubspec.yaml` pins an exact Flutter version, and `flutter` is not on `PATH`.
+
+#### `Flutter … (pinned by …/pubspec.yaml; flutter on PATH is …) not found. Install it with: follow https://docs.flutter.dev/install/archive to get Flutter … and put its bin directory first on PATH`
+
+`pubspec.yaml` pins a Flutter version and the `flutter` on `PATH` is a different one, so `collect` stopped before
+building. Install the pinned version and put its `bin` directory first on `PATH`, or change the pin.
 
 #### `… not found. Install it with: install it or change web.build.command to a command that is installed`
 
@@ -601,10 +612,12 @@ typed. The reason is one of:
 There is no `flighthouse.yaml` in the working directory. Run flighthouse from the app's root, pass `--config` with
 the file's path, or create the file as [Configure](#configure) shows.
 
-#### `config: web (line …, column …): not supported by flighthouse …`
+#### `config: … (line …, column …): not supported by flighthouse …, which accepts app, reportDir, …`
 
-The installed flighthouse predates that key. 0.1.0 prints `unknown key; expected one of app, …` for `web` instead.
-Check the key's spelling, then install a newer flighthouse as [Install flighthouse](#install-flighthouse) shows.
+A top-level key is misspelled, or the installed flighthouse predates it. The message lists the keys this build
+accepts. Check the spelling; if it is right, install a newer flighthouse as
+[Install flighthouse](#install-flighthouse) shows. 0.1.0 prints `unknown key; expected one of app, …` for `web`
+instead.
 
 #### `config: … expected a non-empty string`
 
