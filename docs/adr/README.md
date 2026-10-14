@@ -38,5 +38,6 @@ maintainer; nothing is built on it.
 | [0031](0031-timeline-summary-writer.md)               | The TimelineSummary writer                            | Accepted, flagged for review |
 | [0032](0032-web-frame-timing-source.md)              | Web frame timing from watchPerformance                | Proposed  |
 | [0033](0033-help-links-needs-review-and-metric-titles.md) | Help links, needs-review, and metric titles in the schema | Proposed  |
+| [0034](0034-web-responsive-layout-out-of-scope.md)   | Web responsive layout is out of scope                 | Proposed  |
 
 ADRs marked Accepted record decisions the maintainer already made in the project brief.
