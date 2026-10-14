@@ -1,7 +1,8 @@
 name: Web
 on:
   pull_request:
-  merge_group:
+  push:
+    branches: [main]
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
@@ -31,7 +32,7 @@ jobs:
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
         with:
-          sdk: stable
+          sdk: 3.13.5
       - name: Install the libraries Chrome needs
         if: matrix.os == 'ubuntu-latest'
         run: integration/web_fixture/tool/chrome_libraries.sh
@@ -70,7 +71,18 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 22
+      - name: Put npm global installs in a cacheable prefix
+        run: |
+          echo "npm_config_prefix=$HOME/.npm-global" >> "$GITHUB_ENV"
+          echo "$HOME/.npm-global/bin" >> "$GITHUB_PATH"
+      - name: Cache Lighthouse
+        id: lighthouse-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.npm-global
+          key: lighthouse-13.5.0-${{ runner.os }}-node-22
       - name: Install Lighthouse
+        if: steps.lighthouse-cache.outputs.cache-hit != 'true'
         run: npm install --global lighthouse@13.5.0
       - name: Install the libraries Chrome needs
         run: integration/web_fixture/tool/chrome_libraries.sh

@@ -80,7 +80,13 @@ footer, or a `claude.ai/code` session link.
 - **Layering**: `test/architecture_test.dart` fails when a file outside `lib/src/io/` and `lib/src/cli/`
   imports `dart:io`, `dart:isolate`, or `package:puppeteer`, or when anything under `lib/` imports Flutter.
 - **pub.dev score**: CI runs `make check/pana` and fails below full points (see
-  [ADR 0018](docs/adr/0018-packaging-and-pub-dev.md)).
+  [ADR 0018](docs/adr/0018-packaging-and-pub-dev.md)). On a pull request each package is scored only when its
+  `pubspec.yaml`, `README.md`, `CHANGELOG.md`, `LICENSE`, `example/`, or `lib/` changes, or when the `Makefile` or
+  `check.yml` does. It is always scored on push to `main` and before publishing.
+- **CI triggers**: workflows run on `pull_request` and on push to `main` (plus `workflow_dispatch`). The repository
+  has no merge queue, so there is no `merge_group` trigger. Enabling a merge queue means adding it back.
+- **Pinned SDKs**: CI pins the Dart SDK to the version that ships with the pinned Flutter (Dart 3.13.5 with
+  Flutter 3.47.7). Bump both together.
 
 ### Scope discipline
 
