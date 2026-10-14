@@ -640,7 +640,37 @@ void main() {
     test('describe renders the location', () {
       expect(
         describe(failed('app: quark\napps: x\n')),
-        startsWith('config: apps (line 2, column 1): unknown key'),
+        startsWith('config: apps (line 2, column 1): not supported'),
+      );
+    });
+
+    test('an unknown top-level key names the version and how to upgrade', () {
+      final failure = parseConfig(
+        'app: quark\nlater: {routes: [/]}\n',
+        version: '9.9.9',
+      ).fold((config) => fail('expected a failure'), (failure) => failure);
+      expect(failure.keyPath, 'later');
+      expect(failure.location, (line: 2, column: 1));
+      expect(
+        failure.problem,
+        'not supported by flighthouse 9.9.9, which accepts app, reportDir, '
+        'baseline, sources, routes, scoring, gate, web; check the spelling, '
+        'or install the newer flighthouse that added it '
+        '(see docs/quickstart-web.md#install-flighthouse)',
+      );
+    });
+
+    test('an unknown top-level key without a version names this build', () {
+      expect(
+        failed('app: quark\nlater: x\n').problem,
+        startsWith('not supported by this flighthouse build, which accepts'),
+      );
+    });
+
+    test('an unknown nested key keeps the plain message', () {
+      expect(
+        failed('app: quark\nweb:\n  routes: [/]\n  later: x\n').problem,
+        startsWith('unknown key; expected one of'),
       );
     });
   });

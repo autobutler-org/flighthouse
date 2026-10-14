@@ -31,6 +31,7 @@ Parsed<Map<String, YamlNode>> readMapping(
   String keyPath,
   List<String> keys, {
   List<String> required = const [],
+  String? unknownKeyProblem,
 }) {
   if (isEmptyNode(node)) {
     return required.isEmpty
@@ -50,7 +51,7 @@ Parsed<Map<String, YamlNode>> readMapping(
       return invalid(
         keyNode,
         childPath(keyPath, '$key'),
-        'unknown key; expected one of ${keys.join(', ')}',
+        unknownKeyProblem ?? 'unknown key; expected one of ${keys.join(', ')}',
       );
     }
   }
