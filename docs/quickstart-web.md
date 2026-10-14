@@ -32,17 +32,30 @@ You do not install Chrome or axe yourself. The first `collect` downloads the Chr
 needs `unzip` and its shared libraries; [`chrome_libraries.sh`](../integration/web_fixture/tool/chrome_libraries.sh)
 lists the Debian and Ubuntu packages.
 
-Install flighthouse 0.2.0 or later from pub.dev:
+An app's own build can need more than this table. Quark's backend, for example, is built with Go (see
+[Quark's configuration](#quarks-configuration)).
+
+### Install flighthouse
+
+The web runner needs flighthouse 0.2.0 or later. Install it from pub.dev:
 
 ```sh
 dart pub global activate flighthouse
 flighthouse --version
 ```
 
-Make sure `~/.pub-cache/bin` is on your `PATH`.
+If pub.dev does not have 0.2.0 yet, `activate` installs an older release without the web runner. Install from git
+instead:
 
-An app's own build can need more than this table. Quark's backend, for example, is built with Go (see
-[Quark's configuration](#quarks-configuration)).
+```sh
+dart pub global activate --source git https://github.com/autobutler-org/flighthouse.git
+flighthouse --version
+```
+
+A build with the web runner prints `(web runner)` after its version, as in `flighthouse 0.2.0 (web runner)`. An
+older build prints only `flighthouse 0.1.0` and rejects the `web` key.
+
+Make sure `~/.pub-cache/bin` is on your `PATH`.
 
 ## Turn on semantics in the app
 
@@ -587,6 +600,11 @@ typed. The reason is one of:
 
 There is no `flighthouse.yaml` in the working directory. Run flighthouse from the app's root, pass `--config` with
 the file's path, or create the file as [Configure](#configure) shows.
+
+#### `config: web (line …, column …): not supported by flighthouse …`
+
+The installed flighthouse predates that key. 0.1.0 prints `unknown key; expected one of app, …` for `web` instead.
+Check the key's spelling, then install a newer flighthouse as [Install flighthouse](#install-flighthouse) shows.
 
 #### `config: … expected a non-empty string`
 

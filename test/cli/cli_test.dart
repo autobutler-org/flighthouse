@@ -84,7 +84,7 @@ void main() {
       ),
     );
     expect(code, exitPassed);
-    expect('$out', 'flighthouse 9.9.9\n');
+    expect('$out', 'flighthouse 9.9.9 (web runner)\n');
   });
 
   test('an unknown command is a usage error', () async {
@@ -181,6 +181,19 @@ void main() {
           '${p.join(Directory.current.path, 'no-such-dir')} '
           '(see docs/quickstart-web.md#configure)\n',
     );
+  });
+
+  test('an unknown top-level key names the installed version', () async {
+    workspace.write('flighthouse.yaml', 'app: quark\nlater:\n  routes: [/]\n');
+    final run = await workspace.run(['report']);
+    expect(run.code, exitUsageError);
+    expect(
+      run.err,
+      startsWith(
+        'config: later (line 2, column 1): not supported by flighthouse 9.9.9, ',
+      ),
+    );
+    expect(run.err, contains('docs/quickstart-web.md#install-flighthouse'));
   });
 
   test('an invalid config names the key and exits 2', () async {

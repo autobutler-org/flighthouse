@@ -831,21 +831,30 @@ Parsed<Config> _validatedConfig({
   );
 }
 
-Parsed<Config> _readConfig(YamlNode root) =>
+const _rootKeys = [
+  'app',
+  'reportDir',
+  'baseline',
+  'sources',
+  'routes',
+  'scoring',
+  'gate',
+  'web',
+];
+
+String _unsupportedRootKey(String? version) =>
+    'not supported by ${version == null ? 'this flighthouse build' : 'flighthouse $version'}, '
+    'which accepts ${_rootKeys.join(', ')}; check the spelling, or install '
+    'the newer flighthouse that added it '
+    '(see docs/quickstart-web.md#install-flighthouse)';
+
+Parsed<Config> _readConfig(YamlNode root, String? version) =>
     readMapping(
       root,
       '',
-      const [
-        'app',
-        'reportDir',
-        'baseline',
-        'sources',
-        'routes',
-        'scoring',
-        'gate',
-        'web',
-      ],
+      _rootKeys,
       required: const ['app'],
+      unknownKeyProblem: _unsupportedRootKey(version),
     ).flatMap(
       (mapping) => switch ((
         requiredField(mapping, 'app', '', readNonEmptyString),
@@ -957,13 +966,15 @@ ConfigFailure _syntaxFailure(YamlException exception) => ConfigFailure(
 /// YAML is a superset of JSON, so a JSON config parses too. Only `app` is
 /// required. Unknown keys, wrong types, weights that do not sum to 1, and
 /// control points with `p10` not below `median` are failures that name the
-/// key and its line and column.
-Result<Config, ConfigFailure> parseConfig(String text) {
+/// key and its line and column. An unknown top-level key names the
+/// flighthouse [version] that rejected it, when given, and where to find
+/// installation instructions for a newer one.
+Result<Config, ConfigFailure> parseConfig(String text, {String? version}) {
   final YamlNode root;
   try {
     root = loadYamlNode(text);
   } on YamlException catch (exception) {
     return Err(_syntaxFailure(exception));
   }
-  return _readConfig(root);
+  return _readConfig(root, version);
 }

@@ -128,7 +128,9 @@ Future<Result<_Context, Failure>> _load(
     Err(:final error) => Err(
       ConfigFailure(keyPath: absoluteConfigPath, problem: error.reason),
     ),
-    Ok(value: final contents) => parseConfig(contents).map((config) {
+    Ok(value: final contents) => parseConfig(contents, version: version).map((
+      config,
+    ) {
       final baseDir = p.dirname(configPath);
       return (
         config: config,
@@ -676,7 +678,7 @@ Future<int> runCli(
   final download = downloadAxe ?? downloadAxeScript;
   final axeCache = axeCacheDir ?? defaultAxeCacheDir();
   if (arguments.length == 1 && arguments.single == '--version') {
-    effects.out.writeln('flighthouse $version');
+    effects.out.writeln('flighthouse $version (web runner)');
     return exitPassed;
   }
   final runner =
