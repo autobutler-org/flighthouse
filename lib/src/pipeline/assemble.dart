@@ -1,6 +1,7 @@
 import '../adapters/adapter.dart';
 import '../adapters/attest/attest_adapter.dart';
 import '../adapters/axe/axe_adapter.dart';
+import '../adapters/frame_timing/frame_timing_adapter.dart';
 import '../adapters/lighthouse/lighthouse_adapter.dart';
 import '../config/config.dart';
 import '../model/enums.dart';
@@ -18,6 +19,7 @@ const Map<Source, Adapter> defaultAdapters = {
   Source.attest: parseAttest,
   Source.axe: parseAxe,
   Source.lighthouse: parseLighthouse,
+  Source.timeline: parseFrameTiming,
 };
 
 /// A report built from every usable artifact, and every failure on the way.

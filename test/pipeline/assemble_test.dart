@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 final config = parseConfig(
   'app: quark\nsources:\n  lighthouse: {dir: lh}\n  axe: {dir: axe}\n'
-  '  timeline: {dir: traces}\n',
+  '  timeline: {dir: traces}\n  flutter-lighthouse: {dir: fl}\n',
 ).fold((config) => config, (failure) => throw StateError('$failure'));
 
 RawArtifact lighthouse(String name) => (
@@ -71,13 +71,16 @@ void main() {
 
   test('a source without an adapter fails once, naming its directory', () {
     final assembled = assemble([
-      (source: Source.timeline, path: 'a.json', contents: '{}'),
-      (source: Source.timeline, path: 'b.json', contents: '{}'),
+      (source: Source.flutterLighthouse, path: 'a.json', contents: '{}'),
+      (source: Source.flutterLighthouse, path: 'b.json', contents: '{}'),
     ]);
     final failure = assembled.failures.single as AdapterFailure;
-    expect(failure.tool, 'timeline');
-    expect(failure.artifactPath, 'traces');
-    expect(failure.problem, contains('cannot read timeline output yet'));
+    expect(failure.tool, 'flutter-lighthouse');
+    expect(failure.artifactPath, 'fl');
+    expect(
+      failure.problem,
+      contains('cannot read flutter-lighthouse output yet'),
+    );
   });
 
   test('axe output is read into the report', () {
@@ -95,6 +98,30 @@ void main() {
     expect(assembled.report.findings.map((finding) => finding.route).toSet(), {
       '/login',
     });
+  });
+
+  test('frame timing output is read into the report', () {
+    final assembled = assemble([
+      (
+        source: Source.timeline,
+        path: 'traces/perf-janky.frame_timing_summary.json',
+        contents: File(
+          'test/fixtures/timeline/3.47.7/perf-janky.frame_timing_summary.json',
+        ).readAsStringSync(),
+      ),
+    ]);
+    expect(assembled.failures, isEmpty);
+    expect(
+      {for (final finding in assembled.report.findings) finding.category},
+      {Category.responsiveness},
+    );
+    expect(
+      {
+        for (final measurement in assembled.report.measurements)
+          measurement.route,
+      },
+      {'perf-janky'},
+    );
   });
 
   test('different tool versions of one source are all recorded', () {

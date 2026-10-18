@@ -9,6 +9,12 @@ export 'src/adapters/adapter.dart';
 export 'src/adapters/attest/attest_adapter.dart'
     show attestStandardRules, parseAttest, testedAttestMajors;
 export 'src/adapters/axe/axe_adapter.dart' show parseAxe, testedAxeMajors;
+export 'src/adapters/frame_timing/frame_timing_adapter.dart'
+    show
+        frameBudgetMillis,
+        frameTimingSummarySuffix,
+        parseFrameTiming,
+        timelineSummarySuffix;
 export 'src/adapters/lighthouse/lighthouse_adapter.dart'
     show parseLighthouse, testedLighthouseMajors;
 export 'src/config/config.dart';
