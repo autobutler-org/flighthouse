@@ -254,5 +254,49 @@ void main() {
       );
       expect(executable, '/opt/flutter/bin/flutter');
     });
+
+    test(
+      'reports a pubspec it cannot decode before running anything',
+      () async {
+        final pubspecPath = p.join(project.path, 'pubspec.yaml');
+        File(pubspecPath).writeAsBytesSync(const [0xff, 0xfe, 0xfd]);
+        final calls = <List<String>>[];
+        final result = await build(calls);
+        final failure = (result as Err<BuiltWebApp, Failure>).error;
+        expect(failure, isA<IoFailure>());
+        expect((failure as IoFailure).operation, 'read');
+        expect(failure.path, pubspecPath);
+        expect(calls, isEmpty);
+      },
+    );
+
+    test(
+      'reports a pubspec that is not YAML before running anything',
+      () async {
+        final pubspecPath = p.join(project.path, 'pubspec.yaml');
+        File(pubspecPath).writeAsStringSync('name: [quark\n');
+        final calls = <List<String>>[];
+        final result = await build(calls);
+        final failure = (result as Err<BuiltWebApp, Failure>).error;
+        expect(failure, isA<IoFailure>());
+        expect((failure as IoFailure).operation, 'read the Flutter pin from');
+        expect(failure.path, pubspecPath);
+        expect(calls, isEmpty);
+      },
+    );
+  });
+
+  test('runs the build command as a real process by default', () async {
+    final result = await buildWebApp(
+      projectDir: project.path,
+      config: WebBuildConfig(
+        command: [Platform.resolvedExecutable, '--version'],
+        outputDir: 'build/web',
+      ),
+    );
+    final failure = (result as Err<BuiltWebApp, Failure>).error;
+    expect(failure, isA<IoFailure>());
+    expect((failure as IoFailure).operation, 'use web build output');
+    expect(failure.path, p.join(project.path, 'build/web'));
   });
 }

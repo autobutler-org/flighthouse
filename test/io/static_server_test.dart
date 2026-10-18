@@ -207,4 +207,149 @@ void main() {
       throwsA(isA<SocketException>()),
     );
   });
+
+  test('rejects a method other than GET or HEAD', () async {
+    final running = await serve();
+    final client = HttpClient();
+    addTearDown(() => client.close(force: true));
+    final response = await (await client.postUrl(running.origin)).close();
+    await response.drain<void>();
+    expect(response.statusCode, HttpStatus.methodNotAllowed);
+    expect(response.headers.value(HttpHeaders.allowHeader), 'GET, HEAD');
+  });
+
+  test('answers HEAD with the length and no body', () async {
+    final running = await serve();
+    final client = HttpClient();
+    addTearDown(() => client.close(force: true));
+    final response = await (await client.headUrl(
+      running.origin.resolve('/main.js'),
+    )).close();
+    expect(response.statusCode, HttpStatus.ok);
+    expect(response.contentLength, 'main();'.length);
+    expect(await response.fold<int>(0, (sum, chunk) => sum + chunk.length), 0);
+  });
+
+  test('labels each asset type it serves', () async {
+    final types = {
+      'app.mjs': 'application/javascript',
+      'data.json': 'application/json',
+      'main.js.map': 'application/json',
+      'logo.svg': 'image/svg+xml',
+      'logo.png': 'image/png',
+      'photo.jpg': 'image/jpeg',
+      'photo.JPEG': 'image/jpeg',
+      'spinner.gif': 'image/gif',
+      'photo.webp': 'image/webp',
+      'favicon.ico': 'image/x-icon',
+      'main.wasm': 'application/wasm',
+      'font.woff': 'font/woff',
+      'font.woff2': 'font/woff2',
+      'font.ttf': 'font/ttf',
+      'NOTICES': 'application/octet-stream',
+    };
+    for (final name in types.keys) {
+      File(p.join(output.path, name)).writeAsStringSync(name);
+    }
+    final running = await serve();
+    for (final MapEntry(key: name, value: type) in types.entries) {
+      expect(await request(running.origin.resolve('/$name')), (
+        status: HttpStatus.ok,
+        contentType: type,
+        body: name,
+      ), reason: name);
+    }
+  });
+
+  test('answers 500 for a file it cannot read', () async {
+    final locked = File(p.join(output.path, 'locked.js'))
+      ..writeAsStringSync('locked');
+    await Process.run('chmod', ['000', locked.path]);
+    addTearDown(() => Process.run('chmod', ['644', locked.path]));
+    try {
+      locked.readAsStringSync();
+      markTestSkipped('this user can read a mode 000 file');
+      return;
+    } on FileSystemException catch (_) {}
+    final running = await serve();
+    final response = await request(running.origin.resolve('/locked.js'));
+    expect(response.status, HttpStatus.internalServerError);
+    expect(response.body, 'Could not read web build output');
+  }, testOn: '!windows');
+
+  group('fails to start', () {
+    IoFailure failure(Result<StaticWebServer, IoFailure> result) =>
+        result.fold((server) {
+          addTearDown(server.close);
+          return fail('started at ${server.origin}');
+        }, (failure) => failure);
+
+    test('without an index.html', () async {
+      File(p.join(output.path, 'index.html')).deleteSync();
+      final error = failure(
+        await startStaticWebServer(
+          outputDir: output.path,
+          port: 0,
+          routes: const [],
+        ),
+      );
+      expect(error.operation, 'serve web build');
+      expect(error.path, endsWith(p.join('web', 'index.html')));
+      expect(error.reason, 'not found');
+    });
+
+    test('for a missing output directory', () async {
+      final missing = p.join(parent.path, 'missing');
+      final error = failure(
+        await startStaticWebServer(
+          outputDir: missing,
+          port: 0,
+          routes: const [],
+        ),
+      );
+      expect(error.operation, 'serve web build');
+      expect(error.path, missing);
+    });
+
+    test('on a port already in use', () async {
+      final taken = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+      addTearDown(taken.close);
+      final error = failure(
+        await startStaticWebServer(
+          outputDir: output.path,
+          port: taken.port,
+          routes: const [],
+        ),
+      );
+      expect(error.operation, 'bind web server');
+      expect(error.path, '127.0.0.1:${taken.port}');
+    });
+
+    test('for a route that is not a URI', () async {
+      final error = failure(
+        await startStaticWebServer(
+          outputDir: output.path,
+          port: 0,
+          routes: const ['http://[::1'],
+        ),
+      );
+      expect(error.operation, 'serve configured route');
+      expect(error.path, output.path);
+    });
+
+    test('without running the callback', () async {
+      var ran = false;
+      final result = await useStaticWebServer<void>(
+        outputDir: p.join(parent.path, 'missing'),
+        port: 0,
+        routes: const [],
+        run: (_) async {
+          ran = true;
+          return const Ok(null);
+        },
+      );
+      expect(result, isA<Err<void, IoFailure>>());
+      expect(ran, isFalse);
+    });
+  });
 }

@@ -79,6 +79,23 @@ void main() {
         const Err<int, String>('a').hashCode,
       );
     });
+
+    test('collapses equal results in a set', () {
+      final results = {
+        Ok<int, String>(int.parse('1')),
+        const Ok<int, String>(1),
+        Err<int, String>(String.fromCharCode(97)),
+        const Err<int, String>('a'),
+      };
+      expect(results, hasLength(2));
+    });
+  });
+
+  group('toString', () {
+    test('names the case and its contents', () {
+      expect('${const Ok<int, String>(1)}', 'Ok(1)');
+      expect('${const Err<int, String>('bad')}', 'Err(bad)');
+    });
   });
 
   group('traverse', () {
