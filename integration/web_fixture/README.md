@@ -106,6 +106,26 @@ cd integration/web_fixture
 flutter drive -d chrome --driver=test_driver/perf_test.dart --target=integration_test/perf_test.dart
 ```
 
+### Recording in CI
+
+[`record-timeline.yml`](../../.github/workflows/record-timeline.yml) runs the same `flutter drive` on a GitHub
+Actions runner with Flutter 3.47.7. It installs Chrome's libraries, prints the Flutter, Dart, Chrome, and
+chromedriver versions, starts chromedriver on port 4444, and uploads two artifacts even when the drive fails:
+`timeline`, the contents of `build/flighthouse/timeline`, and `chromedriver-log`.
+
+The `device` input picks the `flutter drive` device. `chrome`, the default, opens a Chrome window. `web-server`
+adds `--browser-name=chrome --headless`. A pull request that changes the workflow file runs it with `chrome`.
+Otherwise dispatch it from `main` and download the artifact from the run:
+
+```sh
+gh workflow run record-timeline.yml -f device=web-server
+gh run watch <run-id>
+gh run download <run-id> --name timeline --dir test/fixtures/timeline/3.47.7
+```
+
+Commit the summaries under `test/fixtures/timeline/3.47.7/` with a `SOURCE.md` that cites the run URL, the
+`flutter drive` command, and the versions the run printed.
+
 ## Re-recording the manifests
 
 `make check/web-fixture/scores` also reuses that build. `scores.json` has no recording step: the check prints both
@@ -172,6 +192,7 @@ and what it says:
   clipped cards dropping out of the semantics tree, not from a layout check.
 - **Memory.** No route plants a memory cost, and the score is `null` in every run.
 - **Performance beyond Lighthouse.** The performance check uses the Lighthouse-derived perf score only. Frame
-  timing from the `integration_test` below is recorded by hand and is not part of `make run/web-fixture`. The recorded ranges come from one machine and one CI
+  timing from the `integration_test` above is recorded by `record-timeline.yml` or by hand and is not part of
+  `make run/web-fixture`. The recorded ranges come from one machine and one CI
   run, so a slower or busier runner can fall outside them; only the relative margin and the floor gate.
 - **One viewport for accessibility.** Every check except `check_responsive.py` audits at 1280 by 800.
