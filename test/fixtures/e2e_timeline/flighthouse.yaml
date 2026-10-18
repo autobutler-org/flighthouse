@@ -1,0 +1,8 @@
+app: web_fixture
+reportDir: ../../../build/e2e_timeline
+baseline: flighthouse-baseline.json
+sources:
+  timeline:
+    dir: ../timeline/3.47.7
+gate:
+  metricFindings: new

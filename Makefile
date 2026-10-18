@@ -114,9 +114,20 @@ release: ## Tag the pubspec version on main and push the tag, which publishes it
 	echo "Pushed $(RELEASE_TAG); the Publish workflow takes it from here"
 
 .PHONY: test/cli
-test/cli: test/quark test/quark/web ## Run the CLI's collect and ci commands against recorded fixtures
+test/cli: test/quark test/quark/web test/cli/timeline ## Run the CLI's collect and ci commands against recorded fixtures
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml collect
 	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e/flighthouse.yaml ci
+
+.PHONY: test/cli/timeline
+test/cli/timeline: ## Run collect and report on the recorded frame timings, and expect ci to fail on the janky scenario
+	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e_timeline/flighthouse.yaml collect
+	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e_timeline/flighthouse.yaml report
+	status=0
+	dart run bin/flighthouse.dart --config $(FIXTURES)/e2e_timeline/flighthouse.yaml ci || status=$$?
+	if [ "$$status" -ne 1 ]; then
+		echo "expected ci to exit 1 (gate failed) on the janky frame timings, got $$status" >&2
+		exit 1
+	fi
 
 .PHONY: test/quark
 test/quark: ## Run the CI gate against real quark page audits
