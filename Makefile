@@ -152,8 +152,8 @@ run/web-fixture/performance: ## Re-record the fixture's performance score ranges
 run/web-fixture/responsive: ## Re-record what flighthouse reports for the fixture's responsive routes at a wide and a narrow viewport, from the build run/web-fixture left
 	python3 integration/web_fixture/tool/check_responsive.py . integration/web_fixture/responsive.json build/web-fixture-responsive --record
 
-.PHONY: run/web-fixture/scores
-run/web-fixture/scores: ## Check that the fully planted fixture scores at least the margin in scores.json below the clean one in accessibility, from the build run/web-fixture left
+.PHONY: check/web-fixture/scores
+check/web-fixture/scores: ## Check that the fully planted fixture scores at least the margin in scores.json below the clean one in accessibility, from the build run/web-fixture left
 	python3 integration/web_fixture/tool/check_scores.py . integration/web_fixture/scores.json build/web-fixture-scores
 
 .PHONY: run/web-fixture/variance

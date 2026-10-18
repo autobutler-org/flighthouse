@@ -44,17 +44,18 @@ report it (`sources`), and whether it is `detectable`. An undetectable entry car
 
 | Target | What it does |
 | --- | --- |
-| `make run/web-fixture` | Builds the fixture, collects it, and runs every check below. CI runs this in `.github/workflows/web.yml`. |
+| `make run/web-fixture` | Builds the fixture, collects it, and runs checks 1 to 6 below. CI runs this in `.github/workflows/web.yml`. |
 | `make run/web-fixture/performance` | Re-records `performance.json` over `RUNS` runs (default 5). |
 | `make run/web-fixture/responsive` | Re-records `responsive.json` at a wide and a narrow viewport. |
-| `make run/web-fixture/scores` | Runs only `check_scores.py`, on the build `make run/web-fixture` left. |
+| `make check/web-fixture/scores` | Runs check 7, `check_scores.py`, on the build `make run/web-fixture` left. CI runs it as its own step right after `make run/web-fixture`. |
 | `make run/web-fixture/variance` | Collects `RUNS` times (default 3) and prints each score's and planted defect's spread. |
 | `make test/web-fixture-tools` | Unit tests the check scripts offline against recorded data. `make test` runs it too. |
 
 `make run/web-fixture` runs [`tool/run_fixture.sh`](tool/run_fixture.sh). It starts the auth backend
 ([`tool/auth_backend.dart`](tool/auth_backend.dart)) on port 8090 with `fixture-user` and `fixture-password` unless
 `FLIGHTHOUSE_USERNAME`, `FLIGHTHOUSE_PASSWORD`, or `FIXTURE_API_PORT` say otherwise, runs `collect` and `report`
-into `build/web-fixture/`, then runs the checks in this order:
+into `build/web-fixture/`, then runs checks 1 to 6 in this order. `make check/web-fixture/scores` runs check 7
+separately, and CI calls it as its own step after `make run/web-fixture`:
 
 1. [`check_raw.py`](tool/check_raw.py) reads the raw Lighthouse and axe output. It passes when there is exactly one
    result per audited route (`/account`, `/public`, `/planted`), every Lighthouse run used desktop settings at 1280
@@ -80,7 +81,7 @@ into `build/web-fixture/`, then runs the checks in this order:
 6. [`check_responsive.py`](tool/check_responsive.py) collects the `/responsive/*` routes at each viewport in
    `responsive.json`. It fails when the responsiveness score or the responsiveness finding count on either route
    differs from what was recorded.
-7. [`check_scores.py`](tool/check_scores.py) collects `/planted?defects=none` and then `/planted`, each on its own,
+7. [`check_scores.py`](tool/check_scores.py), run by `make check/web-fixture/scores`, collects `/planted?defects=none` and then `/planted`, each on its own,
    and reads flighthouse's accessibility score from each `report.json`. It fails when the planted score is not at
    least `margin` in [`scores.json`](scores.json) below the clean score from the same run. The margin is 0.05. The
    accessibility score did not move across five runs
@@ -107,7 +108,7 @@ flutter drive -d chrome --driver=test_driver/perf_test.dart --target=integration
 
 ## Re-recording the manifests
 
-`make run/web-fixture/scores` also reuses that build. `scores.json` has no recording step: the check prints both
+`make check/web-fixture/scores` also reuses that build. `scores.json` has no recording step: the check prints both
 scores on every run, and `margin` is edited by hand.
 
 The three re-recording targets reuse the build that `make run/web-fixture` left in `build/web`, so run that first.
