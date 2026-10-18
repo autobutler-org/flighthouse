@@ -145,3 +145,40 @@ Result<T, Failure> _withCleanup<T>(
   (_, Err(:final error)) => Err(error),
   (Ok(:final value), Ok()) => Ok(value),
 };
+
+typedef Clock = DateTime Function();
+
+typedef RouteAudit<T, F> = Future<Result<T, F>> Function(
+  void Function(String route) onRoute,
+);
+
+String formatSeconds(Duration duration) =>
+    '${(duration.inMicroseconds / Duration.microsecondsPerSecond).toStringAsFixed(1)}s';
+
+Future<Result<T, F>> timeRouteAudits<T, F>({
+  required String tool,
+  required Clock now,
+  required ProgressSink progress,
+  required RouteAudit<T, F> audit,
+}) async {
+  ({String route, DateTime started})? current;
+  void finish(String Function(String route, String elapsed) line) {
+    if (current case (:final route, :final started)) {
+      progress(line(route, formatSeconds(now().difference(started))));
+    }
+  }
+
+  String audited(String route, String elapsed) =>
+      'audited $route with $tool in $elapsed';
+
+  final result = await audit((route) {
+    finish(audited);
+    progress('auditing $route with $tool');
+    current = (route: route, started: now());
+  });
+  finish(switch (result) {
+    Ok() => audited,
+    Err() => (route, elapsed) => 'failed $route with $tool after $elapsed',
+  });
+  return result;
+}

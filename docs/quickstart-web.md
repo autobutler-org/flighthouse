@@ -284,9 +284,13 @@ building the web app: flutter build web --release --dart-define=FLIGHTHOUSE_SEMA
 starting Chrome
 browser Chrome/152.0.7977.42
 auditing /account with lighthouse
+audited /account with lighthouse in 14.8s
 auditing /public with lighthouse
+audited /public with lighthouse in 11.3s
 auditing /account with axe
+audited /account with axe in 2.1s
 auditing /public with axe
+audited /public with axe in 1.7s
 collected 2 lighthouse files
 collected 2 axe files
 $ flighthouse baseline --update
@@ -299,6 +303,11 @@ gate passed
 
 `collect` prints a line as it builds the web app, starts Chrome, and audits each route with Lighthouse and then axe,
 so a long build shows which step is running. The first run also downloads Chrome.
+
+After each route, `collect` prints `audited <route> with <tool> in <seconds>s`, the wall-clock time from the start of
+that route's audit to the start of the next one, to one decimal place. When a route's audit fails, the line reads
+`failed <route> with <tool> after <seconds>s` instead, and the failure follows on standard error. Compare these lines
+across CI runs to see which route and which tool account for a slow or variable collection.
 
 ### Reuse an existing build
 

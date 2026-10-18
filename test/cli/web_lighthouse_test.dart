@@ -69,6 +69,7 @@ void main() {
         return lighthouseReport(url);
       });
       BrowserViewport? viewport;
+      var seconds = 0;
 
       final run = await workspace.execute(
         ['collect'],
@@ -78,6 +79,7 @@ void main() {
           return Ok(browser.session);
         },
         platformEnvironment: const {'FLIGHTHOUSE_PASSWORD': _secret},
+        now: () => DateTime.utc(2026, 10, 8).add(Duration(seconds: seconds++)),
       );
 
       expect(run.code, exitPassed);
@@ -91,8 +93,11 @@ void main() {
         'building the web app: flutter build web --release',
         'starting Chrome',
         'browser ${browser.session.info.browserVersion}',
-        for (final route in _routes) 'auditing $route with lighthouse',
-        for (final route in _routes) 'auditing $route with axe',
+        for (final tool in ['lighthouse', 'axe'])
+          for (final route in _routes) ...[
+            'auditing $route with $tool',
+            'audited $route with $tool in 1.0s',
+          ],
         'collected 2 lighthouse files',
         'collected 2 axe files',
         '',
@@ -328,6 +333,7 @@ final class Workspace {
     required WebBrowserLauncher launchBrowser,
     Map<String, String>? platformEnvironment,
     HostsFileRead? readHostsFile,
+    DateTime Function()? now,
   }) async {
     final out = StringBuffer();
     final err = StringBuffer();
@@ -335,7 +341,7 @@ final class Workspace {
       ['--config', path('flighthouse.yaml'), ...arguments],
       version: '9.9.9',
       environment: (
-        now: () => DateTime.utc(2026, 10, 8),
+        now: now ?? () => DateTime.utc(2026, 10, 8),
         commitOf: (_) async => 'abc1234',
         out: out,
         err: err,
