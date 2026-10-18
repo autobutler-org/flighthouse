@@ -172,6 +172,8 @@ gate:
 - `lighthouse.command` can be `[npx, --yes, lighthouse@13.5.0]` instead of a global install.
 - `axe.scriptPath` can point at a local `axe.min.js` instead of downloading `axe.version`.
 - `sources.lighthouse` and `sources.axe` cannot be set together with `web`. Other `sources`, such as `attest`, can.
+  `sources.timeline` imports frame timings from an `integration_test`; see the
+  [frame timing quickstart](quickstart-frame-timing.md).
 
 ### Sign-in and credentials
 
@@ -408,7 +410,8 @@ The summary line scores each category from 0 to 100. A web run measures three:
 - `perf`: Lighthouse's performance audits and metrics, such as Largest Contentful Paint.
 - `best-practices`: Lighthouse's best-practices audits.
 
-`responsiveness` and `memory` show `n/a` and are left out of `overall`. `overall` is the weighted mean of the
+`responsiveness` and `memory` show `n/a` and are left out of `overall`. To measure `responsiveness`, add frame
+timings from `watchPerformance` as the [frame timing quickstart](quickstart-frame-timing.md) shows. `overall` is the weighted mean of the
 measured categories; by default `a11y` and `perf` weigh 3 times as much as `best-practices`. `report.html` colors
 each score the way Lighthouse does: 90 to 100 passes, 50 to 89 is average, and 0 to 49 fails. The bands are only a
 reading aid; the gate compares scores with the baseline, not with the bands.
