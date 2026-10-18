@@ -8,7 +8,7 @@ on:
       device:
         description: flutter drive device, chrome or web-server
         required: true
-        default: chrome
+        default: web-server
         type: choice
         options:
           - chrome
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      DEVICE: ${{ inputs.device || 'chrome' }}
+      DEVICE: ${{ inputs.device || 'web-server' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7

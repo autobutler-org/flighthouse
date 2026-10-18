@@ -113,8 +113,9 @@ Actions runner with Flutter 3.47.7. It installs Chrome's libraries, prints the F
 chromedriver versions, starts chromedriver on port 4444, and uploads two artifacts even when the drive fails:
 `timeline`, the contents of `build/flighthouse/timeline`, and `chromedriver-log`.
 
-The `device` input picks the `flutter drive` device. `chrome`, the default, opens a Chrome window. `web-server`
-adds `--browser-name=chrome --headless`. A pull request that changes the workflow file runs it with `chrome`.
+The `device` input picks the `flutter drive` device. `web-server`, the default, adds `--browser-name=chrome --headless`.
+`chrome` opens a Chrome window, which a runner without a display cannot show, so the run hangs after Chrome connects. A
+pull request that changes the workflow file runs it with `web-server`.
 Otherwise dispatch it from `main` and download the artifact from the run:
 
 ```sh
