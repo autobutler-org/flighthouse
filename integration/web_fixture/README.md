@@ -90,6 +90,21 @@ into `build/web-fixture/`, then runs the checks in this order:
 
 Steps 4 to 7 reuse the build from step 1 instead of rebuilding.
 
+## Frame timing
+
+[`integration_test/perf_test.dart`](integration_test/perf_test.dart) opens `/perf/control` and `/perf/janky` and
+measures each with `watchPerformance`, using `perf-control` and `perf-janky` as the report keys
+([ADR 0032](../../docs/adr/0032-web-frame-timing-source.md)). The driver,
+[`test_driver/perf_test.dart`](test_driver/perf_test.dart), writes both reports with `flighthouse_flutter`'s
+`writeFrameTimingSummaries` to `build/flighthouse/timeline/<key>.frame_timing_summary.json` and fails unless both
+were written. It needs a `chromedriver` matching the installed Chrome, listening on port 4444.
+
+```sh
+chromedriver --port=4444 &
+cd integration/web_fixture
+flutter drive -d chrome --driver=test_driver/perf_test.dart --target=integration_test/perf_test.dart
+```
+
 ## Re-recording the manifests
 
 `make run/web-fixture/scores` also reuses that build. `scores.json` has no recording step: the check prints both
@@ -156,7 +171,6 @@ and what it says:
   clipped cards dropping out of the semantics tree, not from a layout check.
 - **Memory.** No route plants a memory cost, and the score is `null` in every run.
 - **Performance beyond Lighthouse.** The performance check uses the Lighthouse-derived perf score only. Frame
-  timing from `integration_test` is not collected from the fixture
-  ([ADR 0032](../../docs/adr/0032-web-frame-timing-source.md)). The recorded ranges come from one machine and one CI
+  timing from the `integration_test` below is recorded by hand and is not part of `make run/web-fixture`. The recorded ranges come from one machine and one CI
   run, so a slower or busier runner can fall outside them; only the relative margin and the floor gate.
 - **One viewport for accessibility.** Every check except `check_responsive.py` audits at 1280 by 800.

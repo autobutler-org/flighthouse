@@ -45,6 +45,38 @@ Future<void> main() => integrationDriver(
 );
 ```
 
+### On Flutter web
+
+A web build has no VM service, so `traceAction` cannot record a `TimelineSummary`. Measure with
+`watchPerformance` instead, naming each scenario by its `reportKey`, and write the reports from the driver with
+`writeFrameTimingSummaries`. Each entry of the response data that is a `watchPerformance` report is written to
+`build/flighthouse/timeline/<reportKey>.frame_timing_summary.json`. Other entries are listed in `skipped`.
+
+```dart
+await binding.watchPerformance(() async {
+  await tester.pumpAndSettle();
+}, reportKey: 'files-scroll');
+```
+
+```dart
+import 'package:flighthouse_flutter/flighthouse_flutter.dart';
+import 'package:integration_test/integration_test_driver.dart';
+
+Future<void> main() => integrationDriver(
+  responseDataCallback: (data) async {
+    final result = await writeFrameTimingSummaries(data);
+    for (final write in result.writes) {
+      switch (write) {
+        case TimelineSummaryWritten():
+          break;
+        case TimelineSummaryWriteFailed(:final path, :final reason):
+          throw StateError('could not write $path: $reason');
+      }
+    }
+  },
+);
+```
+
 Point `flighthouse collect` at the same directory in `flighthouse.yaml`:
 
 ```yaml

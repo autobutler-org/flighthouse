@@ -1,7 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter_driver/flutter_driver.dart';
+
+import 'summary_file.dart';
 
 /// The outcome of [writeTimelineSummary].
 sealed class TimelineSummaryWrite {
@@ -27,8 +26,6 @@ final class TimelineSummaryWriteFailed extends TimelineSummaryWrite {
   final String reason;
 }
 
-final RegExp _namePattern = RegExp(r'^[A-Za-z0-9][A-Za-z0-9._-]*$');
-
 /// Writes the [TimelineSummary.summaryJson] of [summary] where
 /// `flighthouse collect` reads timeline summaries.
 ///
@@ -49,32 +46,12 @@ Future<TimelineSummaryWrite> writeTimelineSummary(
   required String name,
   String? directory,
 }) async {
-  if (!_namePattern.hasMatch(name)) {
-    throw ArgumentError.value(
-      name,
-      'name',
-      'must start with a letter or digit and contain only letters, digits, '
-          '".", "_", and "-"',
-    );
-  }
-  final path =
-      '${directory ?? '$testOutputsDirectory/flighthouse/timeline'}'
-      '/$name.timeline_summary.json';
+  final path = summaryPath(name, 'timeline_summary.json', directory);
   final Map<String, dynamic> summaryJson;
   try {
     summaryJson = summary.summaryJson;
   } on StateError catch (error) {
     return TimelineSummaryWriteFailed(path: path, reason: error.message.trim());
   }
-  try {
-    final file = File(path);
-    await file.parent.create(recursive: true);
-    await file.writeAsString(json.encode(summaryJson));
-    return TimelineSummaryWritten(path: path);
-  } on FileSystemException catch (error) {
-    return TimelineSummaryWriteFailed(
-      path: path,
-      reason: error.osError?.message ?? error.message,
-    );
-  }
+  return writeSummaryJson(path, summaryJson);
 }
