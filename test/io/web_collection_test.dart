@@ -199,6 +199,87 @@ void main() {
       throwsA(isA<SocketException>()),
     );
   });
+  group('timeRouteAudits', () {
+    DateTime Function() ticking(List<int> milliseconds) {
+      final times = [
+        for (final offset in milliseconds)
+          DateTime.utc(2026, 10, 17).add(Duration(milliseconds: offset)),
+      ].iterator;
+      return () {
+        if (!times.moveNext()) {
+          throw StateError('the fake clock ran out of readings');
+        }
+        return times.current;
+      };
+    }
+
+    test(
+      'reports how long each route took after the next one starts',
+      () async {
+        final result = await timeRouteAudits<int, Failure>(
+          tool: 'lighthouse',
+          now: ticking([0, 41234, 41234, 44000]),
+          progress: progress.add,
+          audit: (onRoute) async {
+            onRoute('/files');
+            onRoute('/photos');
+            return const Ok(2);
+          },
+        );
+
+        expect(result, const Ok<int, Failure>(2));
+        expect(progress, [
+          'auditing /files with lighthouse',
+          'audited /files with lighthouse in 41.2s',
+          'auditing /photos with lighthouse',
+          'audited /photos with lighthouse in 2.8s',
+        ]);
+      },
+    );
+
+    test('reports how long the failing route ran before it failed', () async {
+      const failure = IoFailure(
+        operation: 'audit',
+        path: '/photos',
+        reason: 'timed out',
+      );
+      final result = await timeRouteAudits<int, Failure>(
+        tool: 'axe',
+        now: ticking([0, 1000, 1000, 31050]),
+        progress: progress.add,
+        audit: (onRoute) async {
+          onRoute('/files');
+          onRoute('/photos');
+          return const Err(failure);
+        },
+      );
+
+      expect(result, const Err<int, Failure>(failure));
+      expect(progress, [
+        'auditing /files with axe',
+        'audited /files with axe in 1.0s',
+        'auditing /photos with axe',
+        'failed /photos with axe after 30.1s',
+      ]);
+    });
+
+    test('reports no duration when the audit fails before any route', () async {
+      const failure = IoFailure(
+        operation: 'read',
+        path: 'axe.min.js',
+        reason: 'not found',
+      );
+      final result = await timeRouteAudits<int, Failure>(
+        tool: 'axe',
+        now: ticking([]),
+        progress: progress.add,
+        audit: (onRoute) async => const Err(failure),
+      );
+
+      expect(result, const Err<int, Failure>(failure));
+      expect(progress, isEmpty);
+    });
+  });
 }
 
 Future<ProcessResult> _successfulBuild(

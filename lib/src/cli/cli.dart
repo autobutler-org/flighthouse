@@ -322,9 +322,6 @@ Future<Result<HostSelection, Failure>> _selectHost({
 String _collected(String source, int count) =>
     'collected $count $source ${count == 1 ? 'file' : 'files'}';
 
-String _auditing(Source source, String route) =>
-    'auditing $route with ${source.id}';
-
 final class _CollectCommand extends _FlighthouseCommand {
   _CollectCommand(
     super.environment,
@@ -409,33 +406,41 @@ final class _CollectCommand extends _FlighthouseCommand {
         progress: environment.out.writeln,
         collect: (browser, origin, routes) async {
           environment.out.writeln('browser ${browser.info.browserVersion}');
-          final lighthouse = await runLighthouseRoutes(
-            lighthouse: web.lighthouse,
-            viewport: web.viewport,
-            browser: browser,
-            origin: origin,
-            routes: routes,
-            outputDir: _rawDir(context, Source.lighthouse),
-            onRoute: (route) =>
-                environment.out.writeln(_auditing(Source.lighthouse, route)),
-            run: runProcess,
+          final lighthouse = await timeRouteAudits(
+            tool: Source.lighthouse.id,
+            now: environment.now,
+            progress: environment.out.writeln,
+            audit: (onRoute) => runLighthouseRoutes(
+              lighthouse: web.lighthouse,
+              viewport: web.viewport,
+              browser: browser,
+              origin: origin,
+              routes: routes,
+              outputDir: _rawDir(context, Source.lighthouse),
+              onRoute: onRoute,
+              run: runProcess,
+            ),
           );
           switch (lighthouse) {
             case Err(:final error):
               return Err(error);
             case Ok(value: final lighthousePaths):
-              final axe = await runAxeRoutes(
-                axe: web.axe,
-                configBaseDir: context.baseDir,
-                readiness: web.readiness,
-                browser: browser,
-                origin: origin,
-                routes: routes,
-                outputDir: _rawDir(context, Source.axe),
-                onRoute: (route) =>
-                    environment.out.writeln(_auditing(Source.axe, route)),
-                cacheDir: axeCacheDir,
-                download: downloadAxe,
+              final axe = await timeRouteAudits(
+                tool: Source.axe.id,
+                now: environment.now,
+                progress: environment.out.writeln,
+                audit: (onRoute) => runAxeRoutes(
+                  axe: web.axe,
+                  configBaseDir: context.baseDir,
+                  readiness: web.readiness,
+                  browser: browser,
+                  origin: origin,
+                  routes: routes,
+                  outputDir: _rawDir(context, Source.axe),
+                  onRoute: onRoute,
+                  cacheDir: axeCacheDir,
+                  download: downloadAxe,
+                ),
               );
               return switch (axe) {
                 Err(:final error) => Err(error),
