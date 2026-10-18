@@ -102,6 +102,8 @@ jobs:
         run: make run/chrome-acquire
       - name: Collect the fixture and exercise the gate
         run: make run/web-fixture
+      - name: Check that the planted defects lower the accessibility score
+        run: make check/web-fixture/scores
       - name: Keep the raw results and auth log
         if: always()
         uses: actions/upload-artifact@v7

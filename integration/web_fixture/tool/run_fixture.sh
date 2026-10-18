@@ -50,5 +50,3 @@ python3 integration/web_fixture/tool/check_performance.py "$root" \
   integration/web_fixture/performance.json "$report/performance"
 python3 integration/web_fixture/tool/check_responsive.py "$root" \
   integration/web_fixture/responsive.json "$report/responsive"
-python3 integration/web_fixture/tool/check_scores.py "$root" \
-  integration/web_fixture/scores.json "$report/scores"
