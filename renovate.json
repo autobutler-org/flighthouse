@@ -1,4 +1,30 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>autobutler-org/renovate-config"]
+  "extends": ["github>autobutler-org/renovate-config"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Keep the Dart version in check.yml's pub cache key in step with the setup-dart sdk pin.",
+      "managerFilePatterns": ["/^\\.github/workflows/check\\.yml$/"],
+      "matchStrings": ["-dart-(?<currentValue>\\d+\\.\\d+\\.\\d+)-"],
+      "depNameTemplate": "dart",
+      "packageNameTemplate": "dart-lang/sdk",
+      "datasourceTemplate": "dart-version"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "flutter/flutter stopped publishing GitHub releases, so read subosito/flutter-action's flutter-version from Flutter's own release feed.",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["flutter"],
+      "overrideDatasource": "flutter-version"
+    },
+    {
+      "description": "Flutter ships its own Dart, so CI pins both and they move in one PR.",
+      "matchManagers": ["github-actions", "custom.regex"],
+      "matchDepNames": ["dart", "flutter"],
+      "groupName": "flutter and dart sdk",
+      "commitMessagePrefix": "chore(deps/github-actions):"
+    }
+  ]
 }
