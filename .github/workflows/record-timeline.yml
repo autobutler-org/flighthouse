@@ -1,5 +1,8 @@
 name: Record timeline
 on:
+  pull_request:
+    paths:
+      - .github/workflows/record-timeline.yml
   workflow_dispatch:
     inputs:
       device:
@@ -21,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      DEVICE: ${{ inputs.device }}
+      DEVICE: ${{ inputs.device || 'chrome' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
