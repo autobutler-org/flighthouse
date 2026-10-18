@@ -3,7 +3,7 @@
 One Lighthouse-style scored report for Flutter apps, covering accessibility, performance, responsiveness, and
 memory, that works as a CI gate.
 
-> **Status: pre-release.** The pipeline reads attest, Lighthouse, and axe JSON; other sources are in progress. Progress is tracked in the
+> **Status: pre-release.** The pipeline reads attest, Lighthouse, and axe JSON and `watchPerformance` frame timings; other sources are in progress. Progress is tracked in the
 > [phase epics](https://github.com/autobutler-org/flighthouse/issues?q=is%3Aissue+label%3Aepic).
 
 ## What it does
@@ -13,7 +13,7 @@ flighthouse does not audit anything itself. It ingests the outputs of tools you 
 - [attest](https://pub.dev/packages/attest_cli) accessibility widget-test reports
 - [Lighthouse](https://github.com/GoogleChrome/lighthouse) JSON reports
 - [axe-core](https://github.com/dequelabs/axe-core) results
-- `integration_test` `TimelineSummary` frame timings
+- `integration_test` frame timings from `watchPerformance`
 - [flutter_lighthouse](https://pub.dev/packages/flutter_lighthouse) output
 
 It normalizes them to one schema, scores them with Lighthouse's log-normal curves, diffs against a committed
@@ -52,14 +52,16 @@ Exit codes: `0` passed, `1` the gate failed, `2` usage or config error, `3` unus
 exits `3` until a baseline exists. The quickstart explains [the baseline](docs/quickstart-web.md#the-baseline) and
 [how CI should treat each code](docs/quickstart-web.md#in-ci).
 
-Today flighthouse reads attest, Lighthouse, and axe JSON. `TimelineSummary` and flutter_lighthouse adapters are
-in progress.
+Today flighthouse reads attest, Lighthouse, and axe JSON and `watchPerformance` frame timing summaries.
+`TimelineSummary` and flutter_lighthouse adapters are in progress.
 
 Configuration lives in `flighthouse.yaml`. See [`example/`](example/README.md). A top-level key flighthouse does not
 know fails with a message that lists the keys it accepts.
 
-Flutter test helpers that write `TimelineSummary` files for flighthouse live in
-[`packages/flighthouse_flutter`](packages/flighthouse_flutter/README.md).
+Flutter test helpers that write frame timing files for flighthouse live in
+[`packages/flighthouse_flutter`](packages/flighthouse_flutter/README.md). The
+[frame timing quickstart](docs/quickstart-frame-timing.md) goes from an `integration_test` to a `responsiveness`
+finding.
 
 ## Design
 
