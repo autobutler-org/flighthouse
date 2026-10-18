@@ -14,5 +14,15 @@ dependencies:
   http: ^1.6.0
   web: ^1.1.1
 
+dev_dependencies:
+  flighthouse_flutter:
+    path: ../../packages/flighthouse_flutter
+  flutter_driver:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+
 flutter:
   uses-material-design: true
