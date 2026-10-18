@@ -69,9 +69,12 @@ Ordered bottom to top. Tasks 2 to 8 are pure and can run in parallel once task 3
 - A real `report.html` for quark has been shown to the maintainer.
 - Every ADR in the list above is Accepted, and every assumption made along the way is written down.
 
-## Open questions
+## Open questions (answered)
 
 - quark does not use attest today. Getting real attest output means adding `attest_flutter` to quark's tests, which
   is a change to quark. Approve that, or should phase 1 run against quark with Lighthouse only?
+  Answered: the phase 1 quark run used eight real attest widget audits ([quark-phase-1](../phases/quark-phase-1.md)).
 - Most quark routes need sign-in. Phase 1 can run Lighthouse on public routes only (`/login`, `/setup`, `/terms`);
   authenticated routes wait for the phase 2 runner. Acceptable?
+  Answered: yes, phase 1 measured public routes only and authenticated collection moved to phase 2
+  ([phase 1 summary](../phases/phase-1.md)).

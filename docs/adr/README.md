@@ -10,9 +10,9 @@ maintainer; nothing is built on it.
 | [0003](0003-package-layout.md)                        | Flutter-free core, Flutter companion package          | Accepted; workspace superseded by 0030 |
 | [0004](0004-functional-core-imperative-shell.md)      | Functional core, imperative shell                     | Accepted  |
 | [0005](0005-failure-as-values.md)                     | In-repo sealed Result, no FP library                  | Accepted  |
-| [0006](0006-core-schema.md)                           | Core schema                                           | Accepted; finding kind, help link, metric title, schema version 2 added by 0033 |
+| [0006](0006-core-schema.md)                           | Core schema                                           | Accepted; measurement weight added by 0022; finding kind, help link, metric title, schema version 2 added by 0033 |
 | [0007](0007-fingerprints-and-normalization.md)        | Fingerprints and normalization                        | Accepted; axe rule superseded by 0024 |
-| [0008](0008-scoring.md)                               | Scoring: Lighthouse log-normal port, weights          | Accepted  |
+| [0008](0008-scoring.md)                               | Scoring: Lighthouse log-normal port, weights          | Accepted; category score formula made precise by 0022 |
 | [0009](0009-baseline-and-ci-gate.md)                  | Baseline diff and CI gate                             | Accepted; metric findings superseded by 0027 |
 | [0010](0010-configuration.md)                         | `flighthouse.yaml` configuration                      | Accepted  |
 | [0011](0011-cli.md)                                   | CLI commands and exit codes                           | Accepted  |
@@ -22,7 +22,7 @@ maintainer; nothing is built on it.
 | [0015](0015-browser-automation-and-axe.md)            | Browser automation and axe                            | Accepted; Linux CI launch is 0026 |
 | [0016](0016-semantics-enabled-web-builds.md)          | Semantics-enabled Flutter web builds                  | Accepted  |
 | [0017](0017-dependency-policy.md)                     | Dependency policy                                     | Accepted; update tooling amended by 0025, companion by 0030 and 0031 |
-| [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted  |
+| [0018](0018-packaging-and-pub-dev.md)                 | Packaging for pub.dev                                 | Accepted; repository URLs amended by 0020 |
 | [0019](0019-testing-and-ci.md)                        | Testing and CI                                        | Accepted  |
 | [0020](0020-repository-in-autobutler-org.md)          | The repository lives in autobutler-org                | Accepted  |
 | [0021](0021-configuration-refinements.md)             | Configuration refinements found while implementing    | Accepted, flagged for review |
@@ -40,4 +40,5 @@ maintainer; nothing is built on it.
 | [0033](0033-help-links-needs-review-and-metric-titles.md) | Help links, needs-review, and metric titles in the schema | Accepted (delegated review) |
 | [0034](0034-web-responsive-layout-out-of-scope.md)   | Web responsive layout is out of scope                 | Accepted (delegated review) |
 
-ADRs marked Accepted record decisions the maintainer already made in the project brief.
+ADRs marked plain Accepted record decisions the maintainer made. A qualifier in the status column says when the
+implementer or a delegated review accepted it instead; the ADR's own status line gives the detail.

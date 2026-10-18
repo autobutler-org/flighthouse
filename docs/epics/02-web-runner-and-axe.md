@@ -10,8 +10,8 @@ or Chrome is missing, it fails with a message naming what to install, and every 
 
 ## ADRs
 
-0014 Accepted before task 3. 0015 and 0016 are accepted after tasks 1 and 2 report back. A new ADR for the `web:`
-config section is written after task 2.
+0014 Accepted before task 3. 0015 and 0016 Accepted after tasks 1 and 2 reported back. The `web:` config section is
+[ADR 0023](../adr/0023-web-runner-configuration.md).
 
 ## Tasks
 

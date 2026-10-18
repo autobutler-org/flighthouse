@@ -2,7 +2,8 @@
 
 One epic per phase. Phases 1 to 3 are filed as GitHub issues, with each task as a sub-issue of its epic
 ([AGENTS.md](../../AGENTS.md), Scope discipline). The GitHub issues are the live record; these files are the original
-drafts. Phase 4 stays a draft until there is demand.
+drafts. Phase 4 stays a draft until there is demand. Epics outside the phases (#99, #148, #166) are filed on GitHub
+only and have no draft here.
 
 | Epic                                      | Phase | Depends on                     |
 | ----------------------------------------- | ----- | ------------------------------ |
