@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "fingerprintVersion": "v2",
+  "scores": {
+    "overall": null,
+    "categories": {
+      "a11y": null,
+      "perf": null,
+      "responsiveness": null,
+      "memory": null,
+      "best-practices": null
+    }
+  },
+  "findings": [
+    {
+      "fingerprint": "9ed7e0b33a4f966d68bf7673ebdbd51aeb375c222ef44e9adca2132be7e72e57",
+      "source": "timeline",
+      "category": "responsiveness",
+      "severity": "moderate",
+      "rule": "frame-build-budget",
+      "route": "perf-control",
+      "target": null
+    },
+    {
+      "fingerprint": "dfb72ecd1c45ebe7e5f0f41f473dc9762406f7a4423dcf54464bd85e2c35694b",
+      "source": "timeline",
+      "category": "responsiveness",
+      "severity": "moderate",
+      "rule": "frame-rasterizer-budget",
+      "route": "perf-control",
+      "target": null
+    }
+  ]
+}
