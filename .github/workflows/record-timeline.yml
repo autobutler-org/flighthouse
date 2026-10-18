@@ -1,0 +1,83 @@
+name: Record timeline
+on:
+  pull_request:
+    paths:
+      - .github/workflows/record-timeline.yml
+  workflow_dispatch:
+    inputs:
+      device:
+        description: flutter drive device, chrome or web-server
+        required: true
+        default: web-server
+        type: choice
+        options:
+          - chrome
+          - web-server
+defaults:
+  run:
+    shell: bash
+permissions:
+  contents: read
+jobs:
+  record:
+    name: Record the fixture frame timing
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DEVICE: ${{ inputs.device || 'web-server' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.7
+          cache: true
+      - name: Install the libraries Chrome needs
+        run: integration/web_fixture/tool/chrome_libraries.sh
+      - name: Print tool versions
+        run: |
+          flutter --version
+          dart --version
+          google-chrome --version
+          "$CHROMEWEBDRIVER/chromedriver" --version
+          echo "DEVICE=${DEVICE}"
+      - name: Resolve dependencies
+        run: flutter pub get --directory integration/web_fixture
+      - name: Start chromedriver
+        run: |
+          "$CHROMEWEBDRIVER/chromedriver" --port=4444 > "$RUNNER_TEMP/chromedriver.log" 2>&1 &
+          for _ in $(seq 1 30); do
+            if curl --silent --fail http://localhost:4444/status > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/chromedriver.log"
+          exit 1
+      - name: Record with flutter drive
+        working-directory: integration/web_fixture
+        timeout-minutes: 15
+        run: |
+          device_args=(-d "$DEVICE")
+          if [[ "$DEVICE" == web-server ]]; then
+            device_args+=(--browser-name=chrome --headless)
+          fi
+          flutter drive -v "${device_args[@]}" \
+            --driver=test_driver/perf_test.dart \
+            --target=integration_test/perf_test.dart
+      - name: Keep the frame timing summaries
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: timeline
+          if-no-files-found: error
+          path: integration/web_fixture/build/flighthouse/timeline
+      - name: Keep the chromedriver log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: chromedriver-log
+          if-no-files-found: warn
+          path: ${{ runner.temp }}/chromedriver.log
