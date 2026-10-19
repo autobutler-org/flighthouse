@@ -131,7 +131,8 @@ footer, or a `claude.ai/code` session link.
 
 ### Verification before claiming done
 
-- Run `make check` and `make test` before every push.
+- Run `make check` and `make test` before every push, `make test/cli` when the CLI or a renderer changed, and
+  `make check/pana` when `pubspec.yaml`, `README.md`, `CHANGELOG.md`, or `example/` changed.
 - Report exactly what was run. Never write "verified by hand", "tested manually", or the like unless that
   verification happened in this session.
 - A PR or commit never carries a Claude Code session link, and all prose and identifiers use American spelling.
@@ -203,6 +204,10 @@ footer, or a `claude.ai/code` session link.
 - Branch names reflect the issue: `feat/12-lighthouse-adapter`, `fix/31-fingerprint-route-case`.
 - Fill out [the PR template](.github/pull_request_template.md).
 - One focused commit per PR, signed off (`git commit -s`). This repository keeps a linear history.
-- **Work with independently reviewable parts is stacked**, using the `gh-stack` skill. Step 5 of the
-  `resolve-issue` skill has the triggers. A schema change goes at the bottom of the stack, the adapters and
-  renderers that consume it above.
+- **Work with independently reviewable parts is stacked**, using the `autobutler:gh-stack` skill. Step 5 of the
+  `autobutler:resolve-issue` skill has the triggers. A schema or `Result` change goes at the bottom of the
+  stack, the adapters and renderers that consume it above; an ADR goes below the code that follows it.
+- Both skills come from the `autobutler` plugin in
+  [autobutler-org/agent-plugins](https://github.com/autobutler-org/agent-plugins), shared across the org's
+  repositories. `.claude/settings.json` registers the marketplace and enables the plugin; the skills defer to
+  this file for every repository-specific rule.
