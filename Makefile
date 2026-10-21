@@ -99,7 +99,7 @@ run/cli: ## Run the CLI (CLI_ARGS supplies the command and options)
 	dart run bin/flighthouse.dart $(CLI_ARGS)
 
 .PHONY: release
-release: ## Tag the pubspec version on main and push the tag, which publishes it
+release: ## Tag the pubspec version on main, push the tag (which publishes it), and create a GitHub release
 	git fetch --quiet --tags origin main
 	if [ "$$(git rev-parse HEAD)" != "$$(git rev-parse origin/main)" ] || [ -n "$$(git status --porcelain)" ]; then
 		echo "Release from a clean, current main: git checkout main && git pull" >&2
@@ -111,6 +111,7 @@ release: ## Tag the pubspec version on main and push the tag, which publishes it
 	fi
 	git tag "$(RELEASE_TAG)"
 	git push origin "$(RELEASE_TAG)"
+	gh release create "$(RELEASE_TAG)" --verify-tag --title "$(RELEASE_TAG)" --generate-notes
 	echo "Pushed $(RELEASE_TAG); the Publish workflow takes it from here"
 
 .PHONY: test/cli

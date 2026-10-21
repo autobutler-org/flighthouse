@@ -62,7 +62,7 @@ to be repeatable, add a target. `make help` lists everything.
 | `make test/cli`   | run the CLI's `ci` command against recorded fixtures                 |
 | `make test/flutter` | run the companion package's `flutter test` (needs Flutter)         |
 | `make check/coverage` | run `make test` with coverage and fail below `coverage_floor`    |
-| `make release`     | tag the pubspec version on a clean, current `main` and push the tag  |
+| `make release`     | tag the pubspec version on a clean, current `main`, push the tag, create a GitHub release |
 
 GNU make is required. On macOS use `gmake`.
 
