@@ -32,7 +32,7 @@ jobs:
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
         with:
-          sdk: 3.13.5
+          sdk: 3.13.7
       - name: Install the libraries Chrome needs
         if: matrix.os == 'ubuntu-latest'
         run: integration/web_fixture/tool/chrome_libraries.sh
@@ -65,7 +65,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.47.7
+          flutter-version: 3.47.8
           cache: true
       - name: Set up Node
         uses: actions/setup-node@v7
